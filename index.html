@@ -8,6 +8,9 @@
 :root{--ink:#15212b;--paper:#f5f0e5;--wine:#7a1f2b;--line:#d8cfbf;--accent:#b28a3a}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--paper)}header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--line);background:#fbf8f1;position:relative;z-index:1000}.brand h1{font-family:Georgia,serif;font-size:22px;margin:0;color:var(--wine);letter-spacing:.2px}.brand p{font-size:12px;margin:3px 0 0;color:#56616b}.header-count{font-size:13px;background:#efe5d1;padding:8px 10px;border-radius:16px}main{display:grid;grid-template-columns:355px 1fr;height:calc(100vh - 76px)}aside{padding:20px;overflow:auto;border-right:1px solid var(--line);background:#fbf8f1}h2{font:700 19px Georgia,serif;margin:0 0 8px;color:var(--wine)}h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 8px;color:#53606b}.intro{font-size:13px;line-height:1.48;margin:0}.search{width:100%;padding:10px 11px;border:1px solid #c8bdab;border-radius:7px;background:white;font-size:14px}.range-label{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.slider{width:100%;accent-color:var(--wine)}.ticks{display:flex;justify-content:space-between;font-size:10px;color:#65717c}.checklist{display:grid;gap:7px;font-size:13px}.checklist label{display:flex;gap:8px;align-items:center}.results{margin-top:16px;border-top:1px solid var(--line)}.item{padding:12px 2px;border-bottom:1px solid #e7dfd1;cursor:pointer}.item:hover .item-title{text-decoration:underline}.item-title{font-weight:700;font-size:14px}.meta{font-size:12px;color:#65717c;margin-top:3px}.empty{font-size:13px;color:#65717c;padding:14px 0}#map{height:100%;width:100%}.leaflet-popup-content{min-width:260px;font-family:Inter,system-ui,sans-serif;max-width:300px}.popup-title{font:700 17px Georgia,serif;color:var(--wine);margin-bottom:5px}.popup-meta{font-size:12px;color:#5a6570;margin-bottom:8px}.popup-text{font-size:13px;line-height:1.35}.badge{font-size:10px;padding:3px 6px;background:#efe5d1;border-radius:10px;margin-left:4px}.certainty{font-size:10px;padding:2px 6px;border-radius:8px;color:#fff;margin-left:4px}.c-confirme{background:#3d6b3d}.c-probable{background:#8a6d1c}.c-approx{background:#8a4a1c}.sources{margin-top:8px;font-size:11px;line-height:1.4;border-top:1px dashed #cfc4ae;padding-top:6px;color:#4a5460}.sources a{color:#3a5a86;text-decoration:none}.sources a:hover{text-decoration:underline}.sources li{margin-bottom:4px}.sources ul{margin:4px 0 0;padding-left:16px}.srctype{font-style:italic;color:#83705a}.popup-img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block}.img-credit{font-size:10px;color:#8b8378;margin-bottom:8px;line-height:1.3;font-style:italic}.popup-tabs{display:flex;gap:4px;margin-bottom:8px;border-bottom:1px solid #e2d9c8}.popup-tab{font-size:11px;padding:5px 9px;cursor:pointer;border:none;background:none;color:#65717c;border-bottom:2px solid transparent;font-weight:600}.popup-tab.active{color:var(--wine);border-bottom-color:var(--wine)}.popup-pane{display:none}.popup-pane.active{display:block}.moves-legend{margin-top:6px;font-size:11px}.moves-legend div{display:flex;align-items:center;gap:6px;margin-bottom:3px}.moves-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}.moves-hint{font-size:11px;color:#65717c;margin-top:4px}.moves-empty{font-size:12px;color:#65717c}.keypoint-icon span{display:block;width:10px;height:10px;background:#fff;border:2px solid #2a2622;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.6)}.keypoint-icon span{cursor:pointer;transition:transform .15s}.keypoint-icon:hover span{transform:scale(1.3)}.kp-popup{font-size:12px}.kp-desc{margin-top:4px;color:#4a4438;line-height:1.4}.kp-tooltip{font-size:11px;font-weight:600}.leaflet-control-layers{font-family:Inter,system-ui,sans-serif;border-radius:8px!important;box-shadow:0 2px 8px rgba(0,0,0,.15)!important;border:1px solid var(--line)!important}.leaflet-control-layers-base label{font-size:12.5px;padding:3px 4px;display:flex;align-items:center;gap:5px}.leaflet-control-layers-toggle{display:none}.ctx-block{margin-bottom:10px}.ctx-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--wine);margin-bottom:3px}.ctx-text{font-size:12.5px;line-height:1.45;color:#332e26}
 @media(max-width:760px){header{height:auto;padding:12px 14px}.header-count{display:none}main{display:flex;flex-direction:column;height:auto}aside{width:100%;border-right:0;border-bottom:1px solid var(--line);max-height:48vh}#map{height:52vh}.brand h1{font-size:18px}}
 .mobile-explorer-toggle,.mobile-battle-sheet,.mobile-sheet-close,.mobile-sheet-handle{display:none}
+.filter-actions{margin:10px 0 2px}
+.filter-action{width:100%;min-height:40px;padding:9px 12px;border:1px solid #bcae98;border-radius:7px;background:#f1e8d8;color:#6d1c28;font-size:12px;font-weight:700;cursor:pointer;transition:background .15s ease,border-color .15s ease}
+.filter-action:hover{background:#e5d6bd;border-color:#a88752}
 @media(max-width:760px){
   html,body{height:100%;overflow:hidden}
   header{height:72px;min-height:72px;padding:10px 14px}
@@ -184,6 +187,7 @@
   .leaflet-control-zoom a{width:44px!important;height:44px!important;line-height:44px!important}
   .leaflet-control-layers{max-width:calc(100vw - 76px);font-size:12px}
   .leaflet-control-layers-base label{min-height:38px}
+  .filter-action{min-height:46px;font-size:14px}
 }
 /* Publicité : emplacements hors carte et hors contenus documentaires. */
 .ad-slot{
@@ -362,6 +366,9 @@
 .poi-official-link:hover{
   text-decoration:underline;
 }
+.movement-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:9px 0 4px}.movement-play{border:1px solid #7a1f2b;background:#7a1f2b;color:#fff;border-radius:7px;padding:6px 9px;font-size:11px;font-weight:700;cursor:pointer}.movement-play:hover{background:#5e1721}.movement-play:disabled{opacity:.56;cursor:wait}.movement-stop{border:1px solid #cfc4ae;background:#fff;color:#5c554c;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:700;cursor:pointer}.movement-note{font-size:10px;color:#6a655d;line-height:1.35;margin:5px 0 1px}.soldier-marker{background:transparent!important;border:0!important}.soldier-token{position:relative;width:32px;height:32px;display:grid;place-items:center;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));transform-origin:center}.soldier-token .unit{position:relative;z-index:2;font-size:24px;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.3)}.soldier-token .flag{position:absolute;right:-4px;top:-5px;width:12px;height:9px;border:1px solid rgba(35,29,23,.6);box-shadow:0 1px 1px rgba(0,0,0,.25)}.soldier-token .flag::before{content:'';position:absolute;left:-3px;top:-4px;height:17px;border-left:2px solid #4d4034}.soldier-token.is-moving{animation:soldier-bob .45s ease-in-out infinite alternate}.soldier-token.is-arrived{animation:soldier-arrive .7s ease-out 1}@keyframes soldier-bob{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-3px) rotate(2deg)}}@keyframes soldier-arrive{0%{transform:scale(1)}45%{transform:scale(1.42)}100%{transform:scale(1)}}.contact-pulse{background:transparent!important;border:0!important}.contact-pulse span{display:block;width:18px;height:18px;border-radius:50%;border:3px solid #a96c22;box-shadow:0 0 0 2px rgba(255,255,255,.75);animation:contact-pulse 1s ease-out 2}@keyframes contact-pulse{0%{transform:scale(.35);opacity:1}100%{transform:scale(2.1);opacity:0}}
+@media(max-width:760px){.movement-controls{gap:8px}.movement-play,.movement-stop{min-height:44px;padding:10px 12px;font-size:13px}.movement-note{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.soldier-token.is-moving,.soldier-token.is-arrived,.contact-pulse span{animation:none}}
 </style></head>
 <body><header><div class="brand"><h1>Atlas des batailles de Belgique et d'Europe</h1><p>Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
@@ -376,7 +383,7 @@
   type="button"
   aria-label="Fermer le panneau d’exploration">
   ×
-</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><div class="checklist" id="periods"></div><h3>Type d’événement</h3>
+</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><div class="filter-actions"><button id="clearFilters" class="filter-action" type="button">Désélectionner toutes les options</button></div><div class="checklist" id="periods"></div><h3>Type d’événement</h3>
 <div class="checklist" id="types"></div>
 
 <div class="poi-section">
@@ -5436,6 +5443,31 @@ populatePoiFilters();
 drawPointsOfInterest();
 const periods=[...new Set(battles.map(x=>x.period))],types=[...new Set(battles.map(x=>x.type))];
 function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
+const clearFiltersBtn = document.getElementById('clearFilters');
+function updateClearFiltersLabel() {
+  const anyChecked = [...document.querySelectorAll('input.period, input.type')].some(i => i.checked);
+  clearFiltersBtn.textContent = anyChecked
+    ? 'Désélectionner toutes les options'
+    : 'Resélectionner toutes les options';
+}
+clearFiltersBtn.addEventListener('click', () => {
+  const anyChecked = [...document.querySelectorAll('input.period, input.type')].some(i => i.checked);
+  document.querySelectorAll('input.period, input.type').forEach(input => {
+    input.checked = !anyChecked;
+  });
+  const poiToggle = document.getElementById('poiToggle');
+  if (poiToggle) {
+    poiToggle.checked = !anyChecked;
+    poiVisible = !anyChecked;
+    drawPointsOfInterest();
+  }
+  updateClearFiltersLabel();
+  update();
+});
+document.querySelectorAll('input.period, input.type').forEach(input => {
+  input.addEventListener('change', updateClearFiltersLabel);
+});
+updateClearFiltersLabel();
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function active(cls){return [...document.querySelectorAll('.'+cls+':checked')].map(x=>x.value)}
 function certLabel(c){return c==='confirmé'?'Confirmé':c==='probable'?'Probable':'Approximatif'}
@@ -5445,7 +5477,8 @@ const img=x.image?`<img class="popup-img" src="${x.image}" alt="Iconographie : $
 const infoPane=`${img}<div class="popup-meta">${x.year} · ${esc(x.period)}<br>${esc(x.place)}</div><div class="popup-text"><b>${esc(x.type)}</b><br>${esc(x.text)}<br><br><b>Issue :</b> ${esc(x.outcome)}<span class="certainty ${certClass(x.certainty)}">${certLabel(x.certainty)}</span></div><div class="sources"><b>Sources (${x.sources.length})</b><ul>${srcs}</ul></div>`;
 const hasMoves=x.movements&&x.movements.length;
 const precise=x.keypoints&&x.keypoints.length;const kpList=precise?`<div class="moves-legend"><b>Lieux clés :</b> ${x.keypoints.map(kp=>esc(kp.name)).join(' · ')}</div>`:'';const hintText=precise?"Tracé calé sur des lieux-clés géoréférencés (fermes, villages) issus de sources historiques ; les axes de mouvement entre ces points restent simplifiés.":"Flèches schématiques et approximatives, à visée pédagogique — elles ne représentent pas un tracé militaire validé trait pour trait.";const legend=hasMoves?`<div class="moves-legend">${x.movements.map(mv=>`<div><span class="moves-swatch" style="background:${mv.color}"></span>${esc(mv.label)}</div>`).join('')}</div>${kpList}<div class="moves-hint">${hintText}</div>`:'<div class="moves-empty">Aucune donnée de mouvement disponible pour cet événement dans ce prototype.</div>';
-const movesPane=`<div class="popup-text"><b>Mouvements de troupes</b></div>${legend}`;
+ const movementControls=hasMoves?`<div class="movement-controls"><button type="button" class="movement-play" data-animation-battle="${esc(x.id)}">▶ Animer les mouvements</button><button type="button" class="movement-stop">■ Arrêter</button></div><p class="movement-note">Animation schématique : les silhouettes représentent les colonnes, pas les effectifs réels.</p>`:'';
+ const movesPane=`<div class="popup-text"><b>Mouvements de troupes</b>${legend}${movementControls}</div>`;
 const ctx=x.context;
 const ctxPane=ctx?`<div class="ctx-block"><div class="ctx-label">Préambule</div><div class="ctx-text">${esc(ctx.preambule)}</div></div><div class="ctx-block"><div class="ctx-label">Déroulé</div><div class="ctx-text">${esc(ctx.deroule)}</div></div><div class="ctx-block"><div class="ctx-label">Après la bataille</div><div class="ctx-text">${esc(ctx.apres)}</div></div><div class="ctx-block"><div class="ctx-label">Forces en présence</div><div class="ctx-text">${esc(ctx.forces)}</div></div><div class="ctx-block"><div class="ctx-label">Pertes</div><div class="ctx-text">${esc(ctx.pertes)}</div></div>`:'<div class="moves-empty">Aucune donnée contextuelle disponible pour cet événement dans ce prototype.</div>';
 const visitsPane = x.visits && x.visits.length
@@ -5484,9 +5517,152 @@ marker.on('popupopen', () => {
 }})}
 
 let moveLayer=L.layerGroup().addTo(map);
-function clearMovementLayer(){moveLayer.clearLayers();}
+function clearMovementLayer(){stopMovementAnimation();moveLayer.clearLayers();}
 function drawMovements(x){clearMovementLayer();if(!x.movements)return;x.movements.forEach(mv=>{L.polyline(mv.coords,{color:mv.color,weight:3,opacity:.85,lineCap:'round'}).addTo(moveLayer);const last=mv.coords[mv.coords.length-1];L.circleMarker(last,{radius:4,color:mv.color,fillColor:mv.color,fillOpacity:1,weight:1}).addTo(moveLayer);});if(x.keypoints){x.keypoints.forEach(kp=>{const kpMarker=L.marker(kp.coords,{icon:L.divIcon({className:'keypoint-icon',html:'<span></span>',iconSize:[14,14]}),zIndexOffset:1000});const kpPopup=`<div class="kp-popup"><b>${esc(kp.name)}</b>${kp.desc?`<div class="kp-desc">${esc(kp.desc)}</div>`:''}</div>`;kpMarker.bindPopup(kpPopup,{maxWidth:240});kpMarker.bindTooltip(kp.name,{permanent:false,direction:'top',className:'kp-tooltip'});kpMarker.addTo(moveLayer);});}const allCoords=x.movements.flatMap(mv=>mv.coords).concat((x.keypoints||[]).map(kp=>kp.coords));map.fitBounds(L.latLngBounds(allCoords),{padding:[40,40],maxZoom:16});}
-function setupPopupTabs(x){const container=document.querySelector('.leaflet-popup-content');if(!container)return;const tabs=container.querySelectorAll('.popup-tab');const panes=container.querySelectorAll('.popup-pane');tabs.forEach(tab=>{tab.onclick=()=>{tabs.forEach(t=>t.classList.remove('active'));panes.forEach(pn=>pn.classList.remove('active'));tab.classList.add('active');const target=container.querySelector('#'+tab.dataset.pane);if(target)target.classList.add('active');if(tab.dataset.pane.startsWith('moves-')){drawMovements(x);}else{clearMovementLayer();}}});}
+let soldierAnimationLayer = null;
+let soldierAnimationFrame = null;
+let soldierAnimationRunning = false;
+
+function ensureSoldierAnimationLayer(){
+  if(!soldierAnimationLayer) soldierAnimationLayer = L.layerGroup().addTo(map);
+  return soldierAnimationLayer;
+}
+
+function stopMovementAnimation(){
+  if(soldierAnimationFrame){
+    cancelAnimationFrame(soldierAnimationFrame);
+    soldierAnimationFrame = null;
+  }
+  soldierAnimationRunning = false;
+  if(soldierAnimationLayer) soldierAnimationLayer.clearLayers();
+}
+
+function soldierStyle(period, movement){
+  const label = `${movement.label || ''} ${movement.faction || ''}`.toLowerCase();
+  const enemy = /allemand|german|pruss|holland|néerland|netherland|autrich|espagnol|fran[cç]ais|roman|romain/.test(label);
+  const isAncient = /antiqu|romain|gaulois/.test(period || '');
+  const isMedieval = /moyen âge|moyen age/.test(period || '');
+  const isModern = /xvii|xviii|révolution|empire|napoléon|napoleon/.test(period || '');
+  const isWWI = /première guerre|premiere guerre|1914|1918/.test(period || '');
+  const isWWII = /seconde guerre|1939|1945|ardennes/.test(period || '');
+  const is1830 = /révolution belge/.test(period || '');
+
+  let unit = '🪖';
+  if(isAncient) unit = label.includes('romain') ? '🛡️' : '⚔️';
+  else if(isMedieval) unit = /caval|cheval/.test(label) ? '🏇' : '⚔️';
+  else if(isModern) unit = /caval|huss|dragon/.test(label) ? '🏇' : '🎖️';
+  else if(is1830) unit = '🎖️';
+  else if(isWWI) unit = '🪖';
+  else if(isWWII) unit = /blind|panzer|tank/.test(label) ? '🛞' : '🪖';
+
+  let flag = '#537ca1';
+  if(/fran[cç]ais|france|napol/.test(label)) flag = 'linear-gradient(90deg,#1e3d82 0 33%,#fff 33% 66%,#b72a31 66%)';
+  else if(/britann|anglais|wellington/.test(label)) flag = '#a8212d';
+  else if(/belge|belg/.test(label)) flag = 'linear-gradient(90deg,#181818 0 33%,#e7c637 33% 66%,#b72a31 66%)';
+  else if(/allemand|german/.test(label)) flag = '#5a6950';
+  else if(/pruss/.test(label)) flag = '#243c69';
+  else if(/autrich/.test(label)) flag = '#eee';
+  else if(/holland|néerland|netherland/.test(label)) flag = 'linear-gradient(#a82932 0 33%,#fff 33% 66%,#265593 66%)';
+  else if(/romain/.test(label)) flag = '#9b2732';
+  else if(/nervien|gaulois/.test(label)) flag = '#6b7744';
+  else if(enemy) flag = '#8a613d';
+
+  return {unit, flag};
+}
+
+function soldierIcon(period, movement, arrived=false){
+  const style = soldierStyle(period, movement);
+  const html = `<div class="soldier-token ${arrived ? 'is-arrived' : 'is-moving'}"><span class="unit">${style.unit}</span><span class="flag" style="background:${style.flag}"></span></div>`;
+  return L.divIcon({className:'soldier-marker',html,iconSize:[32,32],iconAnchor:[16,16]});
+}
+
+function pointAlongPath(coords, progress){
+  if(!coords || coords.length < 2) return coords?.[0] || null;
+  const latLngs = coords.map(point => L.latLng(point));
+  const lengths = [];
+  let total = 0;
+  for(let i=0;i<latLngs.length-1;i++){
+    const length = map.distance(latLngs[i],latLngs[i+1]);
+    lengths.push(length);
+    total += length;
+  }
+  if(total === 0) return latLngs[latLngs.length-1];
+  let wanted = Math.min(1,Math.max(0,progress))*total;
+  for(let i=0;i<lengths.length;i++){
+    if(wanted <= lengths[i] || i === lengths.length-1){
+      const ratio = lengths[i] === 0 ? 1 : wanted / lengths[i];
+      return L.latLng(
+        latLngs[i].lat + (latLngs[i+1].lat-latLngs[i].lat)*ratio,
+        latLngs[i].lng + (latLngs[i+1].lng-latLngs[i].lng)*ratio
+      );
+    }
+    wanted -= lengths[i];
+  }
+  return latLngs[latLngs.length-1];
+}
+
+function animateBattleMovements(battle, button){
+  if(!battle?.movements?.length || soldierAnimationRunning) return;
+  ensureSoldierAnimationLayer();
+  stopMovementAnimation();
+  soldierAnimationRunning = true;
+  if(button){button.disabled=true;button.textContent='Animation…';}
+
+  const soldiers = battle.movements
+    .filter(move => Array.isArray(move.coords) && move.coords.length > 1)
+    .map(move => {
+      const marker = L.marker(move.coords[0],{
+        icon:soldierIcon(battle.period,move),
+        interactive:false,
+        keyboard:false,
+        zIndexOffset:1200
+      }).addTo(soldierAnimationLayer);
+      return {move,marker};
+    });
+
+  const duration = Math.max(2600,Math.min(6500,2200+soldiers.length*700));
+  const start = performance.now();
+
+  function tick(now){
+    const t = Math.min(1,(now-start)/duration);
+    const eased = t < .5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+    soldiers.forEach(({move,marker},index) => {
+      const individualProgress = Math.min(1,Math.max(0,(eased-index*.035)/.965));
+      const position = pointAlongPath(move.coords,individualProgress);
+      if(position) marker.setLatLng(position);
+    });
+    if(t < 1){
+      soldierAnimationFrame = requestAnimationFrame(tick);
+      return;
+    }
+    soldiers.forEach(({move,marker}) => {
+      const last = move.coords[move.coords.length-1];
+      marker.setIcon(soldierIcon(battle.period,move,true));
+      L.marker(last,{
+        icon:L.divIcon({className:'contact-pulse',html:'<span></span>',iconSize:[18,18],iconAnchor:[9,9]}),
+        interactive:false,
+        keyboard:false,
+        zIndexOffset:1100
+      }).addTo(soldierAnimationLayer);
+    });
+    soldierAnimationRunning = false;
+    soldierAnimationFrame = null;
+    if(button){button.disabled=false;button.textContent='↻ Rejouer';}
+  }
+  soldierAnimationFrame = requestAnimationFrame(tick);
+}
+
+function addMovementAnimationControls(container,battle){
+  if(!container || !battle?.movements?.some(move => move.coords?.length > 1)) return;
+  const playButton = container.querySelector('.movement-play');
+  const stopButton = container.querySelector('.movement-stop');
+  if(playButton) playButton.addEventListener('click',() => animateBattleMovements(battle,playButton));
+  if(stopButton) stopButton.addEventListener('click',() => {
+    stopMovementAnimation();
+    if(playButton){playButton.disabled=false;playButton.textContent='▶ Animer les mouvements';}
+  });
+}
+ function setupPopupTabs(x){const container=document.querySelector('.leaflet-popup-content');if(!container)return;stopMovementAnimation();const tabs=container.querySelectorAll('.popup-tab');const panes=container.querySelectorAll('.popup-pane');tabs.forEach(tab=>{tab.onclick=()=>{tabs.forEach(t=>t.classList.remove('active'));panes.forEach(pn=>pn.classList.remove('active'));tab.classList.add('active');const target=container.querySelector('#'+tab.dataset.pane);if(target)target.classList.add('active');if(tab.dataset.pane.startsWith('moves-')){drawMovements(x);addMovementAnimationControls(container,x);}else{clearMovementLayer();}}});}
 
 const {minYear,maxYear,search,minLabel,maxLabel,counter,results}=Object.fromEntries(['minYear','maxYear','search','minLabel','maxLabel','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
 /* ── Mobile : panneau Explorer + fiche de bataille ── */
@@ -5530,6 +5706,7 @@ function closeMobileBattleSheet() {
 }
 
 function setupMobileTabs(x) {
+  stopMovementAnimation();
   const tabs = mobileBattleSheet.querySelectorAll('.popup-tab');
   const panes = mobileBattleSheet.querySelectorAll('.popup-pane');
 
@@ -5550,7 +5727,9 @@ function setupMobileTabs(x) {
 
       if (tab.dataset.pane.startsWith('moves-')) {
         drawMovements(x);
+        addMovementAnimationControls(mobileBattleSheet, x);
       } else {
+        stopMovementAnimation();
         clearMovementLayer();
       }
     });
