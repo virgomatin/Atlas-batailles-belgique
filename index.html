@@ -104,6 +104,86 @@
   font-size: 11px;
   line-height: 1.35;
 }
+.poi-section{
+  border-top:1px solid #e7dfd1;
+  margin-top:18px;
+  padding-top:2px;
+}
+.poi-master-toggle{
+  font-weight:700 !important;
+  color:#7a1f2b;
+}
+.poi-type-row{
+  padding-left:4px;
+  color:#56616b;
+}
+.poi-dot{
+  display:inline-block;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  margin-right:2px;
+  border:1px solid #fff;
+  box-shadow:0 0 0 1px rgba(0,0,0,.14);
+}
+.poi-type-count{
+  margin-left:auto;
+  color:#8b8378;
+  font-size:11px;
+}
+.poi-tooltip{
+  font-size:11px;
+  font-weight:600;
+}
+.poi-title{
+  font:700 16px Georgia,serif;
+  color:#7a1f2b;
+  margin-bottom:5px;
+}
+.poi-meta{
+  font-size:11px;
+  color:#5a6570;
+  margin-bottom:8px;
+}
+.poi-related{
+  border-top:1px dashed #cfc4ae;
+  margin-top:9px;
+  padding-top:7px;
+  font-size:11px;
+}
+.poi-battle-link{
+  border:0;
+  background:#efe5d1;
+  color:#5f2631;
+  border-radius:10px;
+  font-size:10px;
+  padding:4px 6px;
+  margin:4px 3px 0 0;
+  cursor:pointer;
+}
+.poi-battle-link:hover{
+  background:#e1d1b3;
+}
+.poi-respect{
+  font-size:11px;
+  color:#665749;
+  background:#f5eee0;
+  border-left:3px solid #8a613d;
+  padding:6px 7px;
+  margin-top:8px;
+  line-height:1.35;
+}
+.poi-official-link{
+  display:inline-block;
+  margin-top:9px;
+  color:#3a5a86;
+  font-size:12px;
+  font-weight:700;
+  text-decoration:none;
+}
+.poi-official-link:hover{
+  text-decoration:underline;
+}
 </style></head>
 <body><header><div class="brand"><h1>Atlas des batailles de Belgique et d'Europe</h1><p>Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
@@ -118,7 +198,15 @@
   type="button"
   aria-label="Fermer le panneau d’exploration">
   ×
-</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><div class="checklist" id="periods"></div><h3>Type d’événement</h3><div class="checklist" id="types"></div><div class="results" id="results"></div><div class="ad-slot" data-provider="placeholder" aria-label="Emplacement publicitaire">
+</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><h3>Type d’événement</h3>
+<div class="checklist" id="types"></div>
+
+<div class="poi-section">
+  <h3>Lieux de mémoire</h3>
+  <div class="checklist" id="poiTypes"></div>
+</div>
+
+<div class="results" id="results"></div><div class="ad-slot" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
   <div class="ad-content">
     Espace réservé à un partenaire : musée, librairie, site mémoriel ou contenu culturel pertinent.
@@ -4740,16 +4828,435 @@ const battles=[
     }
   ]
 },];
-const map=L.map('map',{zoomControl:true}).setView([50.65,4.6],8);
+const pointsOfInterest = [
+  {
+    id:'place-des-martyrs-bruxelles',
+    name:'Place des Martyrs',
+    type:'memorial',
+    icon:'✦',
+    periods:['Révolution belge'],
+    coords:[50.8505,4.3559],
+    city:'Bruxelles',
+    country:'Belgique',
+    description:'Lieu de mémoire majeur de la Révolution belge, où reposent de nombreux combattants tombés lors des combats de septembre 1830 à Bruxelles.',
+    relatedBattles:['combats-parc-bruxelles-1830'],
+    officialUrl:'https://monument.heritage.brussels/fr/Bruxelles_Pentagone/Place_des_Martyrs/10000012',
+    sourceName:'Bruxelles Patrimoines',
+    sourceUrl:'https://monument.heritage.brussels/fr/Bruxelles_Pentagone/Place_des_Martyrs/10000012'
+  },
+  {
+    id:'musee-ville-bruxelles-1830',
+    name:'Musée de la Ville de Bruxelles — Maison du Roi',
+    type:'museum',
+    icon:'▣',
+    periods:['Révolution belge'],
+    coords:[50.8467,4.3525],
+    city:'Bruxelles',
+    country:'Belgique',
+    description:'Musée conservant notamment des représentations et objets relatifs aux Journées de Septembre et à l’histoire de Bruxelles.',
+    relatedBattles:['combats-parc-bruxelles-1830'],
+    officialUrl:'https://www.brussels.be/musee-de-la-ville-de-bruxelles',
+    sourceName:'Ville de Bruxelles',
+    sourceUrl:'https://www.brussels.be/musee-de-la-ville-de-bruxelles'
+  },
+  {
+    id:'hougoumont-waterloo',
+    name:'Ferme d’Hougoumont',
+    type:'battlefield',
+    icon:'⚔',
+    periods:['Empire napoléonien'],
+    coords:[50.6807,4.4066],
+    city:'Braine-l’Alleud',
+    country:'Belgique',
+    description:'Ferme transformée en point d’appui allié le 18 juin 1815 ; sa défense a fixé une part importante des combats sur l’aile droite de Wellington.',
+    relatedBattles:['waterloo'],
+    officialUrl:'https://www.waterloo1815.be/',
+    sourceName:'Waterloo 1815',
+    sourceUrl:'https://www.waterloo1815.be/'
+  },
+  {
+    id:'butte-lion-waterloo',
+    name:'Butte du Lion',
+    type:'memorial',
+    icon:'✦',
+    periods:['Empire napoléonien'],
+    coords:[50.6812,4.4126],
+    city:'Waterloo',
+    country:'Belgique',
+    description:'Monument commémoratif dominant le champ de bataille de Waterloo et intégré au parcours de visite Waterloo 1815.',
+    relatedBattles:['waterloo'],
+    officialUrl:'https://www.waterloo1815.be/',
+    sourceName:'Waterloo 1815',
+    sourceUrl:'https://www.waterloo1815.be/'
+  },
+  {
+    id:'fort-loncin',
+    name:'Fort de Loncin',
+    type:'fortification',
+    icon:'▰',
+    periods:['Première Guerre mondiale'],
+    coords:[50.6659,5.5006],
+    city:'Ans',
+    country:'Belgique',
+    description:'Fort de la position fortifiée de Liège, détruit par l’artillerie allemande lors du siège de 1914. Il est aujourd’hui un site mémoriel et une nécropole militaire.',
+    relatedBattles:['bataille-de-liege-1914','siege-de-liege-1914'],
+    officialUrl:'https://www.fortdeloncin.com/',
+    sourceName:'Fort de Loncin',
+    sourceUrl:'https://www.fortdeloncin.com/'
+  },
+  {
+    id:'in-flanders-fields',
+    name:'In Flanders Fields Museum',
+    type:'museum',
+    icon:'▣',
+    periods:['Première Guerre mondiale'],
+    coords:[50.8512,2.8850],
+    city:'Ypres / Ieper',
+    country:'Belgique',
+    description:'Musée de référence consacré à la guerre de 1914-1918, au paysage du front et aux mémoires civiles et militaires du saillant d’Ypres.',
+    relatedBattles:['premiere-bataille-ypres-1914','deuxieme-bataille-ypres-1915','troisieme-bataille-ypres-1917'],
+    officialUrl:'https://www.inflandersfields.be/',
+    sourceName:'In Flanders Fields Museum',
+    sourceUrl:'https://www.inflandersfields.be/'
+  },
+  {
+    id:'porte-menin',
+    name:'Porte de Menin',
+    type:'memorial',
+    icon:'✦',
+    periods:['Première Guerre mondiale'],
+    coords:[50.8513,2.8854],
+    city:'Ypres / Ieper',
+    country:'Belgique',
+    description:'Mémorial de la Commonwealth War Graves Commission dédié aux soldats disparus dans le saillant d’Ypres ; il est associé à la cérémonie du Last Post.',
+    relatedBattles:['premiere-bataille-ypres-1914','deuxieme-bataille-ypres-1915','troisieme-bataille-ypres-1917'],
+    officialUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/91800/ypres-menin-gate-memorial/',
+    sourceName:'CWGC',
+    sourceUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/91800/ypres-menin-gate-memorial/'
+  },
+  {
+    id:'tyne-cot',
+    name:'Tyne Cot Cemetery',
+    type:'cemetery',
+    icon:'✚',
+    periods:['Première Guerre mondiale'],
+    coords:[50.8876,2.9986],
+    city:'Zonnebeke',
+    country:'Belgique',
+    description:'Grand cimetière militaire du Commonwealth situé dans le paysage des combats de Passchendaele. Lieu funéraire : respecter les sépultures et le calme du site.',
+    relatedBattles:['troisieme-bataille-ypres-1917','bataille-de-passchendaele-1917'],
+    officialUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/53200/tyne-cot-cemetery/',
+    sourceName:'CWGC',
+    sourceUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/53200/tyne-cot-cemetery/'
+  },
+  {
+    id:'lijssenthoek',
+    name:'Lijssenthoek Military Cemetery',
+    type:'cemetery',
+    icon:'✚',
+    periods:['Première Guerre mondiale'],
+    coords:[50.8313,2.7753],
+    city:'Poperinge',
+    country:'Belgique',
+    description:'Nécropole militaire du Commonwealth liée aux hôpitaux de campagne installés derrière le front d’Ypres. Lieu funéraire : recueillement requis.',
+    relatedBattles:['deuxieme-bataille-ypres-1915','troisieme-bataille-ypres-1917'],
+    officialUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/10700/LIJSSENTHOEK-MILITARY-CEMETERY/',
+    sourceName:'CWGC',
+    sourceUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/10700/LIJSSENTHOEK-MILITARY-CEMETERY/'
+  },
+  {
+    id:'ploegsteert-memorial',
+    name:'Mémorial de Ploegsteert',
+    type:'memorial',
+    icon:'✦',
+    periods:['Première Guerre mondiale'],
+    coords:[50.7253,2.8808],
+    city:'Ploegsteert',
+    country:'Belgique',
+    description:'Mémorial du Commonwealth portant les noms de soldats disparus dans les environs de Ploegsteert et sans sépulture connue.',
+    relatedBattles:['premiere-bataille-ypres-1914','bataille-de-messines-1917'],
+    officialUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/88800/ploegsteert-memorial/',
+    sourceName:'CWGC',
+    sourceUrl:'https://www.cwgc.org/visit-us/find-cemeteries-memorials/cemetery-details/88800/ploegsteert-memorial/'
+  },
+  {
+    id:'musee-yser',
+    name:'Musée de l’Yser',
+    type:'museum',
+    icon:'▣',
+    periods:['Première Guerre mondiale'],
+    coords:[51.0315,2.8643],
+    city:'Dixmude / Diksmuide',
+    country:'Belgique',
+    description:'Centre d’interprétation installé dans la tour de l’Yser, dominant l’ancien front de 1914-1918.',
+    relatedBattles:['bataille-de-lyser-1914'],
+    officialUrl:'https://www.yser.be/',
+    sourceName:'Musée de l’Yser',
+    sourceUrl:'https://www.yser.be/'
+  },
+  {
+    id:'mardasson',
+    name:'Mémorial du Mardasson',
+    type:'memorial',
+    icon:'✦',
+    periods:['Seconde Guerre mondiale','Bataille des Ardennes'],
+    coords:[50.0007,5.7425],
+    city:'Bastogne',
+    country:'Belgique',
+    description:'Monument commémoratif dédié aux forces américaines engagées pendant la bataille des Ardennes.',
+    relatedBattles:['bataille-des-ardennes-1944','siege-de-bastogne-1944'],
+    officialUrl:'https://www.bastognewarmuseum.be/',
+    sourceName:'Bastogne War Museum',
+    sourceUrl:'https://www.bastognewarmuseum.be/'
+  },
+  {
+    id:'bastogne-war-museum',
+    name:'Bastogne War Museum',
+    type:'museum',
+    icon:'▣',
+    periods:['Seconde Guerre mondiale','Bataille des Ardennes'],
+    coords:[50.0001,5.7424],
+    city:'Bastogne',
+    country:'Belgique',
+    description:'Musée consacré à la Seconde Guerre mondiale et aux expériences militaires et civiles de l’hiver 1944-1945.',
+    relatedBattles:['bataille-des-ardennes-1944','siege-de-bastogne-1944'],
+    officialUrl:'https://www.bastognewarmuseum.be/',
+    sourceName:'Bastogne War Museum',
+    sourceUrl:'https://www.bastognewarmuseum.be/'
+  },
+  {
+    id:'recogne',
+    name:'Cimetière militaire allemand de Recogne',
+    type:'cemetery',
+    icon:'✚',
+    periods:['Seconde Guerre mondiale','Bataille des Ardennes'],
+    coords:[50.0100,5.7170],
+    city:'Recogne / Bastogne',
+    country:'Belgique',
+    description:'Nécropole militaire allemande située près de Bastogne, liée aux combats de la bataille des Ardennes. Lieu funéraire : recueillement requis.',
+    relatedBattles:['bataille-des-ardennes-1944','siege-de-bastogne-1944'],
+    officialUrl:'https://visitwallonia.be/fr-be/3/jaime/patrimoine-et-culture/memoire/1940-1945-en-wallonie-la-bataille-des-ardennes/musees-et-patrimoine',
+    sourceName:'Visit Wallonia',
+    sourceUrl:'https://visitwallonia.be/fr-be/3/jaime/patrimoine-et-culture/memoire/1940-1945-en-wallonie-la-bataille-des-ardennes/musees-et-patrimoine'
+  },
+  {
+    id:'bois-jacques',
+    name:'Bois Jacques — Easy Company',
+    type:'battlefield',
+    icon:'⚔',
+    periods:['Seconde Guerre mondiale','Bataille des Ardennes'],
+    coords:[50.0304,5.7281],
+    city:'Foy / Bastogne',
+    country:'Belgique',
+    description:'Secteur forestier associé aux positions américaines et aux combats de l’hiver 1944-1945 près de Bastogne.',
+    relatedBattles:['bataille-des-ardennes-1944','siege-de-bastogne-1944'],
+    officialUrl:'https://www.bastognewarmuseum.be/',
+    sourceName:'Bastogne War Museum',
+    sourceUrl:'https://www.bastognewarmuseum.be/'
+  },
+  {
+    id:'breendonk',
+    name:'Fort de Breendonk',
+    type:'fortification',
+    icon:'▰',
+    periods:['Seconde Guerre mondiale'],
+    coords:[51.0461,4.3346],
+    city:'Willebroek',
+    country:'Belgique',
+    description:'Forteresse utilisée comme camp de détention nazi pendant l’occupation. Site de mémoire de la déportation et de la résistance.',
+    relatedBattles:[],
+    officialUrl:'https://breendonk.be/',
+    sourceName:'Mémorial national du Fort de Breendonk',
+    sourceUrl:'https://breendonk.be/'
+  },
+  {
+    id:'citadelle-namur',
+    name:'Citadelle de Namur',
+    type:'fortification',
+    icon:'▰',
+    periods:['XVIIe siècle','Guerres de l’époque moderne'],
+    coords:[50.4605,4.8640],
+    city:'Namur',
+    country:'Belgique',
+    description:'Forteresse dominant le confluent de la Sambre et de la Meuse, associée aux sièges de Namur de 1692 et de 1695.',
+    relatedBattles:['namur1695','siege-namur-1692'],
+    officialUrl:'https://www.citadelle.namur.be/',
+    sourceName:'Citadelle de Namur',
+    sourceUrl:'https://www.citadelle.namur.be/'
+  },
+  {
+    id:'kortrijk-1302',
+    name:'Kortrijk 1302',
+    type:'museum',
+    icon:'▣',
+    periods:['Moyen Âge'],
+    coords:[50.8301,3.2654],
+    city:'Courtrai / Kortrijk',
+    country:'Belgique',
+    description:'Centre d’interprétation consacré à la bataille des Éperons d’or de 1302 et à sa mémoire dans l’histoire flamande.',
+    relatedBattles:['courtrai'],
+    officialUrl:'https://www.kortrijk1302.be/',
+    sourceName:'Kortrijk 1302',
+    sourceUrl:'https://www.kortrijk1302.be/'
+  }
+];
+
+const poiTypeLabels = {
+  memorial:'Mémorial',
+  cemetery:'Cimetière militaire',
+  museum:'Musée',
+  battlefield:'Champ de bataille',
+  fortification:'Fortification'
+};
+
+const poiTypeColors = {
+  memorial:'#7a1f2b',
+  cemetery:'#485f44',
+  museum:'#315b7c',
+  battlefield:'#8a613d',
+  fortification:'#5d536e'
+};
+
+let poiLayer;
+let poiVisible = true;
+
+function poiPopupHtml(poi){
+  const related = poi.relatedBattles
+    .map(id => battles.find(battle => battle.id === id))
+    .filter(Boolean);
+
+  const relatedHtml = related.length
+    ? `
+      <div class="poi-related">
+        <b>Batailles liées</b>
+        <div>
+          ${related.map(battle => `
+            <button type="button" class="poi-battle-link" data-battle-id="${esc(battle.id)}">
+              ${esc(battle.name)} (${battle.year})
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `
+    : '';
+
+  const cemeteryNote = poi.type === 'cemetery'
+    ? '<div class="poi-respect">Lieu funéraire : merci de respecter le calme, les sépultures et les consignes du site.</div>'
+    : '';
+
+  return `
+    <div class="poi-popup">
+      <div class="poi-title">${poi.icon || '●'} ${esc(poi.name)}</div>
+      <div class="poi-meta">${esc(poiTypeLabels[poi.type] || poi.type)} · ${esc(poi.city)} · ${esc(poi.periods.join(' · '))}</div>
+      <div class="popup-text">${esc(poi.description)}</div>
+      ${cemeteryNote}
+      ${relatedHtml}
+      <div class="sources">
+        <b>Informations</b>
+        <ul>
+          <li><a href="${esc(poi.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(poi.sourceName)}</a></li>
+        </ul>
+      </div>
+      <a class="poi-official-link" href="${esc(poi.officialUrl)}" target="_blank" rel="noopener noreferrer">Préparer la visite ↗</a>
+    </div>
+  `;
+}
+
+function setupPoiPopup(poi, marker){
+  marker.on('popupopen', () => {
+    const popup = marker.getPopup();
+    const node = popup && popup.getElement();
+
+    if(!node) return;
+
+    node.querySelectorAll('.poi-battle-link').forEach(button => {
+      button.addEventListener('click', () => {
+        const battle = battles.find(item => item.id === button.dataset.battleId);
+
+        if(!battle) return;
+
+        map.closePopup();
+        map.flyTo(battle.coords, 11, {duration:.6});
+
+        setTimeout(() => {
+          const battleMarker = markerById.get(battle.id);
+          if(battleMarker) battleMarker.openPopup();
+        }, 650);
+      });
+    });
+  });
+}
+
+function drawPointsOfInterest(){
+  poiLayer.clearLayers();
+
+  if(!poiVisible) return;
+
+  pointsOfInterest.forEach(poi => {
+    const marker = L.circleMarker(poi.coords, {
+      radius:8,
+      color:'#fff',
+      weight:2,
+      fillColor:poiTypeColors[poi.type] || '#555',
+      fillOpacity:.96,
+      className:'poi-marker'
+    }).addTo(poiLayer);
+
+    marker.bindTooltip(
+      `${poiTypeLabels[poi.type] || poi.type} — ${poi.name}`,
+      {
+        direction:'top',
+        className:'poi-tooltip'
+      }
+    );
+
+    marker.bindPopup(poiPopupHtml(poi), {
+      maxWidth:330,
+      closeOnClick:false,
+      autoClose:false
+    });
+
+    setupPoiPopup(poi, marker);
+  });
+}
+
+function populatePoiFilters(){
+  const target = document.getElementById('poiTypes');
+
+  if(!target) return;
+
+  const presentTypes = [...new Set(pointsOfInterest.map(poi => poi.type))];
+
+  target.innerHTML = `
+    <label class="poi-master-toggle">
+      <input id="poiToggle" type="checkbox" checked>
+      Afficher les lieux de mémoire
+      <span id="poiCount">(${pointsOfInterest.length})</span>
+    </label>
+  ` + presentTypes.map(type => `
+    <label class="poi-type-row">
+      <span class="poi-dot" style="background:${poiTypeColors[type]}"></span>
+      ${esc(poiTypeLabels[type] || type)}
+      <span class="poi-type-count">${pointsOfInterest.filter(poi => poi.type === type).length}</span>
+    </label>
+  `).join('');
+
+  document.getElementById('poiToggle').addEventListener('change', event => {
+    poiVisible = event.target.checked;
+    drawPointsOfInterest();
+  });
+}
+  const map=L.map('map',{zoomControl:true}).setView([50.65,4.6],8);
 const osmLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 const ferrarisWallonie=L.tileLayer.wms('https://geoservices.wallonie.be/arcgis/services/CARTES_ANCIENNES/FERRARIS/MapServer/WMSServer',{layers:'0',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; SPW — Carte de Ferraris (1770-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
 const ferrarisVlaanderen=L.tileLayer.wms('https://geo.api.vlaanderen.be/HISTCART/wms',{layers:'ferraris',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; Informatie Vlaanderen — Ferrariskaart (1771-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
 const ferrarisLayer=L.layerGroup([ferrarisWallonie,ferrarisVlaanderen]);
 const baseLayers={'Carte actuelle (OpenStreetMap)':osmLayer,'Carte de Ferraris (1777, Wallonie + Flandre)':ferrarisLayer};
 L.control.layers(baseLayers,null,{position:'topright',collapsed:false}).addTo(map);
-const layer=L.layerGroup().addTo(map);let markerById={};
+const layer=L.layerGroup().addTo(map);poiLayer=L.layerGroup().addTo(map);let markerById={};
 const periods=[...new Set(battles.map(x=>x.period))],types=[...new Set(battles.map(x=>x.type))];
-function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
+function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');populatePoiFilters();
+drawPointsOfInterest();
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function active(cls){return [...document.querySelectorAll('.'+cls+':checked')].map(x=>x.value)}
 function certLabel(c){return c==='confirmé'?'Confirmé':c==='probable'?'Probable':'Approximatif'}
