@@ -104,6 +104,387 @@
   font-size: 11px;
   line-height: 1.35;
 }
+  /* =========================================================
+   REFONTE MOBILE — Atlas des batailles
+   À coller juste avant </style>
+   ========================================================= */
+
+@media (max-width: 760px) {
+  :root {
+    --mobile-header-h: 72px;
+    --mobile-sheet-bg: #fffdf9;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body {
+    background: #e7e0d5;
+  }
+
+  /* La carte devient l'écran principal. */
+  header {
+    position: fixed;
+    z-index: 1200;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-header-h);
+    min-height: var(--mobile-header-h);
+    padding: 11px 14px;
+    border: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 253, 249, 0.97) 0%,
+      rgba(255, 253, 249, 0.86) 72%,
+      rgba(255, 253, 249, 0) 100%
+    );
+    pointer-events: none;
+  }
+
+  header .brand {
+    pointer-events: auto;
+  }
+
+  .brand h1 {
+    margin: 0;
+    color: var(--wine);
+    font-size: 18px;
+    line-height: 1.05;
+  }
+
+  .brand p {
+    max-width: 250px;
+    margin: 3px 0 0;
+    color: #697382;
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  .header-count,
+  .ad-top {
+    display: none !important;
+  }
+
+  main {
+    display: block;
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  /* Le panneau desktop devient un panneau de filtres coulissant. */
+  aside {
+    position: fixed;
+    z-index: 1400;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    max-height: min(78dvh, 660px);
+    padding: 18px 16px 28px;
+    overflow: auto;
+    border: 0;
+    border-radius: 24px 24px 0 0;
+    background: var(--mobile-sheet-bg);
+    box-shadow: 0 -10px 34px rgba(32, 26, 20, 0.24);
+    transform: translateY(105%);
+    transition: transform 0.28s ease;
+    overscroll-behavior: contain;
+  }
+
+  body.mobile-sheet-open aside {
+    transform: translateY(0);
+  }
+
+  aside::before {
+    display: block;
+    width: 44px;
+    height: 5px;
+    margin: -8px auto 14px;
+    border-radius: 999px;
+    background: #d3c6b5;
+    content: "";
+  }
+
+  aside h2 {
+    margin: 0 40px 7px 0;
+    font-size: 21px;
+  }
+
+  aside .intro {
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+
+  aside h3 {
+    margin: 18px 0 8px;
+  }
+
+  .search {
+    min-height: 48px;
+    padding: 12px;
+    border-radius: 13px;
+    font-size: 16px;
+  }
+
+  .slider {
+    min-height: 32px;
+  }
+
+  .checklist {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .checklist label {
+    min-height: 42px;
+    padding: 8px;
+    border: 1px solid #e5dccf;
+    border-radius: 10px;
+    background: #fbf7f0;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .results {
+    padding-bottom: 15px;
+  }
+
+  .item {
+    padding: 14px 3px;
+  }
+
+  .item-title {
+    font-size: 15px;
+  }
+
+  /* Carte vraiment plein écran. */
+  #map {
+    position: fixed;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+  }
+
+  .leaflet-control-zoom {
+    margin-top: 92px !important;
+    margin-left: 12px !important;
+    border: 0 !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .leaflet-control-zoom a {
+    width: 42px !important;
+    height: 42px !important;
+    border: 0 !important;
+    background: #fffdf9 !important;
+    color: var(--wine) !important;
+    font-size: 23px !important;
+    line-height: 42px !important;
+  }
+
+  .leaflet-control-layers {
+    display: none;
+  }
+
+  /* Bouton Explorer flottant. */
+  .mobile-explorer-toggle {
+    position: fixed;
+    z-index: 1250;
+    bottom: 22px;
+    left: 14px;
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 17px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--wine);
+    box-shadow: 0 4px 16px rgba(60, 25, 28, 0.34);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .mobile-explorer-toggle::before {
+    content: "☰";
+    font-size: 17px;
+  }
+
+  body.mobile-sheet-open .mobile-explorer-toggle,
+  body.mobile-battle-open .mobile-explorer-toggle {
+    display: none;
+  }
+
+  /* Bouton de fermeture du panneau Explorer. */
+  .mobile-sheet-close {
+    position: absolute;
+    z-index: 2;
+    top: 17px;
+    right: 16px;
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: #f2ece2;
+    color: #5f5650;
+    font-size: 25px;
+    line-height: 1;
+  }
+
+  /* Fiche sélectionnée : panneau inférieur indépendant. */
+  .mobile-battle-sheet {
+    position: fixed;
+    z-index: 1500;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-height: min(72dvh, 620px);
+    overflow: auto;
+    border-radius: 25px 25px 0 0;
+    background: var(--mobile-sheet-bg);
+    box-shadow: 0 -12px 35px rgba(31, 24, 17, 0.3);
+    transform: translateY(110%);
+    transition: transform 0.3s ease;
+    overscroll-behavior: contain;
+  }
+
+  body.mobile-battle-open .mobile-battle-sheet {
+    transform: translateY(0);
+  }
+
+  .mobile-sheet-handle {
+    width: 44px;
+    height: 5px;
+    margin: 9px auto 10px;
+    border-radius: 999px;
+    background: #d3c6b5;
+  }
+
+  .mobile-battle-head {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 0 16px 11px;
+    border-bottom: 1px solid #eee4d7;
+  }
+
+  .mobile-battle-title {
+    flex: 1;
+    margin: 0;
+    color: var(--wine);
+    font: 700 20px/1.15 Georgia, serif;
+  }
+
+  .mobile-battle-close {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: #f2ece2;
+    color: #5f5650;
+    font-size: 25px;
+    line-height: 1;
+  }
+
+  .mobile-battle-sheet .popup-title {
+    display: none;
+  }
+
+  .mobile-battle-sheet .popup-tabs {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 11px 16px 8px;
+    overflow-x: auto;
+    border: 0;
+    background: var(--mobile-sheet-bg);
+  }
+
+  .mobile-battle-sheet .popup-tab {
+    min-height: 39px;
+    flex: 0 0 auto;
+    padding: 8px 11px;
+    border: 1px solid #e4dacd;
+    border-radius: 11px;
+    background: #f4eee5;
+    color: #5b636c;
+    font-size: 12px;
+  }
+
+  .mobile-battle-sheet .popup-tab.active {
+    border-color: var(--wine);
+    background: var(--wine);
+    color: #fff;
+  }
+
+  .mobile-battle-sheet .popup-pane {
+    padding: 0 16px 24px;
+  }
+
+  .mobile-battle-sheet .popup-meta {
+    margin-top: 5px;
+    font-size: 13px;
+  }
+
+  .mobile-battle-sheet .popup-text,
+  .mobile-battle-sheet .ctx-text {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .mobile-battle-sheet .popup-img {
+    height: 185px;
+    border-radius: 12px;
+  }
+
+  .mobile-battle-sheet .sources {
+    font-size: 12px;
+  }
+
+  .mobile-battle-sheet .visit-card {
+    padding: 13px;
+  }
+
+  .mobile-battle-sheet .visit-title {
+    font-size: 14px;
+  }
+
+  /* Popups Leaflet désactivées en mobile : on utilise la fiche basse. */
+  .leaflet-popup {
+    display: none !important;
+  }
+
+  /* Évite que la pub surcharge l'interface mobile. */
+  aside .ad-slot {
+    display: none;
+  }
+
+  /* Panneau ouvert = carte non manipulable derrière. */
+  body.mobile-sheet-open #map,
+  body.mobile-battle-open #map {
+    pointer-events: none;
+  }
+}
 </style></head>
 <body><header><div class="brand"><h1>Atlas des batailles de Belgique et d'Europe</h1><p>Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
@@ -137,7 +518,201 @@
 </button>
 
 <div id="mobileBattleSheet" class="mobile-battle-sheet" aria-live="polite"></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">/* =========================================================
+   REFONTE MOBILE — Atlas des batailles
+   À coller juste avant </script>
+   ========================================================= */
+
+(() => {
+  const mobileQuery = window.matchMedia('(max-width: 760px)');
+
+  const explorer = document.getElementById('mobileExplorerPanel');
+  const explorerToggle = document.getElementById('mobileExplorerToggle');
+  const explorerClose = document.getElementById('mobileSheetClose');
+  const battleSheet = document.getElementById('mobileBattleSheet');
+
+  function isMobileAtlas() {
+    return mobileQuery.matches;
+  }
+
+  function invalidateMobileMap() {
+    if (typeof map !== 'undefined' && map) {
+      window.setTimeout(() => map.invalidateSize(), 320);
+    }
+  }
+
+  function openExplorerSheet() {
+    if (!isMobileAtlas()) return;
+
+    document.body.classList.remove('mobile-battle-open');
+    document.body.classList.add('mobile-sheet-open');
+
+    if (explorerToggle) {
+      explorerToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    invalidateMobileMap();
+  }
+
+  function closeExplorerSheet() {
+    document.body.classList.remove('mobile-sheet-open');
+
+    if (explorerToggle) {
+      explorerToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    invalidateMobileMap();
+  }
+
+  function closeBattleSheet() {
+    document.body.classList.remove('mobile-battle-open');
+
+    if (battleSheet) {
+      battleSheet.innerHTML = '';
+    }
+
+    if (typeof clearMovementLayer === 'function') {
+      clearMovementLayer();
+    }
+
+    invalidateMobileMap();
+  }
+
+  function setupMobilePopupTabs(battle) {
+    if (!battleSheet) return;
+
+    const tabs = battleSheet.querySelectorAll('.popup-tab');
+    const panes = battleSheet.querySelectorAll('.popup-pane');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(button => button.classList.remove('active'));
+        panes.forEach(pane => pane.classList.remove('active'));
+
+        tab.classList.add('active');
+
+        const pane = battleSheet.querySelector(`#${tab.dataset.pane}`);
+
+        if (pane) {
+          pane.classList.add('active');
+        }
+
+        if (tab.dataset.pane.startsWith('moves-')) {
+          if (typeof drawMovements === 'function') {
+            drawMovements(battle);
+          }
+        } else if (typeof clearMovementLayer === 'function') {
+          clearMovementLayer();
+        }
+      });
+    });
+  }
+
+  function openBattleSheet(battle) {
+    if (!isMobileAtlas() || !battleSheet) return;
+
+    closeExplorerSheet();
+
+    if (typeof clearMovementLayer === 'function') {
+      clearMovementLayer();
+    }
+
+    battleSheet.innerHTML = `
+      <div class="mobile-sheet-handle" aria-hidden="true"></div>
+
+      <div class="mobile-battle-head">
+        <h2 class="mobile-battle-title">${esc(battle.name)}</h2>
+
+        <button
+          type="button"
+          class="mobile-battle-close"
+          aria-label="Fermer la fiche de bataille"
+        >×</button>
+      </div>
+
+      ${popupHtml(battle)}
+    `;
+
+    const closeButton = battleSheet.querySelector('.mobile-battle-close');
+
+    if (closeButton) {
+      closeButton.addEventListener('click', closeBattleSheet);
+    }
+
+    setupMobilePopupTabs(battle);
+
+    document.body.classList.add('mobile-battle-open');
+
+    invalidateMobileMap();
+  }
+
+  if (explorerToggle) {
+    explorerToggle.addEventListener('click', openExplorerSheet);
+  }
+
+  if (explorerClose) {
+    explorerClose.addEventListener('click', closeExplorerSheet);
+  }
+
+  /* Fermer le panneau Explorer en cliquant sur la poignée / en glissant vers le bas. */
+  if (explorer) {
+    let explorerStartY = null;
+
+    explorer.addEventListener('touchstart', event => {
+      explorerStartY = event.touches[0].clientY;
+    }, { passive: true });
+
+    explorer.addEventListener('touchend', event => {
+      if (explorerStartY === null) return;
+
+      const distance = event.changedTouches[0].clientY - explorerStartY;
+
+      if (distance > 90 && explorer.scrollTop <= 5) {
+        closeExplorerSheet();
+      }
+
+      explorerStartY = null;
+    }, { passive: true });
+  }
+
+  /* Glisser la fiche vers le bas pour fermer. */
+  if (battleSheet) {
+    let battleStartY = null;
+
+    battleSheet.addEventListener('touchstart', event => {
+      battleStartY = event.touches[0].clientY;
+    }, { passive: true });
+
+    battleSheet.addEventListener('touchend', event => {
+      if (battleStartY === null) return;
+
+      const distance = event.changedTouches[0].clientY - battleStartY;
+
+      if (distance > 100 && battleSheet.scrollTop <= 5) {
+        closeBattleSheet();
+      }
+
+      battleStartY = null;
+    }, { passive: true });
+  }
+
+  /*
+    Cette fonction est appelée depuis les marqueurs et les résultats.
+    Elle est volontairement globale pour cohabiter avec ton code actuel.
+  */
+  window.openMobileBattleSheet = openBattleSheet;
+  window.closeMobileBattleSheet = closeBattleSheet;
+  window.openExplorerSheet = openExplorerSheet;
+  window.closeExplorerSheet = closeExplorerSheet;
+
+  /* Ferme les panneaux lorsqu’on repasse en affichage ordinateur. */
+  mobileQuery.addEventListener('change', event => {
+    if (!event.matches) {
+      closeExplorerSheet();
+      closeBattleSheet();
+    }
+  });
+})();</script>
 <script>
 const battles=[
 {id:'worringen',name:'Bataille de Worringen',year:1288,period:'Moyen Âge',type:'Bataille rangée',place:'Worringen (Cologne) — conditionne les frontières orientales du Brabant',coords:[51.043,6.888],conflict:'Guerre de succession du Limbourg',outcome:'Victoire brabançonne',certainty:'confirmé',color:'#587547',text:'Jean Ier de Brabant vainc Henri VI de Luxembourg et l’archevêque de Cologne ; le duché de Limbourg est rattaché au Brabant.',image:'https://commons.wikimedia.org/wiki/Special:FilePath/Worringen%201288.svg',credit:'Carte de la bataille de Worringen, positions vers 11h, 5 juin 1288 — Wikimedia Commons, CC BY-SA 3.0',context:{"preambule": "Le conflit naît de la succession contestée du duché de Limbourg après la mort du duc Waleran IV en 1280, opposant Jean Ier de Brabant aux prétentions de Henri VI de Luxembourg et de l'archevêque Siegfried de Cologne.", "deroule": "Le 5 juin 1288, après le siège du château de Worringen entamé le 29 mai, les deux coalitions se rencontrent en rase campagne près de Cologne. La percée initiale de l'archevêque désorganise son propre dispositif, tandis que les milices urbaines de Cologne et les paysans de Berg finissent par submerger le centre luxembourgeois.", "apres": "Siegfried de Cologne est capturé et emprisonné plus d'un an ; il doit céder ses droits de fortification et payer une rançon de 12 000 marks au traité de mai 1289. Jean Ier consolide son autorité sur le Limbourg et Cologne obtient une large autonomie municipale.", "forces": "≈4 800 hommes brabançons (milices de Cologne, paysans de Berg et de la Marck) contre ≈4 200 hommes de la coalition archiépiscopale et luxembourgeoise.", "pertes": "≈40 morts côté brabançon contre ≈1 100 morts (puis 700 supplémentaires des suites de blessures) côté luxembourgeois-archiépiscopal, incluant la mort de Henri VI de Luxembourg et de plusieurs de ses frères."},keypoints:[{"name": "Champ de bataille de Worringen", "coords": [51.0425, 6.88778], "desc": "Plaine entre Cologne et Worringen où se sont affrontées les coalitions brabançonne et luxembourgeoise le 5 juin 1288."}],movements:[{"label": "Avance brabançonne", "color": "#2e6b3e", "coords": [[50.85, 4.35], [51.0, 6.5], [51.043, 6.888]]}, {"label": "Avance de Cologne/Luxembourg", "color": "#8a3e3e", "coords": [[50.94, 6.96], [51.02, 6.9], [51.043, 6.888]]}],sources:[
@@ -4125,8 +4700,9 @@ const visitsPane = x.visits && x.visits.length
                      return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">Fiche</button><button class="popup-tab" data-pane="ctx-${x.id}">Contexte</button><button class="popup-tab" data-pane="moves-${x.id}">Mouvements</button><button class="popup-tab" data-pane="visits-${x.id}">Visiter & voir</button></div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>`}
 
 function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minLabel.textContent=a;maxLabel.textContent=b;let q=search.value.trim().toLowerCase(),ps=active('period'),ts=active('type');let data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));layer.clearLayers();markerById={};data.forEach(x=>{let marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});marker.on('click', () => {
-  if (isMobileView()) {
-    openMobileBattleSheet(x);
+  if (window.matchMedia('(max-width: 760px)').matches) {
+  window.openMobileBattleSheet(x);
+}
   }
 });
 
@@ -4134,8 +4710,9 @@ marker.on('popupopen', () => {
   if (!isMobileView()) {
     setupPopupTabs(x);
   }
-});marker.on('popupclose',()=>{clearMovementLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});if (isMobileView()) {
-  openMobileBattleSheet(x);
+});marker.on('popupclose',()=>{clearMovementLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});if (window.matchMedia('(max-width: 760px)').matches) {
+  window.openMobileBattleSheet(x);
+}
 } else {
   markerById[x.id].openPopup();
 }})}
@@ -4176,7 +4753,7 @@ function closeExplorerSheet() {
   }, 300);
 }
 
-function closeMobileBattleSheet() {
+function oldCloseMobileBattleSheet() {
   document.body.classList.remove('mobile-battle-open');
   mobileBattleSheet.innerHTML = '';
   clearMovementLayer();
@@ -4214,7 +4791,7 @@ function setupMobileTabs(x) {
   });
 }
 
-function openMobileBattleSheet(x) {
+function oldOpenMobileBattleSheet(x) {
   if (!isMobileView()) return;
 
   closeExplorerSheet();
