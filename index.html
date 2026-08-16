@@ -5245,7 +5245,8 @@ function populatePoiFilters(){
     poiVisible = event.target.checked;
     drawPointsOfInterest();
   });
-}
+}populatePoiFilters();
+drawPointsOfInterest();
   const map=L.map('map',{zoomControl:true}).setView([50.65,4.6],8);
 const osmLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 const ferrarisWallonie=L.tileLayer.wms('https://geoservices.wallonie.be/arcgis/services/CARTES_ANCIENNES/FERRARIS/MapServer/WMSServer',{layers:'0',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; SPW — Carte de Ferraris (1770-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
@@ -5255,8 +5256,7 @@ const baseLayers={'Carte actuelle (OpenStreetMap)':osmLayer,'Carte de Ferraris (
 L.control.layers(baseLayers,null,{position:'topright',collapsed:false}).addTo(map);
 const layer=L.layerGroup().addTo(map);poiLayer=L.layerGroup().addTo(map);let markerById={};
 const periods=[...new Set(battles.map(x=>x.period))],types=[...new Set(battles.map(x=>x.type))];
-function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');populatePoiFilters();
-drawPointsOfInterest();
+function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function active(cls){return [...document.querySelectorAll('.'+cls+':checked')].map(x=>x.value)}
 function certLabel(c){return c==='confirmé'?'Confirmé':c==='probable'?'Probable':'Approximatif'}
