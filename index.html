@@ -67,7 +67,14 @@
     Espace partenaire culturel ou annonce contextuelle.
   </div>
 </div><div class="header-count" id="counter"></div></header>
-<main><aside><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">1200</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="1200" max="1945" value="1200"><input class="slider" type="range" id="maxYear" min="1200" max="1945" value="1945"><div class="ticks"><span>1200</span><span>1500</span><span>1700</span><span>1815</span><span>1914</span><span>1945</span></div><h3>Périodes historiques</h3><div class="checklist" id="periods"></div><h3>Type d’événement</h3><div class="checklist" id="types"></div><div class="results" id="results"></div><div class="ad-slot" data-provider="placeholder" aria-label="Emplacement publicitaire">
+<main><aside id="mobileExplorerPanel"><div class="mobile-sheet-handle" aria-hidden="true"></div>
+<button
+  id="mobileSheetClose"
+  class="mobile-sheet-close"
+  type="button"
+  aria-label="Fermer le panneau d’exploration">
+  ×
+</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">1200</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="1200" max="1945" value="1200"><input class="slider" type="range" id="maxYear" min="1200" max="1945" value="1945"><div class="ticks"><span>1200</span><span>1500</span><span>1700</span><span>1815</span><span>1914</span><span>1945</span></div><h3>Périodes historiques</h3><div class="checklist" id="periods"></div><h3>Type d’événement</h3><div class="checklist" id="types"></div><div class="results" id="results"></div><div class="ad-slot" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
   <div class="ad-content">
     Espace réservé à un partenaire : musée, librairie, site mémoriel ou contenu culturel pertinent.
@@ -76,7 +83,16 @@
     Cet emplacement ne collecte aucune donnée et ne gêne pas la lecture.
     Remplacez son contenu par le code de votre régie ou d’un partenaire direct.
   </p>
-</div></aside><div id="map"></div></main>
+</div></aside><div id="map"></div></main><button
+  id="mobileExplorerToggle"
+  class="mobile-explorer-toggle"
+  type="button"
+  aria-controls="mobileExplorerPanel"
+  aria-expanded="false">
+  ☰ Explorer
+</button>
+
+<div id="mobileBattleSheet" class="mobile-battle-sheet" aria-live="polite"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 const battles=[
@@ -181,7 +197,21 @@ const ctx=x.context;
 const ctxPane=ctx?`<div class="ctx-block"><div class="ctx-label">Préambule</div><div class="ctx-text">${esc(ctx.preambule)}</div></div><div class="ctx-block"><div class="ctx-label">Déroulé</div><div class="ctx-text">${esc(ctx.deroule)}</div></div><div class="ctx-block"><div class="ctx-label">Après la bataille</div><div class="ctx-text">${esc(ctx.apres)}</div></div><div class="ctx-block"><div class="ctx-label">Forces en présence</div><div class="ctx-text">${esc(ctx.forces)}</div></div><div class="ctx-block"><div class="ctx-label">Pertes</div><div class="ctx-text">${esc(ctx.pertes)}</div></div>`:'<div class="moves-empty">Aucune donnée contextuelle disponible pour cet événement dans ce prototype.</div>';
 return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">Fiche</button><button class="popup-tab" data-pane="ctx-${x.id}">Contexte</button><button class="popup-tab" data-pane="moves-${x.id}">Mouvements</button></div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div>`}
 
-function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minLabel.textContent=a;maxLabel.textContent=b;let q=search.value.trim().toLowerCase(),ps=active('period'),ts=active('type');let data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));layer.clearLayers();markerById={};data.forEach(x=>{let marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});marker.on('popupopen',()=>{setupPopupTabs(x);});marker.on('popupclose',()=>{clearMovementLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});markerById[x.id].openPopup()})}
+function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minLabel.textContent=a;maxLabel.textContent=b;let q=search.value.trim().toLowerCase(),ps=active('period'),ts=active('type');let data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));layer.clearLayers();markerById={};data.forEach(x=>{let marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});marker.on('click', () => {
+  if (isMobileView()) {
+    openMobileBattleSheet(x);
+  }
+});
+
+marker.on('popupopen', () => {
+  if (!isMobileView()) {
+    setupPopupTabs(x);
+  }
+});marker.on('popupclose',()=>{clearMovementLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});if (isMobileView()) {
+  openMobileBattleSheet(x);
+} else {
+  markerById[x.id].openPopup();
+}})}
 
 let moveLayer=L.layerGroup().addTo(map);
 function clearMovementLayer(){moveLayer.clearLayers();}
@@ -189,4 +219,126 @@ function drawMovements(x){clearMovementLayer();if(!x.movements)return;x.movement
 function setupPopupTabs(x){const container=document.querySelector('.leaflet-popup-content');if(!container)return;const tabs=container.querySelectorAll('.popup-tab');const panes=container.querySelectorAll('.popup-pane');tabs.forEach(tab=>{tab.onclick=()=>{tabs.forEach(t=>t.classList.remove('active'));panes.forEach(pn=>pn.classList.remove('active'));tab.classList.add('active');const target=container.querySelector('#'+tab.dataset.pane);if(target)target.classList.add('active');if(tab.dataset.pane.startsWith('moves-')){drawMovements(x);}else{clearMovementLayer();}}});}
 
 const {minYear,maxYear,search,minLabel,maxLabel,counter,results}=Object.fromEntries(['minYear','maxYear','search','minLabel','maxLabel','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
-</script></body></html>
+/* ── Mobile : panneau Explorer + fiche de bataille ── */
+const mobileQuery = window.matchMedia('(max-width: 760px)');
+const mobileExplorerToggle = document.getElementById('mobileExplorerToggle');
+const mobileSheetClose = document.getElementById('mobileSheetClose');
+const mobileBattleSheet = document.getElementById('mobileBattleSheet');
+
+function isMobileView() {
+  return mobileQuery.matches;
+}
+
+function openExplorerSheet() {
+  if (!isMobileView()) return;
+
+  document.body.classList.add('mobile-sheet-open');
+  mobileExplorerToggle.setAttribute('aria-expanded', 'true');
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
+}
+
+function closeExplorerSheet() {
+  document.body.classList.remove('mobile-sheet-open');
+  mobileExplorerToggle.setAttribute('aria-expanded', 'false');
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
+}
+
+function closeMobileBattleSheet() {
+  document.body.classList.remove('mobile-battle-open');
+  mobileBattleSheet.innerHTML = '';
+  clearMovementLayer();
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 220);
+}
+
+function setupMobileTabs(x) {
+  const tabs = mobileBattleSheet.querySelectorAll('.popup-tab');
+  const panes = mobileBattleSheet.querySelectorAll('.popup-pane');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panes.forEach(pane => pane.classList.remove('active'));
+
+      tab.classList.add('active');
+
+      const target = mobileBattleSheet.querySelector(
+        '#' + tab.dataset.pane
+      );
+
+      if (target) {
+        target.classList.add('active');
+      }
+
+      if (tab.dataset.pane.startsWith('moves-')) {
+        drawMovements(x);
+      } else {
+        clearMovementLayer();
+      }
+    });
+  });
+}
+
+function openMobileBattleSheet(x) {
+  if (!isMobileView()) return;
+
+  closeExplorerSheet();
+  clearMovementLayer();
+
+  const content = popupHtml(x);
+
+  mobileBattleSheet.innerHTML = `
+    <div class="mobile-sheet-handle" aria-hidden="true"></div>
+
+    <div class="mobile-battle-head">
+      <h2 class="mobile-battle-title">${esc(x.name)}</h2>
+
+      <button
+        class="mobile-battle-close"
+        type="button"
+        aria-label="Fermer la fiche">
+        ×
+      </button>
+    </div>
+
+    ${content.replace(
+      `<div class="popup-title">${esc(x.name)}</div>`,
+      ''
+    )}
+  `;
+
+  mobileBattleSheet
+    .querySelector('.mobile-battle-close')
+    .addEventListener('click', closeMobileBattleSheet);
+
+  setupMobileTabs(x);
+
+  document.body.classList.add('mobile-battle-open');
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 250);
+}
+
+if (mobileExplorerToggle) {
+  mobileExplorerToggle.addEventListener('click', openExplorerSheet);
+}
+
+if (mobileSheetClose) {
+  mobileSheetClose.addEventListener('click', closeExplorerSheet);
+}
+
+mobileQuery.addEventListener('change', event => {
+  if (!event.matches) {
+    closeExplorerSheet();
+    closeMobileBattleSheet();
+  }
+});</script></body></html>
