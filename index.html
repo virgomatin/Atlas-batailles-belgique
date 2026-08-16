@@ -373,6 +373,21 @@
 .bme-mapcard-img:hover{opacity:.9}
 .bme-mapcard-desc{font-size:11px;color:#5c554c;padding:5px 9px 2px;margin:0;line-height:1.45}
 .bme-mapcard-credit{font-size:10px;color:#8a7f74;padding:3px 9px 7px;margin:0;font-style:italic}
+
+/* ── Terrain overlay styles ── */
+.terrain-note{font-size:12px;line-height:1.46;color:#3e3220;background:#f5f0e0;border-left:3px solid #7a5c28;padding:6px 9px;border-radius:4px;margin-bottom:9px}
+.terrain-topo-btn{display:inline-flex;align-items:center;gap:6px;margin-bottom:9px;padding:6px 11px;background:#3d5e3a;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.01em}
+.terrain-topo-btn:hover{background:#2d4a2a}
+.terrain-topo-btn.active{background:#7a5c28}
+.terrain-legend{margin-top:6px;font-size:11.5px;line-height:1.5}
+.terrain-legend div{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.tleg-line{display:inline-block;width:22px;height:3px;border-radius:1.5px;vertical-align:middle}
+.tleg-dash{display:inline-block;width:22px;vertical-align:middle;border-top:2.5px dashed #333}
+.tleg-fort{display:inline-block;width:11px;height:11px;background:#f5e8c0;border:2.5px solid #8b4513;border-radius:1px;vertical-align:middle}
+.tleg-rail{display:inline-block;width:22px;vertical-align:middle;border-top:2px dotted #444}
+.tleg-flood{display:inline-block;width:18px;height:10px;background:rgba(70,130,180,.35);border:1.5px solid rgba(70,130,180,.7);vertical-align:middle}
+.fort-sq{width:11px;height:11px;background:#f5e8c0;border:2.5px solid #8b4513;border-radius:1px;box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+.terrain-section{margin-bottom:6px;font-size:11.5px;font-weight:700;color:var(--wine);letter-spacing:.05em;text-transform:uppercase}
 </style></head>
 <body><header><div class="brand"><h1>Atlas des batailles de Belgique et d'Europe</h1><p>Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
@@ -515,7 +530,22 @@ const battles=[
     text:'Recherche de documentaires et conférences historiques sur la bataille de 1302.',
     url:'https://www.youtube.com/results?search_query=bataille+de+Courtrai+1302+documentaire'
   }
-],sources:[
+],terrain:{
+  note:'Les milices flamandes choisirent délibérément le terrain devant Courtrai : la chevalerie française dut descendre une pente, traverser plusieurs fossés et ruisseaux, et charger sur un sol détrempé. Les goedendags flamands annihilèrent les chevaliers englués dans la boue.',
+  floods:[
+    {label:'Fossés et zones marécageuses (obstacle anti-cavalerie)',coords:[[50.816,3.258],[50.823,3.276],[50.817,3.283],[50.810,3.268]]}
+  ],
+  forts:[
+    {name:'Château de Courtrai',coords:[50.829,3.264],desc:'Château tenu par une garnison française pendant la bataille. Sa prise marqua la fin des combats.'},
+    {name:'Groeningekouter (champ de bataille)',coords:[50.818,3.268],desc:'Terrain marécageux où la milice flamande retranchée derrière des fossés anéantit la chevalerie française. Les 500 éperons d\'or récupérés donnèrent son nom à la bataille.'},
+    {name:'Pont de Groeninghe',coords:[50.823,3.265],desc:'Pont sur le Groene Beek que les Flamands défendirent avec succès, empêchant toute retraite organisée des Français.'}
+  ],
+  frontlines:[
+    {label:'Position flamande (défense en arc)',color:'#2e6b3e',coords:[[50.822,3.253],[50.820,3.262],[50.818,3.274],[50.819,3.283],[50.823,3.290]]},
+    {label:'Charge de la chevalerie française',color:'#8b2222',coords:[[50.809,3.305],[50.813,3.288],[50.817,3.275],[50.818,3.268]]}
+  ]
+},
+sources:[
  {a:'Encyclopedia Britannica',t:'Battle of the Golden Spurs',u:'https://www.britannica.com/event/Battle-of-the-Golden-Spurs',type:'synthèse académique'}]},
 {id:'namur1695',name:'Siège de Namur (1695)',year:1695,period:'XVIIe siècle',type:'Siège et fortifications',place:'Namur',coords:[50.467,4.867],conflict:'Guerre de la Ligue d’Augsbourg',outcome:'Capitulation française',certainty:'confirmé',color:'#8a3e3e',text:'Second siège de Namur ; les forces de Guillaume III reprennent la place aux troupes de Boufflers après deux mois de combats.',image:'https://upload.wikimedia.org/wikipedia/commons/6/6a/Siege_of_Namur_%281695%29.png',credit:'Le siège de Namur en 1695 — Wikimedia Commons, domaine public',context:{"preambule": "Après avoir perdu Namur au profit des Français en 1692, Guillaume III d\'Orange organise en 1695 un siège de représailles avec l\'appui du Saint-Empire et de l\'Espagne, visant à reprendre cette place forte clé de la guerre de Neuf Ans.", "deroule": "Le siège débute le 2 juillet 1695 avec 58 000 assiégeants encerclant la ville tandis qu\'une armée de couverture de 102 000 hommes tient à distance l\'armée de secours de Villeroi. Les assauts alliés du 30 août sont particulièrement coûteux, mais forcent progressivement le repli des défenseurs vers la citadelle.", "apres": "La garnison française, commandée par Boufflers, capitule le 4 septembre 1695 après avoir épuisé ses capacités de résistance. La reprise de Namur est considérée comme le plus grand succès militaire personnel de Guillaume III et prépare le traité de Ryswick de 1697.", "forces": "58 000 assiégeants alliés (plus 102 000 en couverture) contre une garnison française d\'environ 13 000-16 000 hommes sous Boufflers.", "pertes": "≈18 000 pertes alliées (dont 3 000 en trois heures lors du seul assaut du 30 août) contre ≈8 000 pertes françaises côté défenseurs."},keypoints:[{"name": "Citadelle de Namur", "coords": [50.4605, 4.864], "desc": "Puissante forteresse au confluent de la Sambre et de la Meuse, dernier bastion français assiégé jusqu\'à sa capitulation le 4 septembre 1695."}],movements:[{"label": "Siège allié (Guillaume III)", "color": "#345b8c", "coords": [[50.55, 4.75], [50.51, 4.81], [50.467, 4.867]]}, {"label": "Garnison française (Boufflers)", "color": "#8a3e3e", "coords": [[50.467, 4.867], [50.467, 4.867]]}],battleMap:{url:'https://upload.wikimedia.org/wikipedia/commons/6/6a/Siege_of_Namur_%281695%29.png',credit:'Gravure contemporaine du siège de Namur, 1695 — Wikimedia Commons, domaine public',desc:'Plan d\'époque montrant les lignes d\'attaque alliées (tranchées parallèles), la disposition des forces de Guillaume III et les positions défensives de Boufflers autour de la citadelle.'},visits:[
   
@@ -523,6 +553,23 @@ const battles=[
   {kind:'Musée',title:'Musée provincial des Arts anciens du Namurois',text:'Collections d\'art et d\'histoire de Namur documentant les sièges répétés de la citadelle aux XVIIe et XVIIIe siècles.',url:'https://www.museedesartsanciens.be/'},
   {kind:'Documentaires',title:'Documentaires sur le siège de Namur (1695)',text:'Documentaires sur le siège de Namur par Guillaume III et les ingénieurs néerlandais, et les guerres de Louis XIV dans les Pays-Bas.',url:'https://www.youtube.com/results?search_query=siège+Namur+1695+Guillaume+III+documentaire'}
   ],
+terrain:{
+  note:'La citadelle de Namur, au confluent de la Meuse et de la Sambre, sur un éperon rocheux, est considérée comme la plus forte place des Pays-Bas espagnols. Vauban l\'avait renforcée en 1692 pour Louis XIV ; Guillaume III dut l\'assiéger deux fois. La topographie — collines abruptes, rivières, escarpes — imposa 70 jours de tranchées parallèles.',
+  forts:[
+    {name:'Citadelle de Namur',coords:[50.459,4.861],desc:'Forteresse sur éperon rocheux dominant la confluence Meuse-Sambre. Dernière enceinte à capituler (1er sept. 1695) après 70 jours de siège.'},
+    {name:'Fort de Terra Nova',coords:[50.462,4.855],desc:'Ouvrage avancé défendant l\'accès nord. Premier ouvrage conquis par les assiégeants.'},
+    {name:'Confluence Meuse-Sambre',coords:[50.461,4.867],desc:'Position stratégique maîtresse : quiconque tient Namur contrôle la route Liège–Paris et la navigation fluviale vers la France.'},
+    {name:'Fort de Bouge (château-vieux)',coords:[50.475,4.870],desc:'Ouvrage extérieur commandant le plateau nord-est. Pris rapidement lors du siège de 1695.'}
+  ],
+  trenches:[
+    {label:'Parallèles de Coehoorn (assiégeants)',coords:[[50.452,4.840],[50.455,4.850],[50.458,4.857],[50.460,4.863]]},
+    {label:'Tranchées d\'approche (versant Sambre)',coords:[[50.470,4.845],[50.465,4.852],[50.462,4.858]]}
+  ],
+  frontlines:[
+    {label:'Encerclement de Guillaume III (coalition)',color:'#1a4a8b',coords:[[50.475,4.835],[50.465,4.820],[50.449,4.840],[50.440,4.863],[50.449,4.890],[50.465,4.890],[50.475,4.875]]},
+    {label:'Défense française (Boufflers)',color:'#8b2222',coords:[[50.462,4.858],[50.459,4.861],[50.461,4.867],[50.455,4.862]]}
+  ]
+},
 sources:[
  {a:'Service historique de la Défense (FR)',t:'Fonds GR 1 A 1310 — commencement du siège de Namur, juillet 1695',u:'https://www.servicehistorique.sga.defense.gouv.fr/ark/1149856',type:'source d’archive primaire'},
  {a:'Wikipédia FR',t:'Siège de Namur (1695)',u:'https://fr.wikipedia.org/wiki/Si%C3%A8ge_de_Namur_(1695)',type:'synthèse'},
@@ -617,7 +664,22 @@ sources:[
     text:'Recherche de documentaires et conférences historiques sur la campagne de 1815.',
     url:'https://www.youtube.com/results?search_query=bataille+de+waterloo+documentaire'
   }
-],sources:[
+],terrain:{
+  note:'Wellington choisit la crête de Mont-Saint-Jean pour ses qualités défensives : la pente douce côté français masquait le gros des troupes, le chemin creux d\'Ohain longeait la crête, et trois fermes fortifiables constituaient des points d\'appui avancés. Napoléon attaqua en montant une pente dont il ne voyait pas l\'envers.',
+  frontlines:[
+    {label:'Ligne alliée (crête Mont-Saint-Jean)',color:'#1a4a8b',coords:[[50.695,4.363],[50.686,4.383],[50.673,4.397],[50.664,4.407],[50.657,4.417]]},
+    {label:'Positions françaises (plateau sud)',color:'#8b2222',coords:[[50.678,4.360],[50.670,4.375],[50.654,4.393],[50.645,4.412]]},
+    {label:'Arrivée prussienne (flanc droit, 19h)',color:'#2e5e2e',coords:[[50.689,4.442],[50.684,4.428],[50.678,4.420],[50.674,4.410]]}
+  ],
+  forts:[
+    {name:'Ferme d\'Hougoumont',coords:[50.670,4.365],desc:'Verger et ferme fortifiés tenus toute la journée par les Gardes britanniques et Nassau. Napoléon y engage des forces disproportionnées, sans jamais percer. Sa résistance ancra le flanc droit allié.'},
+    {name:'Ferme de la Haie-Sainte',coords:[50.675,4.386],desc:'Ferme centrale tenue par la KGL (King\'s German Legion). Sa prise par les Français vers 18h ouvrit une brèche dans la ligne alliée, mais Napoléon ne put l\'exploiter avant l\'arrivée de Blücher.'},
+    {name:'Ferme de Papelotte',coords:[50.678,4.422],desc:'Flanc gauche allié tenu par des Nassauviens. L\'arrivée des Prussiens de Blücher par ce secteur retourna la bataille.'},
+    {name:'La Belle Alliance',coords:[50.655,4.392],desc:'Auberge au centre du dispositif français. Wellington et Blücher s\'y retrouvèrent symboliquement après la bataille.'},
+    {name:'Chemin creux d\'Ohain',coords:[50.677,4.396],desc:'Chemin creux longeant la crête alliée, obstacle naturel qui désorganisa plusieurs charges françaises. Longtemps exagéré dans les récits romantiques.'}
+  ]
+},
+sources:[
  {a:'Duke of Wellington',t:'Dépêche à Lord Bathurst, 19 juin 1815 (autographe, British Library, Add MS 69850)',u:'https://searcharchives.bl.uk/catalog/032-002043166',type:'source primaire manuscrite'},
  {a:'The London Gazette',t:'Waterloo Dispatch — Gazette Extraordinary, 22 juin 1815',u:'https://www.thegazette.co.uk/all-notices/content/100109',type:'document officiel contemporain'},
  {a:'Alessandro Barbero',t:'The Battle: A New History of Waterloo',u:'https://archive.org/details/battlenewhistory0000barb',type:'monographie savante'},
@@ -652,7 +714,32 @@ sources:[
     text:'Recherche de documentaires sur les forts de Liège et les premiers jours de la Première Guerre mondiale.',
     url:'https://www.youtube.com/results?search_query=Li%C3%A8ge+1914+forts+documentaire'
   }
-],sources:[
+],terrain:{
+  note:'12 forts Brialmont forment un cercle de 50 km autour de Liège. Objectif stratégique : les lignes ferroviaires convergeant vers Liège, seul passage rapide vers Paris. Les obusiers Krupp de 420 mm réduisirent les forts au silence en 11 jours.',
+  forts:[
+    {name:'Fort de Loncin',coords:[50.663,5.490],desc:'Fort central détruit le 15 août 1914 par l\'explosion du magasin à poudres. Le général Leman y est capturé enseveli sous les décombres.'},
+    {name:'Fort de Barchon',coords:[50.677,5.668],desc:'Capitule le 8 août 1914 sous le feu de l\'artillerie lourde allemande.'},
+    {name:'Fort de Fléron',coords:[50.614,5.618],desc:'Résiste jusqu\'au 13 août 1914. Premier fort à recevoir le tir des obusiers de 420 mm.'},
+    {name:'Fort d\'Embourg',coords:[50.558,5.597],desc:'Fort du secteur sud, capitule le 16 août 1914.'},
+    {name:'Fort de Flémalle',coords:[50.597,5.455],desc:'Secteur ouest, capitule le 15 août 1914.'},
+    {name:'Fort de Hollogne',coords:[50.623,5.407],desc:'Secteur nord-ouest, capitule le 15 août 1914.'},
+    {name:'Fort de Liers',coords:[50.686,5.537],desc:'Capitule le 8 août 1914, l\'un des premiers à tomber.'},
+    {name:'Fort de Pontisse',coords:[50.706,5.563],desc:'Fort nord, capitule le 13 août 1914.'},
+    {name:'Fort de Lantin',coords:[50.711,5.513],desc:'Capitule le 10 août 1914.'},
+    {name:'Fort de Boncelles',coords:[50.541,5.534],desc:'Fort sud-est, capitule le 15 août 1914.'},
+    {name:'Fort de Chaudfontaine',coords:[50.584,5.669],desc:'Secteur est, capitule le 13 août 1914.'},
+    {name:'Fort d\'Évegnée',coords:[50.636,5.657],desc:'Capitule le 13 août 1914.'}
+  ],
+  railways:[
+    {label:'Ligne Liège–Aix-la-Chapelle (objectif)',coords:[[50.64,5.57],[50.657,5.651],[50.69,5.77],[50.73,5.98]]},
+    {label:'Ligne Liège–Bruxelles',coords:[[50.64,5.57],[50.623,5.407],[50.60,5.30],[50.55,4.95]]}
+  ],
+  frontlines:[
+    {label:'Avance allemande (flanc nord)',color:'#8b2222',coords:[[50.75,5.90],[50.706,5.70],[50.686,5.537],[50.677,5.668],[50.636,5.657]]},
+    {label:'Avance allemande (flanc sud)',color:'#a83232',coords:[[50.55,5.95],[50.564,5.70],[50.558,5.597],[50.584,5.669],[50.614,5.618]]}
+  ]
+},
+sources:[
  {a:'Général Gérard Leman',t:'Rapport au Roi sur la défense de Liège en août 1914 (éd. G. Hautecler, Académie royale de Belgique, 1960)',u:'https://fr.wikipedia.org/wiki/G%C3%A9rard_Leman',type:'source primaire (rapport officiel)'},
  {a:'Extrait du journal du général Leman',t:'Extract from General Leman’s Diary, August 1914',u:'https://www.firstworldwar.com/source/lemandiary.htm',type:'source primaire (journal)'},
  {a:'Georges Hautecler',t:'Le rapport du général Leman sur la défense de Liège en août 1914, Bruxelles, 1960',u:'https://encyclopedia.1914-1918-online.net/article/warfare-1914-1918-belgium/',type:'monographie savante'},
@@ -687,6 +774,25 @@ sources:[
   {kind:'Site mémoriel',title:'Dodengang — Tranchée de la Mort (Diksmuide)',text:'Tranchées originales de 1914 sur la rive gauche de l\'Yser, à quelques mètres des positions allemandes. Site classé, visite libre toute l\'année.',url:'https://www.diksmuide.be/dodengang'},
   {kind:'Musée',title:'In Flanders Fields Museum (Ypres)',text:'Musée de référence sur la Grande Guerre en Flandre, contextualisant la bataille de l\'Yser et la stabilisation du front belge jusqu\'en 1918.',url:'https://www.inflandersfields.be/'}
   ],
+terrain:{
+  note:'La décision d\'ouvrir les écluses de Ganzepoot (Nieuport) transforma les polders plats en une barrière infranchissable. La crue contrôlée des terres basses entre la digue de l\'Yser et la digue du chemin de fer stoppa l\'avance allemande fin octobre 1914. Le front ainsi stabilisé ne bougera plus jusqu\'en 1918.',
+  frontlines:[
+    {label:'Ligne de front belge (fin oct. 1914)',color:'#1a4a8b',coords:[[51.128,2.756],[51.098,2.840],[51.043,2.932],[51.018,2.970],[50.983,3.038],[50.893,3.031]]},
+    {label:'Avance allemande (arrêtée par l\'inondation)',color:'#8b2222',coords:[[51.128,2.880],[51.092,2.960],[51.040,3.048],[50.972,3.122],[50.892,3.152]]}
+  ],
+  floods:[
+    {label:'Polders inondés (novembre 1914)',coords:[[51.128,2.756],[51.128,2.892],[51.092,2.960],[51.040,3.048],[51.018,2.970],[51.043,2.932],[51.098,2.840]]},
+    {label:'Zone marécageuse côtière',coords:[[51.130,2.650],[51.128,2.756],[51.100,2.750],[51.095,2.680]]}
+  ],
+  railways:[
+    {label:'Digue-chemin de fer (obstacle hydraulique clé)',coords:[[51.040,2.540],[51.090,2.680],[51.128,2.756]]},
+    {label:'Tramway côtier (ligne d\'approvisionnement)',coords:[[51.100,2.550],[51.120,2.640],[51.128,2.756]]}
+  ],
+  forts:[
+    {name:'Écluses de Ganzepoot (Nieuport)',coords:[51.128,2.756],desc:'Écluses ouvertes sur ordre dans la nuit du 25-26 octobre 1914. L\'inondation des polders stoppa définitivement l\'avance allemande vers la côte.'},
+    {name:'Dixmude (Diksmuide) — pivot défensif',coords:[51.033,2.863],desc:'Ville tenue par les fusiliers marins français du vice-amiral Ronarc\'h pendant 3 semaines de siège, permettant l\'organisation de la défense de l\'Yser.'}
+  ]
+},
 sources:[
  {a:'État-major allemand',t:'Die Schlacht an der Yser und bei Ypern im Herbst 1914 (Oldenburg, 1918) — traduction : Ypres 1914, an Official Account',u:'https://www.gutenberg.org/files/44234/44234-h/44234-h.htm',type:'source officielle contemporaine (état-major allemand)'},
  {a:'Brigadier-général James E. Edmonds',t:'Military Operations, France and Belgium, 1914, Vol. II: Antwerp, La Bassée, Armentières, Messines and Ypres',u:'http://www.greatwar.co.uk/battles/yser/yser-battle.htm',type:'source officielle contemporaine'},
@@ -725,6 +831,21 @@ sources:[
   {kind:'Site mémoriel',title:'Mémorial de l\'Opération Dynamo (Dunkerque)',text:'Mémoriaux et plaques commémoratives rappelant les soldats alliés qui couvrirent l\'évacuation de 338 000 hommes depuis les plages de Dunkerque après le repli à travers la Lys.',url:'https://www.dunkerque-tourisme.fr/'},
   {kind:'Documentaires',title:'Documentaires sur la Lys et Dunkerque (1940)',text:'Documentaires sur la percée allemande, la bataille de la Lys et l\'opération Dynamo (mai-juin 1940).',url:'https://www.youtube.com/results?search_query=bataille+Lys+1940+Dunkerque+Dynamo+documentaire'}
   ],
+terrain:{
+  note:'La Lys — rivière lente et canalisée — constitua la dernière ligne défensive naturelle de l\'armée belge avant la capitulation du 28 mai 1940. La plaine de Flandre, plate et sans relief notable, offrit peu de positions défensives naturelles aux troupes belges encerclées dans la poche de Dunkerque.',
+  frontlines:[
+    {label:'Ligne de la Lys (front belge, 24-27 mai)',color:'#1a4a8b',coords:[[51.030,3.220],[50.960,3.340],[50.900,3.410],[50.850,3.490],[50.820,3.570]]},
+    {label:'Percée allemande (27-28 mai)',color:'#8b2222',coords:[[51.030,3.100],[50.980,3.200],[50.930,3.300],[50.880,3.420],[50.840,3.520]]}
+  ],
+  forts:[
+    {name:'Canal de la Lys (obstacle défensif)',coords:[50.940,3.390],desc:'Rivière canalisée utilisée comme ligne d\'arrêt défensive. Les ponts furent détruits par le génie belge pour ralentir l\'avance allemande.'},
+    {name:'Courtrai (Kortrijk)',coords:[50.829,3.264],desc:'Nœud routier et ferroviaire. Sa chute le 27 mai 1940 déséquilibra la défense de la Lys.'}
+  ],
+  railways:[
+    {label:'Ligne Gand–Courtrai (couloir de retraite)',coords:[[51.030,3.720],[50.940,3.560],[50.829,3.264]]},
+    {label:'Ligne vers Dunkerque',coords:[[51.030,3.100],[51.040,2.900],[51.030,2.670]]}
+  ]
+},
 sources:[
  {a:'Roger Bouhon',t:'Mai 1940 : la Bataille de Belgique (Bruxelles, s.d.) — cité par le Centre d’histoire militaire US',u:'https://www.history.army.mil/html/books/007/7-8-1/CMH_Pub_7-8-1.pdf',type:'monographie contemporaine'},
  {a:'VisitWallonia',t:'May 1940: The Invasion of Belgium and the Road to Occupation',u:'https://visitwallonia.com/en-gb/3/i-love/heritage-and-culture/wallonia-in-the-wars/39-45/may-1940-the-invasion-of-belgium-',type:'synthèse patrimoniale'}]},
@@ -753,7 +874,26 @@ sources:[
     text:'Recherche de documentaires et archives consacrés à l’offensive allemande de décembre 1944.',
     url:'https://www.youtube.com/results?search_query=Battle+of+the+Bulge+documentary'
   }
-],sources:[
+],terrain:{
+  note:'Von Rundstedt exploita le brouillard, les forêts ardennaises denses et les routes étroites pour neutraliser la supériorité aérienne alliée. L\'absence de grandes routes nord-sud força les colonnes blindées à converger vers les quelques axes asphalétés — et vers Bastogne, nœud irremplaçable de 7 routes.',
+  frontlines:[
+    {label:'Front allemand au 15 déc. (ligne d\'attaque)',color:'#8b2222',coords:[[50.550,6.180],[50.380,6.100],[50.150,6.220],[49.980,6.300],[49.820,6.420]]},
+    {label:'Maximum de l\'avance (25 déc. 1944)',color:'#c44444',coords:[[50.550,6.180],[50.470,5.980],[50.370,5.620],[50.320,5.350],[50.290,5.110]]},
+    {label:'Épaule nord tenue — Elsenborn',color:'#1a4a8b',coords:[[50.550,6.180],[50.520,6.070],[50.500,6.010],[50.480,5.970]]},
+    {label:'Contre-offensive Patton (26-31 déc.)',color:'#2e6b8b',coords:[[49.820,6.420],[49.940,6.200],[50.001,5.720],[50.140,5.600]]}
+  ],
+  forts:[
+    {name:'Bastogne',coords:[50.001,5.717],desc:'Nœud de 7 routes, crucial pour toute logistique en Ardenne. Tenu par la 101e division aéroportée US. Célèbre réponse "Nuts !" du général McAuliffe à la sommation de reddition allemande (22 déc.).'},
+    {name:'Crête d\'Elsenborn',coords:[50.489,6.148],desc:'Hauteur défensive tenue par la 2e et la 99e DI américaine. Verrou nord empêchant les Panzer d\'atteindre Liège. Sa résistance dès le 17 déc. déséquilibra toute l\'offensive.'},
+    {name:'Celles (pointe du saillant)',coords:[50.293,5.096],desc:'Point le plus occidental atteint par les Panzer, à 7 km de la Meuse, le 24 déc. 1944. Stoppés par la 2e DB britannique.'},
+    {name:'Saint-Vith',coords:[50.280,6.130],desc:'Nœud routier défendu du 17 au 23 déc. par la 7e DA US — 6 jours de retard infligés à l\'axe nord de l\'offensive.'}
+  ],
+  railways:[
+    {label:'Ligne Liège–Luxembourg (enjeu logistique)',coords:[[50.550,5.570],[50.380,5.720],[50.150,6.050],[49.950,6.150]]},
+    {label:'Voie vers Bastogne',coords:[[50.280,5.520],[50.150,5.620],[50.001,5.720]]}
+  ]
+},
+sources:[
  {a:'Hugh M. Cole',t:'The Ardennes: Battle of the Bulge, U.S. Army in World War II (Office of the Chief of Military History, 1965)',u:'https://archive.org/details/ardennesofficial0000cole',type:'histoire officielle de l’armée américaine'},
  {a:'U.S. Army Center of Military History',t:'Ardennes-Alsace, CMH Pub 72-26',u:'https://www.history.army.mil/html/books/072/72-26/CMH_Pub_72-26(75th-Anniversary).pdf',type:'source officielle'},
  {a:'National Archives (US)',t:'The Bloodiest Battle — Battle of the Bulge 70 Years',u:'https://www.archives.gov/publications/prologue/2014/winter/battle-of-the-bulge-70-years',type:'archive officielle'},
@@ -1176,6 +1316,25 @@ sources:[
   {kind:'Musée',title:'MAS — Museum aan de Stroom (Anvers)',text:'Le musée d\'Anvers contextualise la libération du port et la bataille de l\'Escaut (1944), indispensable pour ravitailler les forces alliées après la percée de Normandie.',url:'https://www.mas.be/'},
   {kind:'Documentaires',title:'Documentaires sur la bataille de l\'Escaut (1944)',text:'Documentaires sur la bataille de l\'Escaut (octobre-novembre 1944) et l\'ouverture du port d\'Anvers aux convois alliés.',url:'https://www.youtube.com/results?search_query=bataille+Escaut+1944+Anvers+Walcheren+documentaire'}
   ],
+terrain:{
+  note:'La campagne de l\'Escaut se joua dans des polders plats, des canaux et des zones délibérément inondées. Les Allemands contrôlaient Walcheren en faisant sauter les digues pour inonder l\'île, rendant les abords des batteries côtières inaccessibles par voie terrestre.',
+  floods:[
+    {label:'Walcheren inondée (digues rompues par RAF, 3 oct.)',coords:[[51.635,3.480],[51.685,3.650],[51.618,3.822],[51.548,3.782],[51.518,3.572],[51.568,3.420]]},
+    {label:'Poche de Breskens (rive sud)',coords:[[51.382,3.483],[51.425,3.703],[51.380,3.855],[51.320,3.720],[51.308,3.520]]}
+  ],
+  frontlines:[
+    {label:'Ligne canadienne (oct. 1944)',color:'#1a4a8b',coords:[[51.472,4.070],[51.382,3.855],[51.320,3.720],[51.308,3.520],[51.382,3.483]]},
+    {label:'Défenses allemandes Walcheren',color:'#8b2222',coords:[[51.635,3.480],[51.685,3.650],[51.618,3.822]]}
+  ],
+  railways:[
+    {label:'Ligne Zuid-Beveland (enjeu tactique)',coords:[[51.49,4.07],[51.50,3.87],[51.49,3.70],[51.47,3.55]]}
+  ],
+  forts:[
+    {name:'Batterie Domburg (Walcheren)',coords:[51.563,3.497],desc:'Batterie côtière allemande commandant l\'estuaire. Neutralisée après l\'inondation et le débarquement amphibie de Flessingue (1er nov. 1944).'},
+    {name:'Flessingue (Vlissingen)',coords:[51.443,3.572],desc:'Port clé de Walcheren, prise par les Commandos britanniques le 1er nov. 1944 après un débarquement amphibie.'},
+    {name:'Écluses de Terneuzen',coords:[51.339,3.830],desc:'Écluses contrôlant la navigation sur le canal Gand–Terneuzen, nœud logistique pour le dégagement du port d\'Anvers.'}
+  ]
+},
 sources:[
     {
       a:'Commonwealth War Graves Commission',
@@ -1595,6 +1754,18 @@ sources:[
   {kind:'Musée',title:'Musée Royal de l\'Armée (Bruxelles)',text:'Collections couvrant les guerres de Louis XIV dans les Pays-Bas espagnols, dont la bataille de Neerwinden (1693) où Luxembourg l\'emporta sur Guillaume III.',url:'https://www.klm-mra.be/'},
   {kind:'Documentaires',title:'Documentaires sur la bataille de Neerwinden (1693)',text:'Documentaires sur les guerres de Louis XIV dans les Pays-Bas et la bataille de Neerwinden.',url:'https://www.youtube.com/results?search_query=bataille+Neerwinden+1693+Luxembourg+Guillaume+III+documentaire'}
   ],
+terrain:{
+  note:'Le terrain de Neerwinden — plateau ondulé de Hesbaye, entrecoupé de villages fortifiés et de haies — favorisait la défense en profondeur. Les villages (Neerwinden, Laer, Rumsdorp) constituèrent des forteresses en miniature. Guillaume III ne put percer la ligne de Luxemburg malgré 3 assauts.',
+  forts:[
+    {name:'Village de Neerwinden',coords:[50.671,5.123],desc:'Village fortifié, cœur des combats. Repris et perdu plusieurs fois dans la journée du 29 juillet 1693. Finalement tenu par les Français.'},
+    {name:'Village de Laer',coords:[50.680,5.138],desc:'Point d\'appui du flanc français, âprement défendu lors des contre-attaques alliées.'},
+    {name:'Groot Gestel (QG allié)',coords:[50.660,5.106],desc:'Quartier général de Guillaume III pendant la bataille.'}
+  ],
+  frontlines:[
+    {label:'Ligne française (Luxemburg)',color:'#8b2222',coords:[[50.693,5.060],[50.683,5.100],[50.671,5.123],[50.660,5.145],[50.648,5.170]]},
+    {label:'Ligne alliée (Guillaume III)',color:'#1a4a8b',coords:[[50.694,5.048],[50.681,5.088],[50.668,5.112],[50.655,5.135],[50.643,5.162]]}
+  ]
+},
 sources:[
     {
       a:'Wikipédia',
@@ -1863,6 +2034,20 @@ sources:[
   {kind:'Site mémoriel',title:'Ville fortifiée de Rocroi (Ardennes françaises)',text:'Ville bastionnée à l\'étoile conçue par Vauban, dont les remparts sont exceptionnellement bien conservés. Classée monument historique. Le champ de bataille est partiellement visible depuis les fortifications.',url:'https://www.rocroi.fr/'},
   {kind:'Documentaires',title:'Documentaires sur la bataille de Rocroi (1643)',text:'Documentaires et conférences sur la bataille de Rocroi (1643), victoire du jeune Condé qui mit fin à la suprématie militaire de l\'Espagne.',url:'https://www.youtube.com/results?search_query=bataille+Rocroi+1643+Condé+Espagne+documentaire'}
   ],
+terrain:{
+  note:'La plaine de Rocroi, plateau herbeux cerné de forêts et de marécages, offrit un terrain rare pour la guerre de Trente Ans : un espace dégagé favorable à la bataille rangée. Condé déborda les Espagnols en contournant leur flanc droit par un chemin forestier que les Espagnols croyaient impraticable.',
+  frontlines:[
+    {label:'Ligne espagnole (tercios)',color:'#8b2222',coords:[[49.904,4.516],[49.898,4.524],[49.893,4.531],[49.888,4.538]]},
+    {label:'Ligne française (Condé)',color:'#1a4a8b',coords:[[49.912,4.514],[49.905,4.521],[49.900,4.529],[49.895,4.536]]}
+  ],
+  floods:[
+    {label:'Marécages et forêts encadrant le champ de bataille',coords:[[49.920,4.505],[49.915,4.540],[49.882,4.548],[49.882,4.508]]}
+  ],
+  forts:[
+    {name:'Rocroi (place fortifiée)',coords:[49.923,4.524],desc:'Petite ville fortifiée dont le relief masquait l\'approche de Condé. Sa garnison fut l\'enjeu du siège qui amena les armées à s\'affronter.'},
+    {name:'Chemin forestier de débordement',coords:[49.892,4.512],desc:'Sentier boisé utilisé par la cavalerie de Condé pour contourner le flanc droit espagnol — itinéraire jugé impraticable par les Espagnols, décision fatale.'}
+  ]
+},
 sources:[
     {
       a:'Wikipédia',
@@ -6342,8 +6527,11 @@ const osmLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{max
 const ferrarisWallonie=L.tileLayer.wms('https://geoservices.wallonie.be/arcgis/services/CARTES_ANCIENNES/FERRARIS/MapServer/WMSServer',{layers:'0',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; SPW — Carte de Ferraris (1770-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
 const ferrarisVlaanderen=L.tileLayer.wms('https://geo.api.vlaanderen.be/HISTCART/wms',{layers:'ferraris',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; Informatie Vlaanderen — Ferrariskaart (1771-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
 const ferrarisLayer=L.layerGroup([ferrarisWallonie,ferrarisVlaanderen]);
-const baseLayers={'Carte actuelle (OpenStreetMap)':osmLayer,'Carte de Ferraris (1777, Wallonie + Flandre)':ferrarisLayer};
-L.control.layers(baseLayers,null,{position:'topright',collapsed:false}).addTo(map);
+const topoLayer=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'Données: &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | Rendu: &copy; <a href="http://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'});
+const railOverlay=L.tileLayer('https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',{maxZoom:19,opacity:0.75,attribution:'&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="https://openrailwaymap.org">OpenRailwayMap</a> (CC-BY-SA)'});
+
+const baseLayers={'Carte (OpenStreetMap)':osmLayer,'🗻 Topographie + courbes de niveau':topoLayer,'Ferraris 1777 (Belgique)':ferrarisLayer};
+L.control.layers(baseLayers,{'🚂 Voies ferrées (OpenRailwayMap)':railOverlay},{position:'topright',collapsed:false}).addTo(map);
 const layer=L.layerGroup().addTo(map);poiLayer=L.layerGroup().addTo(map);let markerById={};
 populatePoiFilters();
 drawPointsOfInterest();
@@ -6416,7 +6604,10 @@ const visitsPane = x.visits && x.visits.length
   : `<div class="moves-empty">
        Aucun musée, mémorial ou documentaire n’est encore référencé pour cette bataille.
      </div>`;
-                     return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">Fiche</button><button class="popup-tab" data-pane="ctx-${x.id}">Contexte</button><button class="popup-tab" data-pane="moves-${x.id}">Mouvements</button><button class="popup-tab" data-pane="visits-${x.id}">Visiter & voir</button></div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>`}
+                     const hasT=x.terrain&&(x.terrain.frontlines||x.terrain.trenches||x.terrain.forts||x.terrain.railways||x.terrain.floods);
+const terrainTab=hasT?`<button class="popup-tab" data-pane="terrain-${x.id}">\u{1F5FB} Terrain</button>`:'';
+const terrainPane=hasT?`<div class="popup-pane" id="terrain-${x.id}">${buildTerrainPanel(x)}</div>`:'';
+return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">Fiche</button><button class="popup-tab" data-pane="ctx-${x.id}">Contexte</button><button class="popup-tab" data-pane="moves-${x.id}">Mouvements</button><button class="popup-tab" data-pane="visits-${x.id}">Visiter & voir</button></div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>${terrainPane}`}
 
 function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minLabel.textContent=a;maxLabel.textContent=b;let q=search.value.trim().toLowerCase(),ps=active('period'),ts=active('type');let data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));layer.clearLayers();markerById={};data.forEach(x=>{let marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});marker.on('click', () => {
   if (isMobileView()) {
@@ -6428,18 +6619,84 @@ function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minL
 marker.on('popupopen', () => {
   if (!isMobileView()) {
     setupPopupTabs(x);
+    if(x.terrain) drawTerrain(x);
   }
-});marker.on('popupclose',()=>{clearMovementLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});if (isMobileView()) {
+});marker.on('popupclose',()=>{clearMovementLayer();clearTerrainLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});if (isMobileView()) {
   openMobileBattleSheet(x);
 } else {
   markerById[x.id].openPopup();
 }})}
 
 let moveLayer=L.layerGroup().addTo(map);
+
+let terrainLayer=L.layerGroup().addTo(map);
+function clearTerrainLayer(){terrainLayer.clearLayers();}
+function activateTopoLayer(){
+  [osmLayer,ferrarisWallonie,ferrarisVlaanderen].forEach(l=>{if(map.hasLayer(l))map.removeLayer(l);});
+  if(!map.hasLayer(topoLayer))topoLayer.addTo(map);
+}
+function drawTerrain(x){
+  clearTerrainLayer();
+  const t=x.terrain;if(!t)return;
+  const esc2=s=>String(s).replace(/[<>"'&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','&':'&amp;'}[c]));
+  /* ── Lignes de front ── */
+  (t.frontlines||[]).forEach(fl=>{
+    const pts=fl.coords.map(c=>L.latLng(c[0],c[1]));
+    L.polyline(pts,{color:fl.color||'#c44',weight:fl.weight||4,opacity:.85,lineJoin:'round'})
+     .bindTooltip(fl.label,{sticky:true,className:'kp-tooltip'}).addTo(terrainLayer);
+  });
+  /* ── Tranchées ── */
+  (t.trenches||[]).forEach(tr=>{
+    const pts=tr.coords.map(c=>L.latLng(c[0],c[1]));
+    L.polyline(pts,{color:'#1a1208',weight:2.5,opacity:.9,dashArray:'6,3',lineJoin:'round'})
+     .bindTooltip(tr.label||'Tranchée',{sticky:true,className:'kp-tooltip'}).addTo(terrainLayer);
+  });
+  /* ── Forts / points d'appui ── */
+  (t.forts||[]).forEach(ft=>{
+    const ic=L.divIcon({className:'',
+      html:'<div style="width:13px;height:13px;background:#f5e8c0;border:2.5px solid #6b2c00;border-radius:2px;box-shadow:0 0 0 1.5px rgba(255,255,255,.7),0 1px 4px rgba(0,0,0,.35)"></div>',
+      iconSize:[13,13],iconAnchor:[6,6]});
+    L.marker(ft.coords,{icon:ic,zIndexOffset:900})
+     .bindPopup('<b>🏰 '+esc2(ft.name)+'</b>'+(ft.desc?'<br><div style="font-size:11px;margin-top:4px;color:#3a3020;line-height:1.45">'+esc2(ft.desc)+'</div>':''),{maxWidth:250})
+     .bindTooltip(ft.name,{permanent:false,direction:'top',className:'kp-tooltip'})
+     .addTo(terrainLayer);
+  });
+  /* ── Voies ferrées — style cartographique double-trait ── */
+  (t.railways||[]).forEach(rl=>{
+    const pts=rl.coords.map(c=>L.latLng(c[0],c[1]));
+    /* Ligne de fond (travées) */
+    L.polyline(pts,{color:'#1a0a00',weight:5,opacity:.82,lineJoin:'round',lineCap:'butt'})
+     .addTo(terrainLayer);
+    /* Traverses blanches par-dessus */
+    L.polyline(pts,{color:'#fff',weight:2.5,opacity:.9,dashArray:'7,7',lineJoin:'round',lineCap:'butt'})
+     .bindTooltip('🚂 '+esc2(rl.label||'Voie ferrée'),{sticky:true,className:'kp-tooltip'})
+     .addTo(terrainLayer);
+  });
+  /* ── Zones inondées / marécages ── */
+  (t.floods||[]).forEach(fz=>{
+    const pts=fz.coords.map(c=>L.latLng(c[0],c[1]));
+    L.polygon(pts,{color:'#3a80c0',fillColor:'rgba(70,130,180,.3)',fillOpacity:1,weight:2,dashArray:'4,3'})
+     .bindTooltip('💧 '+esc2(fz.label||'Zone inondée'),{sticky:true,className:'kp-tooltip'}).addTo(terrainLayer);
+  });
+}
+function buildTerrainPanel(x){
+  const t=x.terrain;if(!t)return'';
+  const esc2=s=>String(s).replace(/[<>"'&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','&':'&amp;'}[c]));
+  const note=t.note?`<div class="terrain-note">${esc2(t.note)}</div>`:'';
+  const items=[];
+  (t.frontlines||[]).forEach(fl=>items.push(`<div><span class="tleg-line" style="background:${fl.color||'#c44'}"></span>${esc2(fl.label)}</div>`));
+  (t.trenches||[]).forEach(tr=>items.push(`<div><span class="tleg-dash"></span>${esc2(tr.label||'Tranchée')}</div>`));
+  (t.forts||[]).forEach(ft=>items.push(`<div><span class="tleg-fort"></span>${esc2(ft.name)}</div>`));
+  (t.railways||[]).forEach(rl=>items.push(`<div><span class="tleg-rail"></span>${esc2(rl.label||'Voie ferrée')}</div>`));
+  (t.floods||[]).forEach(fz=>items.push(`<div><span class="tleg-flood"></span>${esc2(fz.label||'Zone inondée/marécageuse')}</div>`));
+  const legend=items.length?`<div class="terrain-legend">${items.join('')}</div>`:'';
+  return `<div style="padding-top:2px"><button class="terrain-topo-btn" onclick="activateTopoLayer();this.classList.add('active');this.textContent='\u{1F5FB} Vue topographique activée'">\u{1F5FB} Activer la vue topographique</button>${note}${legend}<div class="moves-hint" style="margin-top:8px">Les éléments militaires s'affichent sur la carte quelle que soit la couche choisie. La vue topographique révèle les courbes de niveau, rivières, forêts et villages.</div></div>`;
+}
+
 function clearMovementLayer(){moveLayer.clearLayers();BattleMapEngine.clear();}
 function drawMovements(x){clearMovementLayer();if(!x.movements)return;if(x.keypoints){x.keypoints.forEach(kp=>{const kpMarker=L.marker(kp.coords,{icon:L.divIcon({className:'keypoint-icon',html:'<span></span>',iconSize:[14,14]}),zIndexOffset:1000});const kpPopup=`<div class="kp-popup"><b>${esc(kp.name)}</b>${kp.desc?`<div class="kp-desc">${esc(kp.desc)}</div>`:''}</div>`;kpMarker.bindPopup(kpPopup,{maxWidth:240});kpMarker.bindTooltip(kp.name,{permanent:false,direction:'top',className:'kp-tooltip'});kpMarker.addTo(moveLayer);});}const allCoords=x.movements.flatMap(mv=>mv.coords).concat((x.keypoints||[]).map(kp=>kp.coords));map.fitBounds(L.latLngBounds(allCoords),{padding:[40,40],maxZoom:16});BattleMapEngine.draw(x);}
 
-function setupPopupTabs(x){const container=document.querySelector('.leaflet-popup-content');if(!container)return;const tabs=container.querySelectorAll('.popup-tab');const panes=container.querySelectorAll('.popup-pane');tabs.forEach(tab=>{tab.onclick=()=>{tabs.forEach(t=>t.classList.remove('active'));panes.forEach(pn=>pn.classList.remove('active'));tab.classList.add('active');const target=container.querySelector('#'+tab.dataset.pane);if(target)target.classList.add('active');if(tab.dataset.pane.startsWith('moves-')){drawMovements(x);BattleMapEngine.bindControls(container,x);}else{clearMovementLayer();}}});}
+function setupPopupTabs(x){const container=document.querySelector('.leaflet-popup-content');if(!container)return;const tabs=container.querySelectorAll('.popup-tab');const panes=container.querySelectorAll('.popup-pane');tabs.forEach(tab=>{tab.onclick=()=>{tabs.forEach(t=>t.classList.remove('active'));panes.forEach(pn=>pn.classList.remove('active'));tab.classList.add('active');const target=container.querySelector('#'+tab.dataset.pane);if(target)target.classList.add('active');if(tab.dataset.pane.startsWith('moves-')){drawMovements(x);BattleMapEngine.bindControls(container,x);}else if(tab.dataset.pane.startsWith('terrain-')){clearMovementLayer();/* terrain already drawn on popupopen */}else{clearMovementLayer();}}});}
 
 const {minYear,maxYear,search,minLabel,maxLabel,counter,results}=Object.fromEntries(['minYear','maxYear','search','minLabel','maxLabel','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
 /* ── Mobile : panneau Explorer + fiche de bataille ── */
@@ -6503,6 +6760,8 @@ function setupMobileTabs(x) {
 
       if (tab.dataset.pane.startsWith('moves-')) {
         drawMovements(x);
+      } else if (tab.dataset.pane.startsWith('terrain-')) {
+        clearMovementLayer(); /* terrain already drawn on open */
       } else {
         clearMovementLayer();
       }
@@ -6515,6 +6774,8 @@ function openMobileBattleSheet(x) {
 
   closeExplorerSheet();
   clearMovementLayer();
+  clearTerrainLayer();
+  if(x.terrain) drawTerrain(x);
 
   const content = popupHtml(x);
 
