@@ -7,6 +7,184 @@
 <style>
 :root{--ink:#15212b;--paper:#f5f0e5;--wine:#7a1f2b;--line:#d8cfbf;--accent:#b28a3a}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--paper)}header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--line);background:#fbf8f1;position:relative;z-index:1000}.brand h1{font-family:Georgia,serif;font-size:22px;margin:0;color:var(--wine);letter-spacing:.2px}.brand p{font-size:12px;margin:3px 0 0;color:#56616b}.header-count{font-size:13px;background:#efe5d1;padding:8px 10px;border-radius:16px}main{display:grid;grid-template-columns:355px 1fr;height:calc(100vh - 76px)}aside{padding:20px;overflow:auto;border-right:1px solid var(--line);background:#fbf8f1}h2{font:700 19px Georgia,serif;margin:0 0 8px;color:var(--wine)}h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 8px;color:#53606b}.intro{font-size:13px;line-height:1.48;margin:0}.search{width:100%;padding:10px 11px;border:1px solid #c8bdab;border-radius:7px;background:white;font-size:14px}.range-label{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.slider{width:100%;accent-color:var(--wine)}.ticks{display:flex;justify-content:space-between;font-size:10px;color:#65717c}.checklist{display:grid;gap:7px;font-size:13px}.checklist label{display:flex;gap:8px;align-items:center}.results{margin-top:16px;border-top:1px solid var(--line)}.item{padding:12px 2px;border-bottom:1px solid #e7dfd1;cursor:pointer}.item:hover .item-title{text-decoration:underline}.item-title{font-weight:700;font-size:14px}.meta{font-size:12px;color:#65717c;margin-top:3px}.empty{font-size:13px;color:#65717c;padding:14px 0}#map{height:100%;width:100%}.leaflet-popup-content{min-width:260px;font-family:Inter,system-ui,sans-serif;max-width:300px}.popup-title{font:700 17px Georgia,serif;color:var(--wine);margin-bottom:5px}.popup-meta{font-size:12px;color:#5a6570;margin-bottom:8px}.popup-text{font-size:13px;line-height:1.35}.badge{font-size:10px;padding:3px 6px;background:#efe5d1;border-radius:10px;margin-left:4px}.certainty{font-size:10px;padding:2px 6px;border-radius:8px;color:#fff;margin-left:4px}.c-confirme{background:#3d6b3d}.c-probable{background:#8a6d1c}.c-approx{background:#8a4a1c}.sources{margin-top:8px;font-size:11px;line-height:1.4;border-top:1px dashed #cfc4ae;padding-top:6px;color:#4a5460}.sources a{color:#3a5a86;text-decoration:none}.sources a:hover{text-decoration:underline}.sources li{margin-bottom:4px}.sources ul{margin:4px 0 0;padding-left:16px}.srctype{font-style:italic;color:#83705a}.popup-img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block}.img-credit{font-size:10px;color:#8b8378;margin-bottom:8px;line-height:1.3;font-style:italic}.popup-tabs{display:flex;gap:4px;margin-bottom:8px;border-bottom:1px solid #e2d9c8}.popup-tab{font-size:11px;padding:5px 9px;cursor:pointer;border:none;background:none;color:#65717c;border-bottom:2px solid transparent;font-weight:600}.popup-tab.active{color:var(--wine);border-bottom-color:var(--wine)}.popup-pane{display:none}.popup-pane.active{display:block}.moves-legend{margin-top:6px;font-size:11px}.moves-legend div{display:flex;align-items:center;gap:6px;margin-bottom:3px}.moves-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}.moves-hint{font-size:11px;color:#65717c;margin-top:4px}.moves-empty{font-size:12px;color:#65717c}.keypoint-icon span{display:block;width:10px;height:10px;background:#fff;border:2px solid #2a2622;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.6)}.keypoint-icon span{cursor:pointer;transition:transform .15s}.keypoint-icon:hover span{transform:scale(1.3)}.kp-popup{font-size:12px}.kp-desc{margin-top:4px;color:#4a4438;line-height:1.4}.kp-tooltip{font-size:11px;font-weight:600}.leaflet-control-layers{font-family:Inter,system-ui,sans-serif;border-radius:8px!important;box-shadow:0 2px 8px rgba(0,0,0,.15)!important;border:1px solid var(--line)!important}.leaflet-control-layers-base label{font-size:12.5px;padding:3px 4px;display:flex;align-items:center;gap:5px}.leaflet-control-layers-toggle{display:none}.ctx-block{margin-bottom:10px}.ctx-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--wine);margin-bottom:3px}.ctx-text{font-size:12.5px;line-height:1.45;color:#332e26}
 @media(max-width:760px){header{height:auto;padding:12px 14px}.header-count{display:none}main{display:flex;flex-direction:column;height:auto}aside{width:100%;border-right:0;border-bottom:1px solid var(--line);max-height:48vh}#map{height:52vh}.brand h1{font-size:18px}}
+.mobile-explorer-toggle,.mobile-battle-sheet,.mobile-sheet-close,.mobile-sheet-handle{display:none}
+@media(max-width:760px){
+  html,body{height:100%;overflow:hidden}
+  header{height:72px;min-height:72px;padding:10px 14px}
+  .brand h1{font-size:18px;line-height:1.15;max-width:calc(100vw - 94px)}
+  .brand p{display:none}
+  main{position:relative;display:block;height:calc(100dvh - 72px);min-height:0}
+  #map{height:100%;width:100%}
+  aside#mobileExplorerPanel{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:1250;
+    width:100%;
+    height:auto;
+    max-height:min(78dvh,680px);
+    padding:28px 16px calc(76px + env(safe-area-inset-bottom));
+    border:0;
+    border-top:1px solid var(--line);
+    border-radius:18px 18px 0 0;
+    box-shadow:0 -8px 28px rgba(21,33,43,.18);
+    transform:translateY(105%);
+    visibility:hidden;
+    transition:transform .25s ease,visibility .25s ease;
+  }
+  body.mobile-sheet-open aside#mobileExplorerPanel{
+    transform:translateY(0);
+    visibility:visible;
+  }
+  .mobile-sheet-handle{
+    display:block;
+    position:absolute;
+    top:10px;
+    left:50%;
+    width:42px;
+    height:4px;
+    border-radius:999px;
+    background:#c8bdab;
+    transform:translateX(-50%);
+  }
+  .mobile-sheet-close{
+    display:flex;
+    position:absolute;
+    top:9px;
+    right:12px;
+    z-index:2;
+    align-items:center;
+    justify-content:center;
+    width:44px;
+    height:44px;
+    padding:0;
+    border:1px solid #d8cfbf;
+    border-radius:50%;
+    background:#fbf8f1;
+    color:var(--wine);
+    font-size:25px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .mobile-explorer-toggle{
+    display:flex;
+    position:fixed;
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    left:16px;
+    z-index:1200;
+    align-items:center;
+    justify-content:center;
+    min-height:48px;
+    padding:12px 18px;
+    border:1px solid #5f1722;
+    border-radius:999px;
+    background:var(--wine);
+    color:#fff;
+    box-shadow:0 4px 14px rgba(21,33,43,.24);
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:opacity .2s ease,transform .2s ease;
+  }
+  body.mobile-sheet-open .mobile-explorer-toggle,
+  body.mobile-battle-open .mobile-explorer-toggle{
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(10px);
+  }
+  .mobile-battle-sheet{
+    display:block;
+    position:fixed;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:1400;
+    max-height:min(88dvh,760px);
+    padding:0 16px calc(16px + env(safe-area-inset-bottom));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border-top:1px solid var(--line);
+    border-radius:18px 18px 0 0;
+    background:#fbf8f1;
+    box-shadow:0 -8px 28px rgba(21,33,43,.2);
+    transform:translateY(105%);
+    visibility:hidden;
+    transition:transform .25s ease,visibility .25s ease;
+  }
+  body.mobile-battle-open .mobile-battle-sheet{
+    transform:translateY(0);
+    visibility:visible;
+  }
+  .mobile-battle-head{
+    position:sticky;
+    top:0;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    min-height:58px;
+    margin:0 -16px;
+    padding:8px 58px 8px 16px;
+    border-bottom:1px solid var(--line);
+    background:rgba(251,248,241,.96);
+    backdrop-filter:blur(8px);
+  }
+  .mobile-battle-title{
+    margin:0;
+    font-size:18px;
+    line-height:1.2;
+  }
+  .mobile-battle-close{
+    position:absolute;
+    top:7px;
+    right:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:44px;
+    height:44px;
+    padding:0;
+    border:1px solid #d8cfbf;
+    border-radius:50%;
+    background:#fbf8f1;
+    color:var(--wine);
+    font-size:25px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .mobile-battle-sheet .popup-tabs{
+    position:sticky;
+    top:58px;
+    z-index:2;
+    margin:0 -16px 12px;
+    padding:0 12px;
+    overflow-x:auto;
+    background:#fbf8f1;
+    scrollbar-width:none;
+  }
+  .mobile-battle-sheet .popup-tabs::-webkit-scrollbar{display:none}
+  .mobile-battle-sheet .popup-tab{
+    flex:0 0 auto;
+    min-height:44px;
+    padding:8px 10px;
+    white-space:nowrap;
+  }
+  .mobile-battle-sheet .popup-pane{padding-bottom:8px}
+  .mobile-battle-sheet .popup-img{height:180px}
+  .mobile-battle-sheet .visit-card{min-height:76px;padding:12px}
+  .mobile-battle-sheet .popup-text{font-size:14px;line-height:1.45}
+  .mobile-battle-sheet .sources{font-size:12px}
+  .search{min-height:44px;font-size:16px}
+  .checklist label{min-height:36px;gap:10px}
+  .checklist input{width:20px;height:20px;flex:0 0 20px}
+  .item{min-height:58px;padding:13px 2px}
+  .item-title{font-size:15px}
+  .leaflet-control-zoom a{width:44px!important;height:44px!important;line-height:44px!important}
+  .leaflet-control-layers{max-width:calc(100vw - 76px);font-size:12px}
+  .leaflet-control-layers-base label{min-height:38px}
+}
 /* Publicité : emplacements hors carte et hors contenus documentaires. */
 .ad-slot{
   margin:20px 0 4px;
@@ -198,7 +376,7 @@
   type="button"
   aria-label="Fermer le panneau d’exploration">
   ×
-</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><h3>Type d’événement</h3>
+</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><div class="checklist" id="periods"></div><h3>Type d’événement</h3>
 <div class="checklist" id="types"></div>
 
 <div class="poi-section">
@@ -5179,7 +5357,7 @@ function setupPoiPopup(poi, marker){
         map.flyTo(battle.coords, 11, {duration:.6});
 
         setTimeout(() => {
-          const battleMarker = markerById.get(battle.id);
+          const battleMarker = markerById[battle.id];
           if(battleMarker) battleMarker.openPopup();
         }, 650);
       });
@@ -5245,8 +5423,7 @@ function populatePoiFilters(){
     poiVisible = event.target.checked;
     drawPointsOfInterest();
   });
-}populatePoiFilters();
-drawPointsOfInterest();
+}
   const map=L.map('map',{zoomControl:true}).setView([50.65,4.6],8);
 const osmLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 const ferrarisWallonie=L.tileLayer.wms('https://geoservices.wallonie.be/arcgis/services/CARTES_ANCIENNES/FERRARIS/MapServer/WMSServer',{layers:'0',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; SPW — Carte de Ferraris (1770-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
@@ -5255,6 +5432,8 @@ const ferrarisLayer=L.layerGroup([ferrarisWallonie,ferrarisVlaanderen]);
 const baseLayers={'Carte actuelle (OpenStreetMap)':osmLayer,'Carte de Ferraris (1777, Wallonie + Flandre)':ferrarisLayer};
 L.control.layers(baseLayers,null,{position:'topright',collapsed:false}).addTo(map);
 const layer=L.layerGroup().addTo(map);poiLayer=L.layerGroup().addTo(map);let markerById={};
+populatePoiFilters();
+drawPointsOfInterest();
 const periods=[...new Set(battles.map(x=>x.period))],types=[...new Set(battles.map(x=>x.type))];
 function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -5289,7 +5468,8 @@ const visitsPane = x.visits && x.visits.length
 
 function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minLabel.textContent=a;maxLabel.textContent=b;let q=search.value.trim().toLowerCase(),ps=active('period'),ts=active('type');let data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));layer.clearLayers();markerById={};data.forEach(x=>{let marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});marker.on('click', () => {
   if (isMobileView()) {
-    openMobileBattleSheet(x);
+     openMobileBattleSheet(x);
+     setTimeout(() => map.closePopup(), 0);
   }
 });
 
@@ -5431,4 +5611,12 @@ mobileQuery.addEventListener('change', event => {
     closeExplorerSheet();
     closeMobileBattleSheet();
   }
-});</script></body></html>
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    closeExplorerSheet();
+    closeMobileBattleSheet();
+  }
+});
+</script></body></html>
