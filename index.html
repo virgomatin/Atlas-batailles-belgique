@@ -157,6 +157,24 @@
     line-height:1;
     cursor:pointer;
   }
+  .mobile-battle-minimize{
+    position:absolute;
+    top:7px;
+    right:62px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:44px;
+    height:44px;
+    padding:0;
+    border:1px solid #d8cfbf;
+    border-radius:50%;
+    background:#fbf8f1;
+    color:var(--wine);
+    font-size:25px;
+    line-height:1;
+    cursor:pointer;
+  }
   .mobile-battle-sheet .popup-tabs{
     position:sticky;
     top:58px;
@@ -188,6 +206,9 @@
   .leaflet-control-layers{max-width:calc(100vw - 76px);font-size:12px}
   .leaflet-control-layers-base label{min-height:38px}
   .filter-action{min-height:46px;font-size:14px}
+  .popup-minimized-dock{right:12px;bottom:calc(76px + env(safe-area-inset-bottom));left:12px;width:auto;max-height:30vh}
+  .popup-minimized-restore{min-height:42px;font-size:13px}
+  .popup-minimized-close{width:42px}
 }
 /* Publicité : emplacements hors carte et hors contenus documentaires. */
 .ad-slot{
@@ -388,6 +409,27 @@
 .tleg-flood{display:inline-block;width:18px;height:10px;background:rgba(70,130,180,.35);border:1.5px solid rgba(70,130,180,.7);vertical-align:middle}
 .fort-sq{width:11px;height:11px;background:#f5e8c0;border:2.5px solid #8b4513;border-radius:1px;box-shadow:0 0 0 1px rgba(255,255,255,.6)}
 .terrain-section{margin-bottom:6px;font-size:11.5px;font-weight:700;color:var(--wine);letter-spacing:.05em;text-transform:uppercase}
+.popup-windowbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-2px 0 8px;padding:0 0 6px;border-bottom:1px solid #e2d9c8}
+.popup-windowbar>.popup-title,.popup-windowbar>.poi-title,.popup-windowbar>.kp-popup{min-width:0;flex:1;margin:0}
+.popup-window-actions{display:flex;flex:0 0 auto;gap:4px}
+.popup-window-btn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;padding:0;border:1px solid #c8bdab;border-radius:5px;background:#f8f3e9;color:#5f2631;font-size:17px;line-height:1;cursor:pointer}
+.popup-window-btn:hover,.popup-window-btn:focus-visible{background:#eadcc6;border-color:#9d7b4a;outline:2px solid rgba(122,31,43,.25);outline-offset:1px}
+.leaflet-popup .leaflet-popup-close-button{display:none}
+.leaflet-popup.popup-window-minimized{display:none!important}
+.popup-minimized-dock{position:absolute;left:12px;bottom:12px;z-index:1100;display:flex;flex-direction:column;align-items:flex-start;gap:7px;width:min(290px,calc(100% - 24px));max-height:min(34vh,260px);overflow-y:auto;pointer-events:none}
+.popup-minimized-tab{display:flex;align-items:stretch;max-width:100%;border:1px solid #bcae98;border-radius:8px;background:rgba(251,248,241,.97);box-shadow:0 2px 9px rgba(21,33,43,.2);overflow:hidden;pointer-events:auto}
+.popup-minimized-restore{min-width:0;padding:8px 10px;border:0;background:transparent;color:#5f2631;font-size:12px;font-weight:700;text-align:left;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;cursor:pointer}
+.popup-minimized-restore:hover,.popup-minimized-restore:focus-visible{background:#f0e5d2;outline:none}
+.popup-minimized-close{width:31px;padding:0;border:0;border-left:1px solid #d8cfbf;background:transparent;color:#65717c;font-size:18px;cursor:pointer}
+.popup-minimized-close:hover,.popup-minimized-close:focus-visible{background:#eadcc6;color:#5f2631;outline:none}
+/* État de chargement non bloquant de la couche historique. */
+.ferraris-status{position:absolute;top:12px;left:50%;z-index:1100;display:flex;align-items:center;gap:8px;max-width:min(420px,calc(100% - 148px));padding:8px 12px;border:1px solid #d4c8ae;border-radius:999px;background:rgba(251,248,241,.96);box-shadow:0 2px 10px rgba(21,33,43,.18);color:#3d3429;font-size:12px;font-weight:650;line-height:1.3;pointer-events:none;transform:translateX(-50%)}
+.ferraris-status[hidden]{display:none}
+.ferraris-status[data-state="loading"]::before{width:13px;height:13px;border:2px solid #b28a3a;border-right-color:transparent;border-radius:50%;content:"";animation:ferraris-spin .75s linear infinite;flex:0 0 auto}
+.ferraris-status[data-state="ready"]{border-color:#9fb69c;color:#2d5a31}
+.ferraris-status[data-state="error"]{border-color:#d5a67a;color:#6a321d}
+@keyframes ferraris-spin{to{transform:rotate(360deg)}}
+@media(max-width:760px){.ferraris-status{top:10px;max-width:calc(100% - 104px);padding:7px 10px;font-size:11px}.leaflet-bottom.leaflet-right{bottom:calc(76px + env(safe-area-inset-bottom))}.leaflet-control-attribution{max-width:calc(100vw - 20px);white-space:normal}}
 </style></head>
 <body><header><div class="brand"><h1>Atlas des batailles de Belgique et d'Europe</h1><p>Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
@@ -440,16 +482,27 @@
      Aucune animation, aucun son, aucune dépendance externe.
   ════════════════════════════════════════════════════════════ */
   const BME = {};
-  let _map = null, _layer = null;
+  let _map = null, _layer = null, _battle = null;
 
   function _ensure() {
     if (!_layer) _layer = L.layerGroup().addTo(_map);
     return _layer;
   }
 
+  /*
+   * Convertit le dernier segment en angle d'écran Leaflet.
+   * Les données restent en latitude/longitude, mais les flèches s'orientent
+   * dans la projection Web Mercator réellement utilisée pour dessiner la carte.
+   */
+  function _screenAngle(from, to) {
+    const a = _map.latLngToLayerPoint(from);
+    const b = _map.latLngToLayerPoint(to);
+    return Math.atan2(b.x - a.x, a.y - b.y) * 180 / Math.PI;
+  }
+
   /* ── Dessin statique : polylignes + pointe SVG au point d'arrivée ── */
-  function draw(b) {
-    if (!_map) return;
+  function _render(b) {
+    if (!_map || !b) return;
     _ensure().clearLayers();
     (b.movements || []).forEach(m => {
       if (!m.coords || m.coords.length < 2) return;
@@ -460,11 +513,9 @@
         color: col, weight: 3, opacity: 0.85,
         lineJoin: 'round', lineCap: 'round'
       }).addTo(_layer);
-      /* Flèche SVG orientée d'après les deux derniers points */
+      /* Flèche SVG orientée d'après les deux derniers points projetés */
       const n = pts.length;
-      const dx = pts[n-1].lng - pts[n-2].lng;
-      const dy = pts[n-1].lat - pts[n-2].lat;
-      const ang = Math.atan2(dx, dy) * 180 / Math.PI;
+      const ang = _screenAngle(pts[n - 2], pts[n - 1]);
       const arrowHtml = `<svg width="16" height="16" viewBox="-8 -8 16 16" `
         + `xmlns="http://www.w3.org/2000/svg" `
         + `style="transform:rotate(${ang.toFixed(1)}deg);display:block;overflow:visible">`
@@ -478,6 +529,15 @@
         icon: arrowIcon, interactive: false, keyboard: false, zIndexOffset: 1100
       }).addTo(_layer);
     });
+  }
+
+  function draw(b) {
+    _battle = b;
+    _render(_battle);
+  }
+
+  function refresh() {
+    _render(_battle);
   }
 
   /* ── Panneau Mouvements : carte historique d'époque si définie ── */
@@ -495,11 +555,19 @@
       + `</div>`;
   }
 
-  function attach(m) { _map = m; return BME; }
+  function attach(m) {
+    _map = m;
+    _map.on('zoomend viewreset resize', refresh);
+    return BME;
+  }
 
   BME.attach  = attach;
   BME.draw    = draw;
-  BME.clear   = () => { if (_layer) _layer.clearLayers(); };
+  BME.refresh = refresh;
+  BME.clear   = () => {
+    _battle = null;
+    if (_layer) _layer.clearLayers();
+  };
   BME.buildPanel  = buildPanel;
   BME.bindControls = () => {};   /* no-op : plus de contrôles animation */
   BME.status  = () => 'idle';
@@ -6367,6 +6435,48 @@ const pointsOfInterest = [
   }
 ];
 
+/*
+ * Convention de l'atlas : toutes les coordonnées Leaflet sont [latitude,
+ * longitude]. Certaines traces importées de Normandie étaient au format GIS
+ * [longitude, latitude] ; les remettre ici dans la convention unique garantit
+ * que marqueurs, tracés, zooms et fonds de carte partagent le même repère.
+ */
+function normalizeAtlasCoordinates(value) {
+  if (!value || typeof value !== 'object') return;
+
+  if (Array.isArray(value)) {
+    value.forEach(normalizeAtlasCoordinates);
+    return;
+  }
+
+  if (Array.isArray(value.coords)) {
+    value.coords = normalizeCoordinateValue(value.coords);
+  }
+
+  Object.values(value).forEach(normalizeAtlasCoordinates);
+}
+
+function normalizeCoordinateValue(coords) {
+  if (
+    coords.length === 2
+    && coords.every(Number.isFinite)
+    && coords[0] >= -15
+    && coords[0] <= 15
+    && coords[1] >= 35
+    && coords[1] <= 65
+  ) {
+    return [coords[1], coords[0]];
+  }
+
+  return coords.map(item => Array.isArray(item)
+    ? normalizeCoordinateValue(item)
+    : item
+  );
+}
+
+normalizeAtlasCoordinates(battles);
+normalizeAtlasCoordinates(pointsOfInterest);
+
 const poiTypeLabels = {
   memorial:'Mémorial',
   cemetery:'Cimetière militaire',
@@ -6524,18 +6634,155 @@ function populatePoiFilters(){
 }
   const map=L.map('map',{zoomControl:true}).setView([50.65,4.6],8);
 const osmLayer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
-const ferrarisWallonie=L.tileLayer.wms('https://geoservices.wallonie.be/arcgis/services/CARTES_ANCIENNES/FERRARIS/MapServer/WMSServer',{layers:'0',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; SPW — Carte de Ferraris (1770-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
-const ferrarisVlaanderen=L.tileLayer.wms('https://geo.api.vlaanderen.be/HISTCART/wms',{layers:'ferraris',format:'image/png',transparent:false,version:'1.3.0',maxZoom:19,minZoom:7,attribution:'&copy; Informatie Vlaanderen — Ferrariskaart (1771-1778)',bounds:L.latLngBounds([[49.4,2.5],[51.6,6.5]])});
+/*
+ * Les emprises proviennent des GetCapabilities officiels des deux services.
+ * OSM fait partie du fond Ferraris : hors couverture historique, l'utilisateur
+ * garde toujours une carte lisible plutôt qu'une zone vide.
+ */
+const ferrarisWallonieBounds=L.latLngBounds([[49.451080,2.560669],[50.956140,6.498683]]);
+const ferrarisVlaanderenBounds=L.latLngBounds([[50.640000,2.520000],[51.510000,5.940000]]);
+const ferrarisWallonie=L.tileLayer.wms('https://geoservices.wallonie.be/arcgis/services/CARTES_ANCIENNES/FERRARIS/MapServer/WMSServer',{
+  layers:'0',format:'image/png',transparent:true,version:'1.3.0',maxZoom:19,minZoom:7,bounds:ferrarisWallonieBounds,
+  attribution:'Données historiques : <a href="https://geoportail.wallonie.be/catalogue/8f9e82f3-1a69-471f-af93-577558224938.html" target="_blank" rel="noopener">SPW — Carte de Ferraris (1770-1778)</a> <a href="https://geoportail.wallonie.be/catalogue/8f9e82f3-1a69-471f-af93-577558224938.html#ConditionUtilisation" target="_blank" rel="noopener">(conditions d’utilisation)</a>'
+});
+const ferrarisVlaanderen=L.tileLayer.wms('https://geo.api.vlaanderen.be/HISTCART/wms',{
+  layers:'ferraris',format:'image/png',transparent:true,version:'1.3.0',maxZoom:19,minZoom:7,bounds:ferrarisVlaanderenBounds,
+  attribution:'<a href="https://www.vlaanderen.be/datavindplaats/catalogus/ferrariskaart-kabinetskaart-der-oostenrijkse-nederlanden-en-het-prinsbisdom-luik-1771-1778" target="_blank" rel="noopener">Digitaal Vlaanderen — Ferrariskaart (1771-1778)</a> <a href="https://www.vlaanderen.be/geopunt/vlaams-geoportaal/bronnen" target="_blank" rel="noopener">(sources et droits)</a>'
+});
 const ferrarisLayer=L.layerGroup([ferrarisWallonie,ferrarisVlaanderen]);
+/*
+ * Ce fond composé conserve OSM indépendamment du groupe : le contrôle Leaflet
+ * peut ainsi revenir à OSM sans que le retrait de Ferraris enlève aussi ses tuiles.
+ */
+ferrarisLayer.onAdd=function(targetMap){
+  if(!targetMap.hasLayer(osmLayer)) targetMap.addLayer(osmLayer);
+  this.eachLayer(targetMap.addLayer,targetMap);
+};
+ferrarisLayer.onRemove=function(targetMap){
+  this.eachLayer(targetMap.removeLayer,targetMap);
+};
 const topoLayer=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'Données: &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | Rendu: &copy; <a href="http://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'});
 const railOverlay=L.tileLayer('https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',{maxZoom:19,opacity:0.75,attribution:'&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="https://openrailwaymap.org">OpenRailwayMap</a> (CC-BY-SA)'});
 
 const baseLayers={'Carte (OpenStreetMap)':osmLayer,'🗻 Topographie + courbes de niveau':topoLayer,'Ferraris 1777 (Belgique)':ferrarisLayer};
 L.control.layers(baseLayers,{'🚂 Voies ferrées (OpenRailwayMap)':railOverlay},{position:'topright',collapsed:false}).addTo(map);
+
+const ferrarisStatus=L.DomUtil.create('div','ferraris-status',map.getContainer());
+ferrarisStatus.id='ferrarisStatus';
+ferrarisStatus.hidden=true;
+ferrarisStatus.setAttribute('role','status');
+ferrarisStatus.setAttribute('aria-live','polite');
+L.DomEvent.disableClickPropagation(ferrarisStatus);
+L.DomEvent.disableScrollPropagation(ferrarisStatus);
+
+const ferrarisLoadState={
+  loading:false,
+  timeoutId:null,
+  hideNoticeId:null,
+  sources:{
+    wallonie:{bounds:ferrarisWallonieBounds,loaded:false},
+    vlaanderen:{bounds:ferrarisVlaanderenBounds,loaded:false}
+  }
+};
+
+function showFerrarisStatus(state,message,autoHide){
+  window.clearTimeout(ferrarisLoadState.hideNoticeId);
+  ferrarisStatus.dataset.state=state;
+  ferrarisStatus.textContent=message;
+  ferrarisStatus.hidden=false;
+  if(autoHide){
+    ferrarisLoadState.hideNoticeId=window.setTimeout(()=>{ferrarisStatus.hidden=true;},autoHide);
+  }
+}
+
+function clearFerrarisLoadTimer(){
+  window.clearTimeout(ferrarisLoadState.timeoutId);
+  ferrarisLoadState.timeoutId=null;
+}
+
+function stopFerrarisLoading(keepNotice){
+  ferrarisLoadState.loading=false;
+  clearFerrarisLoadTimer();
+  Object.values(ferrarisLoadState.sources).forEach(source=>{source.loaded=false;});
+  if(!keepNotice) ferrarisStatus.hidden=true;
+}
+
+function ferrarisVisibleSources(){
+  const viewport=map.getBounds();
+  return Object.values(ferrarisLoadState.sources).filter(source=>source.bounds.intersects(viewport)&&map.getZoom()>=7);
+}
+
+function beginFerrarisLoading(){
+  if(!map.hasLayer(ferrarisLayer)||ferrarisLoadState.loading) return;
+  if(!ferrarisVisibleSources().length){
+    showFerrarisStatus('ready','Carte standard affichée hors de l’emprise Ferraris.',2400);
+    return;
+  }
+  ferrarisLoadState.loading=true;
+  Object.values(ferrarisLoadState.sources).forEach(source=>{source.loaded=false;});
+  showFerrarisStatus('loading','Chargement de la carte de Ferraris…');
+  ferrarisLoadState.timeoutId=window.setTimeout(()=>{
+    if(ferrarisLoadState.loading) failFerrarisLoading('Le chargement de la carte de Ferraris prend trop de temps.');
+  },12000);
+}
+
+function finishFerrarisLoading(){
+  const visibleSources=ferrarisVisibleSources();
+  if(!ferrarisLoadState.loading||!visibleSources.length||!visibleSources.every(source=>source.loaded)) return;
+  ferrarisLoadState.loading=false;
+  clearFerrarisLoadTimer();
+  showFerrarisStatus('ready','Carte de Ferraris affichée.',1800);
+}
+
+function noteFerrarisLoaded(name){
+  if(!map.hasLayer(ferrarisLayer)||!ferrarisLoadState.loading) return;
+  ferrarisLoadState.sources[name].loaded=true;
+  finishFerrarisLoading();
+}
+
+function failFerrarisLoading(message){
+  if(!ferrarisLoadState.loading) return;
+  stopFerrarisLoading(true);
+  if(map.hasLayer(ferrarisLayer)) map.removeLayer(ferrarisLayer);
+  if(!map.hasLayer(osmLayer)) osmLayer.addTo(map);
+  map.fire('baselayerchange',{layer:osmLayer});
+  showFerrarisStatus('error',`${message} La carte standard reste disponible.`);
+}
+
+ferrarisWallonie.on('loading',beginFerrarisLoading);
+ferrarisVlaanderen.on('loading',beginFerrarisLoading);
+ferrarisWallonie.on('load',()=>noteFerrarisLoaded('wallonie'));
+ferrarisVlaanderen.on('load',()=>noteFerrarisLoaded('vlaanderen'));
+ferrarisWallonie.on('tileerror',()=>failFerrarisLoading('Le service Ferraris Wallonie est momentanément indisponible.'));
+ferrarisVlaanderen.on('tileerror',()=>failFerrarisLoading('Le service Ferraris Flandre est momentanément indisponible.'));
+map.on('baselayerchange',event=>{
+  if(event.layer===ferrarisLayer){
+    window.setTimeout(beginFerrarisLoading,0);
+  }else{
+    stopFerrarisLoading(false);
+  }
+});
 const layer=L.layerGroup().addTo(map);poiLayer=L.layerGroup().addTo(map);let markerById={};
 populatePoiFilters();
 drawPointsOfInterest();
 BattleMapEngine.attach(map,{battleIndex:battles});
+/*
+ * Leaflet suit les redimensionnements de fenêtre, mais les panneaux mobile et
+ * les changements d'orientation modifient aussi l'espace disponible sans
+ * toujours déclencher le même cycle. Cette synchronisation garde les couches
+ * vectorielles exactement dans le même repère que les tuiles.
+ */
+let mapLayoutFrame;
+function syncMapLayout(){
+  window.cancelAnimationFrame(mapLayoutFrame);
+  mapLayoutFrame=window.requestAnimationFrame(()=>{
+    map.invalidateSize({pan:false,debounceMoveend:true});
+  });
+}
+if(window.ResizeObserver){
+  new ResizeObserver(syncMapLayout).observe(map.getContainer());
+}
+window.addEventListener('orientationchange',()=>window.setTimeout(syncMapLayout,150));
 const periods=[...new Set(battles.map(x=>x.period))],types=[...new Set(battles.map(x=>x.type))];
 function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
 const clearFiltersBtn = document.getElementById('clearFilters');
@@ -6609,31 +6856,64 @@ const terrainTab=hasT?`<button class="popup-tab" data-pane="terrain-${x.id}">\u{
 const terrainPane=hasT?`<div class="popup-pane" id="terrain-${x.id}">${buildTerrainPanel(x)}</div>`:'';
 return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">Fiche</button><button class="popup-tab" data-pane="ctx-${x.id}">Contexte</button><button class="popup-tab" data-pane="moves-${x.id}">Mouvements</button><button class="popup-tab" data-pane="visits-${x.id}">Visiter & voir</button></div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>${terrainPane}`}
 
-function update(){let a=+minYear.value,b=+maxYear.value;if(a>b){[a,b]=[b,a]}minLabel.textContent=a;maxLabel.textContent=b;let q=search.value.trim().toLowerCase(),ps=active('period'),ts=active('type');let data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));layer.clearLayers();markerById={};data.forEach(x=>{let marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});marker.on('click', () => {
-  if (isMobileView()) {
-     openMobileBattleSheet(x);
-     setTimeout(() => map.closePopup(), 0);
-  }
-});
+function update(){
+  let a=+minYear.value,b=+maxYear.value;
+  if(a>b)[a,b]=[b,a];
+  minLabel.textContent=a;
+  maxLabel.textContent=b;
+  const q=search.value.trim().toLowerCase();
+  const ps=active('period'),ts=active('type');
+  const data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));
+  layer.clearLayers();
+  markerById={};
 
-marker.on('popupopen', () => {
-  if (!isMobileView()) {
-    setupPopupTabs(x);
-    if(x.terrain) drawTerrain(x);
-  }
-});marker.on('popupclose',()=>{clearMovementLayer();clearTerrainLayer();});markerById[x.id]=marker});counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;results.innerHTML=data.length?`<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join(''):'<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{let x=battles.find(z=>z.id===el.dataset.id);map.flyTo(x.coords,11,{duration:.6});if (isMobileView()) {
-  openMobileBattleSheet(x);
-} else {
-  markerById[x.id].openPopup();
-}})}
+  data.forEach(x=>{
+    const marker=L.circleMarker(x.coords,{radius:9,color:'#fff',weight:2,fillColor:x.color,fillOpacity:.96}).addTo(layer);
+    marker.bindPopup(popupHtml(x),{maxWidth:300,closeOnClick:false,autoClose:false});
+    marker.on('click',()=>{
+      if(isMobileView()){
+        openMobileBattleSheet(x);
+        setTimeout(()=>map.closePopup(),0);
+      }
+    });
+    marker.on('popupopen',()=>{
+      if(!isMobileView()){
+        setupPopupTabs(x,marker.getPopup().getElement());
+        if(x.terrain) drawTerrain(x);
+      }
+    });
+    marker.on('popupclose',()=>{
+      window.setTimeout(()=>{
+        if(!isOverlayDetailPopup(map._popup)){
+          clearMovementLayer();
+          clearTerrainLayer();
+        }
+      },0);
+    });
+    markerById[x.id]=marker;
+  });
+
+  counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;
+  results.innerHTML=data.length
+    ? `<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join('')
+    : '<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';
+  document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{
+    const x=battles.find(z=>z.id===el.dataset.id);
+    map.flyTo(x.coords,11,{duration:.6});
+    if(isMobileView()) openMobileBattleSheet(x);
+    else markerById[x.id].openPopup();
+  });
+}
 
 let moveLayer=L.layerGroup().addTo(map);
 
 let terrainLayer=L.layerGroup().addTo(map);
 function clearTerrainLayer(){terrainLayer.clearLayers();}
 function activateTopoLayer(){
-  [osmLayer,ferrarisWallonie,ferrarisVlaanderen].forEach(l=>{if(map.hasLayer(l))map.removeLayer(l);});
+  if(map.hasLayer(ferrarisLayer)) map.removeLayer(ferrarisLayer);
+  if(map.hasLayer(osmLayer)) map.removeLayer(osmLayer);
   if(!map.hasLayer(topoLayer))topoLayer.addTo(map);
+  map.fire('baselayerchange',{layer:topoLayer});
 }
 function drawTerrain(x){
   clearTerrainLayer();
@@ -6696,7 +6976,29 @@ function buildTerrainPanel(x){
 function clearMovementLayer(){moveLayer.clearLayers();BattleMapEngine.clear();}
 function drawMovements(x){clearMovementLayer();if(!x.movements)return;if(x.keypoints){x.keypoints.forEach(kp=>{const kpMarker=L.marker(kp.coords,{icon:L.divIcon({className:'keypoint-icon',html:'<span></span>',iconSize:[14,14]}),zIndexOffset:1000});const kpPopup=`<div class="kp-popup"><b>${esc(kp.name)}</b>${kp.desc?`<div class="kp-desc">${esc(kp.desc)}</div>`:''}</div>`;kpMarker.bindPopup(kpPopup,{maxWidth:240});kpMarker.bindTooltip(kp.name,{permanent:false,direction:'top',className:'kp-tooltip'});kpMarker.addTo(moveLayer);});}const allCoords=x.movements.flatMap(mv=>mv.coords).concat((x.keypoints||[]).map(kp=>kp.coords));map.fitBounds(L.latLngBounds(allCoords),{padding:[40,40],maxZoom:16});BattleMapEngine.draw(x);}
 
-function setupPopupTabs(x){const container=document.querySelector('.leaflet-popup-content');if(!container)return;const tabs=container.querySelectorAll('.popup-tab');const panes=container.querySelectorAll('.popup-pane');tabs.forEach(tab=>{tab.onclick=()=>{tabs.forEach(t=>t.classList.remove('active'));panes.forEach(pn=>pn.classList.remove('active'));tab.classList.add('active');const target=container.querySelector('#'+tab.dataset.pane);if(target)target.classList.add('active');if(tab.dataset.pane.startsWith('moves-')){drawMovements(x);BattleMapEngine.bindControls(container,x);}else if(tab.dataset.pane.startsWith('terrain-')){clearMovementLayer();/* terrain already drawn on popupopen */}else{clearMovementLayer();}}});}
+function setupPopupTabs(x,popupNode){
+  const container=(popupNode&&popupNode.querySelector('.leaflet-popup-content'))||document.querySelector('.leaflet-popup-content');
+  if(!container)return;
+  const tabs=container.querySelectorAll('.popup-tab');
+  const panes=container.querySelectorAll('.popup-pane');
+  tabs.forEach(tab=>{
+    tab.onclick=()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      panes.forEach(pn=>pn.classList.remove('active'));
+      tab.classList.add('active');
+      const target=container.querySelector('#'+tab.dataset.pane);
+      if(target)target.classList.add('active');
+      if(tab.dataset.pane.startsWith('moves-')){
+        drawMovements(x);
+        BattleMapEngine.bindControls(container,x);
+      }else if(tab.dataset.pane.startsWith('terrain-')){
+        clearMovementLayer();
+      }else{
+        clearMovementLayer();
+      }
+    };
+  });
+}
 
 const {minYear,maxYear,search,minLabel,maxLabel,counter,results}=Object.fromEntries(['minYear','maxYear','search','minLabel','maxLabel','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
 /* ── Mobile : panneau Explorer + fiche de bataille ── */
@@ -6708,6 +7010,164 @@ const mobileBattleSheet = document.getElementById('mobileBattleSheet');
 function isMobileView() {
   return mobileQuery.matches;
 }
+
+/*
+ * Gestion unifiée des fenêtres Leaflet : une seule fenêtre complète peut rester
+ * ouverte. Les fenêtres réduites sont rangées dans un dock vertical sur la carte.
+ */
+const popupMinimizedDock=L.DomUtil.create('div','popup-minimized-dock',map.getContainer());
+popupMinimizedDock.setAttribute('role','region');
+popupMinimizedDock.setAttribute('aria-label','Fenêtres réduites');
+const leafletPopupWindows=new WeakMap();
+let activeLeafletPopup=null;
+let minimizedMobileWindow=null;
+
+function popupWindowLabel(content){
+  const heading=content.querySelector('.popup-title,.poi-title,.kp-popup > b')||content.querySelector('b');
+  return (heading&&heading.textContent.trim())||'Fenêtre de carte';
+}
+
+function addMinimizedPopupTab(label,onRestore,onClose){
+  const tab=document.createElement('div');
+  tab.className='popup-minimized-tab';
+  const restore=document.createElement('button');
+  restore.type='button';
+  restore.className='popup-minimized-restore';
+  restore.textContent=`↗ ${label}`;
+  restore.setAttribute('aria-label',`Restaurer : ${label}`);
+  const close=document.createElement('button');
+  close.type='button';
+  close.className='popup-minimized-close';
+  close.textContent='×';
+  close.setAttribute('aria-label',`Fermer : ${label}`);
+  restore.addEventListener('click',event=>{event.stopPropagation();onRestore();});
+  close.addEventListener('click',event=>{event.stopPropagation();onClose();});
+  tab.append(restore,close);
+  popupMinimizedDock.appendChild(tab);
+  return tab;
+}
+
+function removeMinimizedPopupTab(tab){
+  if(tab&&tab.parentNode) tab.parentNode.removeChild(tab);
+}
+
+function closeLeafletPopupWindow(popup){
+  const state=leafletPopupWindows.get(popup);
+  if(state) removeMinimizedPopupTab(state.tab);
+  if(popup&&typeof popup.close==='function') popup.close();
+  else if(map.hasLayer(popup)) map.closePopup(popup);
+}
+
+function minimizeLeafletPopupWindow(popup){
+  const state=leafletPopupWindows.get(popup);
+  const node=popup&&popup.getElement();
+  if(!state||!node||state.minimized) return;
+  state.minimized=true;
+  node.classList.add('popup-window-minimized');
+  node.setAttribute('aria-hidden','true');
+  state.tab=addMinimizedPopupTab(
+    state.label,
+    ()=>restoreLeafletPopupWindow(popup),
+    ()=>closeLeafletPopupWindow(popup)
+  );
+}
+
+function restoreLeafletPopupWindow(popup){
+  const state=leafletPopupWindows.get(popup);
+  const node=popup&&popup.getElement();
+  if(!state||!node) return;
+  if(activeLeafletPopup&&activeLeafletPopup!==popup){
+    const activeState=leafletPopupWindows.get(activeLeafletPopup);
+    if(!activeState||!activeState.minimized) closeLeafletPopupWindow(activeLeafletPopup);
+  }
+  state.minimized=false;
+  removeMinimizedPopupTab(state.tab);
+  state.tab=null;
+  node.classList.remove('popup-window-minimized');
+  node.removeAttribute('aria-hidden');
+  if(map.hasLayer(popup)){
+    map._popup=popup;
+    activeLeafletPopup=popup;
+  }else{
+    popup.openOn(map);
+    activeLeafletPopup=popup;
+  }
+}
+
+function installLeafletPopupWindowControls(popup){
+  const node=popup&&popup.getElement();
+  const content=node&&node.querySelector('.leaflet-popup-content');
+  if(!content||content.querySelector('.popup-windowbar')) return;
+
+  const bar=document.createElement('div');
+  bar.className='popup-windowbar';
+  let title=content.querySelector('.popup-title,.poi-popup > .poi-title,.kp-popup > b');
+  if(!title&&content.firstElementChild&&content.firstElementChild.tagName==='B') title=content.firstElementChild;
+  const label=popupWindowLabel(content);
+  if(title) bar.appendChild(title);
+  else{
+    const fallback=document.createElement('span');
+    fallback.className='popup-window-label';
+    fallback.textContent=label;
+    bar.appendChild(fallback);
+  }
+
+  const actions=document.createElement('div');
+  actions.className='popup-window-actions';
+  const minimize=document.createElement('button');
+  minimize.type='button';
+  minimize.className='popup-window-btn';
+  minimize.textContent='−';
+  minimize.setAttribute('aria-label',`Réduire : ${label}`);
+  const close=document.createElement('button');
+  close.type='button';
+  close.className='popup-window-btn';
+  close.textContent='×';
+  close.setAttribute('aria-label',`Fermer : ${label}`);
+  minimize.addEventListener('click',event=>{event.stopPropagation();minimizeLeafletPopupWindow(popup);});
+  close.addEventListener('click',event=>{event.stopPropagation();closeLeafletPopupWindow(popup);});
+  actions.append(minimize,close);
+  bar.appendChild(actions);
+  content.insertBefore(bar,content.firstChild);
+  leafletPopupWindows.set(popup,{label,minimized:false,tab:null});
+}
+
+function clearMinimizedMobileWindow(){
+  if(minimizedMobileWindow) removeMinimizedPopupTab(minimizedMobileWindow.tab);
+  minimizedMobileWindow=null;
+}
+
+function isOverlayDetailPopup(popup){
+  const source=popup&&popup._source;
+  return Boolean(source&&(moveLayer.hasLayer(source)||terrainLayer.hasLayer(source)));
+}
+
+function handleLeafletPopupOpening(popup){
+  if(activeLeafletPopup&&activeLeafletPopup!==popup){
+    const activeState=leafletPopupWindows.get(activeLeafletPopup);
+    if(!activeState||!activeState.minimized){
+      if(isOverlayDetailPopup(popup)&&activeState) minimizeLeafletPopupWindow(activeLeafletPopup);
+      else closeLeafletPopupWindow(activeLeafletPopup);
+    }
+  }
+  activeLeafletPopup=popup;
+  installLeafletPopupWindowControls(popup);
+}
+
+map.on('popupopen',event=>{
+  handleLeafletPopupOpening(event.popup);
+});
+map.on('popupclose',event=>{
+  const state=leafletPopupWindows.get(event.popup);
+  if(state) removeMinimizedPopupTab(state.tab);
+  if(activeLeafletPopup===event.popup) activeLeafletPopup=null;
+});
+const originalLeafletPopupOnAdd=L.Popup.prototype.onAdd;
+L.Popup.prototype.onAdd=function(targetMap){
+  const result=originalLeafletPopupOnAdd.call(this,targetMap);
+  if(targetMap===map) handleLeafletPopupOpening(this);
+  return result;
+};
 
 function openExplorerSheet() {
   if (!isMobileView()) return;
@@ -6730,13 +7190,39 @@ function closeExplorerSheet() {
 }
 
 function closeMobileBattleSheet() {
+  clearMinimizedMobileWindow();
   document.body.classList.remove('mobile-battle-open');
+  mobileBattleSheet.setAttribute('aria-hidden','true');
   mobileBattleSheet.innerHTML = '';
   clearMovementLayer();
+  clearTerrainLayer();
 
   setTimeout(() => {
     map.invalidateSize();
   }, 220);
+}
+
+function minimizeMobileBattleSheet(x) {
+  if (!isMobileView() || !document.body.classList.contains('mobile-battle-open')) return;
+
+  clearMinimizedMobileWindow();
+  document.body.classList.remove('mobile-battle-open');
+  mobileBattleSheet.setAttribute('aria-hidden','true');
+  const state={battle:x,tab:null};
+  state.tab=addMinimizedPopupTab(
+    x.name,
+    ()=>{
+      if(minimizedMobileWindow===state){
+        clearMinimizedMobileWindow();
+        openMobileBattleSheet(x);
+      }
+    },
+    ()=>{
+      if(minimizedMobileWindow===state) closeMobileBattleSheet();
+    }
+  );
+  minimizedMobileWindow=state;
+  setTimeout(()=>map.invalidateSize(),220);
 }
 
 function setupMobileTabs(x) {
@@ -6772,6 +7258,8 @@ function setupMobileTabs(x) {
 function openMobileBattleSheet(x) {
   if (!isMobileView()) return;
 
+  if(document.body.classList.contains('mobile-battle-open')) closeMobileBattleSheet();
+  clearMinimizedMobileWindow();
   closeExplorerSheet();
   clearMovementLayer();
   clearTerrainLayer();
@@ -6784,6 +7272,13 @@ function openMobileBattleSheet(x) {
 
     <div class="mobile-battle-head">
       <h2 class="mobile-battle-title">${esc(x.name)}</h2>
+
+      <button
+        class="mobile-battle-minimize"
+        type="button"
+        aria-label="Réduire la fiche">
+        −
+      </button>
 
       <button
         class="mobile-battle-close"
@@ -6802,9 +7297,13 @@ function openMobileBattleSheet(x) {
   mobileBattleSheet
     .querySelector('.mobile-battle-close')
     .addEventListener('click', closeMobileBattleSheet);
+  mobileBattleSheet
+    .querySelector('.mobile-battle-minimize')
+    .addEventListener('click', () => minimizeMobileBattleSheet(x));
 
   setupMobileTabs(x);
 
+  mobileBattleSheet.removeAttribute('aria-hidden');
   document.body.classList.add('mobile-battle-open');
 
   setTimeout(() => {
