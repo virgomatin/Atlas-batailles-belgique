@@ -5,7 +5,7 @@
 <title>Atlas des batailles de Belgique et d'Europe</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
-:root{--ink:#15212b;--paper:#f5f0e5;--wine:#7a1f2b;--line:#d8cfbf;--accent:#b28a3a}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--paper)}header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--line);background:#fbf8f1;position:relative;z-index:1000}.brand h1{font-family:Georgia,serif;font-size:22px;margin:0;color:var(--wine);letter-spacing:.2px}.brand p{font-size:12px;margin:3px 0 0;color:#56616b}.header-count{font-size:13px;background:#efe5d1;padding:8px 10px;border-radius:16px}main{display:grid;grid-template-columns:355px 1fr;height:calc(100vh - 76px)}aside{padding:20px;overflow:auto;border-right:1px solid var(--line);background:#fbf8f1}h2{font:700 19px Georgia,serif;margin:0 0 8px;color:var(--wine)}h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 8px;color:#53606b}.intro{font-size:13px;line-height:1.48;margin:0}.search{width:100%;padding:10px 11px;border:1px solid #c8bdab;border-radius:7px;background:white;font-size:14px}.range-label{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.slider{width:100%;accent-color:var(--wine)}.ticks{display:flex;justify-content:space-between;font-size:10px;color:#65717c}.checklist{display:grid;gap:7px;font-size:13px}.checklist label{display:flex;gap:8px;align-items:center}.results{margin-top:16px;border-top:1px solid var(--line)}.item{padding:12px 2px;border-bottom:1px solid #e7dfd1;cursor:pointer}.item:hover .item-title{text-decoration:underline}.item-title{font-weight:700;font-size:14px}.meta{font-size:12px;color:#65717c;margin-top:3px}.empty{font-size:13px;color:#65717c;padding:14px 0}#map{height:100%;width:100%}.leaflet-popup-content{min-width:260px;font-family:Inter,system-ui,sans-serif;max-width:300px}.popup-title{font:700 17px Georgia,serif;color:var(--wine);margin-bottom:5px}.popup-meta{font-size:12px;color:#5a6570;margin-bottom:8px}.popup-text{font-size:13px;line-height:1.35}.badge{font-size:10px;padding:3px 6px;background:#efe5d1;border-radius:10px;margin-left:4px}.certainty{font-size:10px;padding:2px 6px;border-radius:8px;color:#fff;margin-left:4px}.c-confirme{background:#3d6b3d}.c-probable{background:#8a6d1c}.c-approx{background:#8a4a1c}.sources{margin-top:8px;font-size:11px;line-height:1.4;border-top:1px dashed #cfc4ae;padding-top:6px;color:#4a5460}.sources a{color:#3a5a86;text-decoration:none}.sources a:hover{text-decoration:underline}.sources li{margin-bottom:4px}.sources ul{margin:4px 0 0;padding-left:16px}.srctype{font-style:italic;color:#83705a}.popup-img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block}.img-credit{font-size:10px;color:#8b8378;margin-bottom:8px;line-height:1.3;font-style:italic}.popup-tabs{display:flex;gap:4px;margin-bottom:8px;border-bottom:1px solid #e2d9c8}.popup-tab{font-size:11px;padding:5px 9px;cursor:pointer;border:none;background:none;color:#65717c;border-bottom:2px solid transparent;font-weight:600}.popup-tab.active{color:var(--wine);border-bottom-color:var(--wine)}.popup-pane{display:none}.popup-pane.active{display:block}.moves-legend{margin-top:6px;font-size:11px}.moves-legend div{display:flex;align-items:center;gap:6px;margin-bottom:3px}.moves-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}.moves-hint{font-size:11px;color:#65717c;margin-top:4px}.moves-empty{font-size:12px;color:#65717c}.keypoint-icon span{display:block;width:10px;height:10px;background:#fff;border:2px solid #2a2622;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.6)}.keypoint-icon span{cursor:pointer;transition:transform .15s}.keypoint-icon:hover span{transform:scale(1.3)}.kp-popup{font-size:12px}.kp-desc{margin-top:4px;color:#4a4438;line-height:1.4}.kp-tooltip{font-size:11px;font-weight:600}.leaflet-control-layers{font-family:Inter,system-ui,sans-serif;border-radius:8px!important;box-shadow:0 2px 8px rgba(0,0,0,.15)!important;border:1px solid var(--line)!important}.leaflet-control-layers-base label{font-size:12.5px;padding:3px 4px;display:flex;align-items:center;gap:5px}.leaflet-control-layers-toggle{display:none}.ctx-block{margin-bottom:10px}.ctx-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--wine);margin-bottom:3px}.ctx-text{font-size:12.5px;line-height:1.45;color:#332e26}
+:root{--ink:#15212b;--paper:#f5f0e5;--wine:#7a1f2b;--line:#d8cfbf;--accent:#b28a3a}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--paper)}header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--line);background:#fbf8f1;position:relative;z-index:1000}.brand h1{font-family:Georgia,serif;font-size:22px;margin:0;color:var(--wine);letter-spacing:.2px}.brand p{font-size:12px;margin:3px 0 0;color:#56616b}.header-count{font-size:13px;background:#efe5d1;padding:8px 10px;border-radius:16px}main{display:grid;grid-template-columns:355px 1fr;height:calc(100vh - 76px)}aside{padding:20px;overflow:auto;border-right:1px solid var(--line);background:#fbf8f1}h2{font:700 19px Georgia,serif;margin:0 0 8px;color:var(--wine)}h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 8px;color:#53606b}.intro{font-size:13px;line-height:1.48;margin:0}.search{width:100%;padding:10px 11px;border:1px solid #c8bdab;border-radius:7px;background:white;font-size:14px}.range-label{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.slider{width:100%;accent-color:var(--wine)}.ticks{display:flex;justify-content:space-between;font-size:10px;color:#65717c}.checklist{display:grid;gap:7px;font-size:13px}.checklist label{display:flex;gap:8px;align-items:center}.checklist label:has(input:checked){font-weight:700;color:var(--wine)}.results{margin-top:16px;border-top:1px solid var(--line)}.item{padding:12px 2px;border-bottom:1px solid #e7dfd1;cursor:pointer}.item:hover .item-title{text-decoration:underline}.item-title{font-weight:700;font-size:14px}.meta{font-size:12px;color:#65717c;margin-top:3px}.empty{font-size:13px;color:#65717c;padding:14px 0}#map{height:100%;width:100%}.leaflet-popup-content{min-width:260px;font-family:Inter,system-ui,sans-serif;max-width:300px}.popup-title{font:700 17px Georgia,serif;color:var(--wine);margin-bottom:5px}.popup-meta{font-size:12px;color:#5a6570;margin-bottom:8px}.popup-text{font-size:13px;line-height:1.35}.badge{font-size:10px;padding:3px 6px;background:#efe5d1;border-radius:10px;margin-left:4px}.certainty{font-size:10px;padding:2px 6px;border-radius:8px;color:#fff;margin-left:4px}.c-confirme{background:#3d6b3d}.c-probable{background:#8a6d1c}.c-approx{background:#8a4a1c}.sources{margin-top:8px;font-size:11px;line-height:1.4;border-top:1px dashed #cfc4ae;padding-top:6px;color:#4a5460}.sources a{color:#3a5a86;text-decoration:none}.sources a:hover{text-decoration:underline}.sources li{margin-bottom:4px}.sources ul{margin:4px 0 0;padding-left:16px}.srctype{font-style:italic;color:#83705a}.popup-img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block}.img-credit{font-size:10px;color:#8b8378;margin-bottom:8px;line-height:1.3;font-style:italic}.popup-tabs{display:flex;gap:4px;margin-bottom:8px;border-bottom:1px solid #e2d9c8}.popup-tab{font-size:11px;padding:5px 9px;cursor:pointer;border:none;background:none;color:#65717c;border-bottom:2px solid transparent;font-weight:600}.popup-tab.active{color:var(--wine);border-bottom-color:var(--wine)}.popup-pane{display:none}.popup-pane.active{display:block}.moves-legend{margin-top:6px;font-size:11px}.moves-legend div{display:flex;align-items:center;gap:6px;margin-bottom:3px}.moves-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}.moves-hint{font-size:11px;color:#65717c;margin-top:4px}.moves-empty{font-size:12px;color:#65717c}.keypoint-icon span{display:block;width:10px;height:10px;background:#fff;border:2px solid #2a2622;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.6)}.keypoint-icon span{cursor:pointer;transition:transform .15s}.keypoint-icon:hover span{transform:scale(1.3)}.kp-popup{font-size:12px}.kp-desc{margin-top:4px;color:#4a4438;line-height:1.4}.kp-tooltip{font-size:11px;font-weight:600}.leaflet-control-layers{font-family:Inter,system-ui,sans-serif;border-radius:8px!important;box-shadow:0 2px 8px rgba(0,0,0,.15)!important;border:1px solid var(--line)!important}.leaflet-control-layers-base label{font-size:12.5px;padding:3px 4px;display:flex;align-items:center;gap:5px}.leaflet-control-layers-toggle{display:none}.ctx-block{margin-bottom:10px}.ctx-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--wine);margin-bottom:3px}.ctx-text{font-size:12.5px;line-height:1.45;color:#332e26}
 @media(max-width:760px){header{height:auto;padding:12px 14px}.header-count{display:none}main{display:flex;flex-direction:column;height:auto}aside{width:100%;border-right:0;border-bottom:1px solid var(--line);max-height:48vh}#map{height:52vh}.brand h1{font-size:18px}}
 .mobile-explorer-toggle,.mobile-battle-sheet,.mobile-sheet-close,.mobile-sheet-handle{display:none}
 .filter-actions{margin:10px 0 2px}
@@ -317,23 +317,81 @@
   color:#7a1f2b;
 }
 .poi-type-row{
-  padding-left:4px;
-  color:#56616b;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:3px 2px;
+  cursor:pointer;
+  color:#3a3028;
+  border-radius:5px;
+  transition:background .12s;
+}
+.poi-type-row:hover{background:#f0e8d8}
+.poi-type-icon{
+  font-size:14px;
+  width:20px;
+  text-align:center;
+  flex-shrink:0;
+  line-height:1;
 }
 .poi-dot{
   display:inline-block;
   width:9px;
   height:9px;
   border-radius:50%;
-  margin-right:2px;
-  border:1px solid #fff;
-  box-shadow:0 0 0 1px rgba(0,0,0,.14);
+  flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 0 1px rgba(0,0,0,.18);
 }
 .poi-type-count{
   margin-left:auto;
   color:#8b8378;
   font-size:11px;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
 }
+.poi-filter-actions{
+  display:flex;
+  gap:6px;
+  margin:6px 0 10px;
+}
+.poi-filter-btn{
+  flex:1;
+  padding:7px 0;
+  border:1px solid #bcae98;
+  border-radius:7px;
+  background:#f1e8d8;
+  color:#6d1c28;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .13s,border-color .13s;
+}
+.poi-filter-btn:hover{background:#e5d6bd;border-color:#a88752}
+.poi-legend-hint{
+  font-size:10.5px;
+  color:#8b8378;
+  margin:0 0 6px;
+  font-style:italic;
+  line-height:1.35;
+}
+/* Marqueurs div POI */
+.poi-div-marker{background:transparent!important;border:none!important}
+.poi-div-inner{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 1px 5px rgba(0,0,0,.32);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  line-height:1;
+  cursor:pointer;
+  transition:transform .12s;
+}
+.poi-div-inner:hover{transform:scale(1.18)}
 .poi-tooltip{
   font-size:11px;
   font-weight:600;
@@ -407,6 +465,8 @@
 .tleg-fort{display:inline-block;width:11px;height:11px;background:#f5e8c0;border:2.5px solid #8b4513;border-radius:1px;vertical-align:middle}
 .tleg-rail{display:inline-block;width:22px;vertical-align:middle;border-top:2px dotted #444}
 .tleg-flood{display:inline-block;width:18px;height:10px;background:rgba(70,130,180,.35);border:1.5px solid rgba(70,130,180,.7);vertical-align:middle}
+/* ── Infobulles d'aide ── */
+.help-wrap{display:inline-block;vertical-align:middle;margin-left:5px;position:relative}.help-btn{width:16px;height:16px;border-radius:50%;background:#ede3d0;border:1.5px solid #c4ad88;color:#7a1f2b;font-size:10px;font-weight:700;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;transition:background .12s,color .12s;line-height:1}.help-btn:hover,.help-btn:focus{background:#7a1f2b;color:#fff;outline:2px solid #b28a3a;outline-offset:1px}.help-tip{position:fixed;background:#1e2835;color:#f0ece4;font-size:11.5px;line-height:1.5;padding:10px 13px;border-radius:8px;width:240px;z-index:9999;pointer-events:none;opacity:0;visibility:hidden;box-shadow:0 4px 18px rgba(0,0,0,.4);text-align:left;font-weight:400}.help-tip.help-tip-open{opacity:1;visibility:visible;pointer-events:auto}.help-tip strong{color:#f5c464;font-size:10.5px;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}.map-help-section{margin-top:4px;border-top:1px solid var(--line);padding-top:2px}.lang-selector{display:flex;gap:3px;align-items:center;flex-shrink:0}.lang-btn{padding:4px 9px;border:1px solid var(--line);border-radius:5px;background:transparent;color:#65717c;font-size:12px;font-weight:700;cursor:pointer;transition:background .12s,color .12s,border-color .12s;line-height:1}.lang-btn:hover{background:#efe5d1;color:var(--ink);border-color:#c4b8a0}.lang-btn.active{background:var(--wine);color:#fff;border-color:var(--wine)}
 .fort-sq{width:11px;height:11px;background:#f5e8c0;border:2.5px solid #8b4513;border-radius:1px;box-shadow:0 0 0 1px rgba(255,255,255,.6)}
 .terrain-section{margin-bottom:6px;font-size:11.5px;font-weight:700;color:var(--wine);letter-spacing:.05em;text-transform:uppercase}
 .popup-windowbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-2px 0 8px;padding:0 0 6px;border-bottom:1px solid #e2d9c8}
@@ -431,12 +491,12 @@
 @keyframes ferraris-spin{to{transform:rotate(360deg)}}
 @media(max-width:760px){.ferraris-status{top:10px;max-width:calc(100% - 104px);padding:7px 10px;font-size:11px}.leaflet-bottom.leaflet-right{bottom:calc(76px + env(safe-area-inset-bottom))}.leaflet-control-attribution{max-width:calc(100vw - 20px);white-space:normal}}
 </style></head>
-<body><header><div class="brand"><h1>Atlas des batailles de Belgique et d'Europe</h1><p>Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
+<body><header><div class="brand"><h1 data-i18n="site_title">Atlas des batailles de Belgique et d'Europe</h1><p data-i18n="site_subtitle">Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
   <div class="ad-content">
     Espace partenaire culturel ou annonce contextuelle.
   </div>
-</div><div class="header-count" id="counter"></div></header>
+</div><div class="lang-selector" id="langSelector"><button class="lang-btn active" data-lang="fr" type="button" title="Français">FR</button><button class="lang-btn" data-lang="nl" type="button" title="Nederlands">NL</button><button class="lang-btn" data-lang="de" type="button" title="Deutsch">DE</button><button class="lang-btn" data-lang="en" type="button" title="English">EN</button></div><div class="header-count" id="counter"></div></header>
 <main><aside id="mobileExplorerPanel"><div class="mobile-sheet-handle" aria-hidden="true"></div>
 <button
   id="mobileSheetClose"
@@ -444,14 +504,17 @@
   type="button"
   aria-label="Fermer le panneau d’exploration">
   ×
-</button><h2>Explorer la carte</h2><p class="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3>Recherche</h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3>Période</h3><div class="range-label"><span id="minLabel">-3000</span><span id="maxLabel">1945</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="-3000"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1945"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3>Périodes historiques</h3><div class="filter-actions"><button id="clearFilters" class="filter-action" type="button">Désélectionner toutes les options</button></div><div class="checklist" id="periods"></div><h3>Type d'événement</h3><div class="filter-actions"><button id="clearTypes" class="filter-action" type="button">Désélectionner toutes les options</button></div>
+</button><h2 data-i18n="explore_title">Explorer la carte</h2><p class="intro" data-i18n="intro">Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.</p><h3><span data-i18n="s_search">Recherche</span><span class="help-wrap"><button class="help-btn" type="button" aria-label="Aide : Recherche">?</button><span class="help-tip" data-i18n="help_search">Tapez un nom de bataille, un lieu ou un conflit. La liste et la carte se mettent à jour en temps réel. Laissez vide pour tout afficher.</span></span></h3><input id="search" class="search" placeholder="Nom, lieu, conflit…" aria-label="Rechercher"><h3><span data-i18n="s_period">Période</span><span class="help-wrap"><button class="help-btn" type="button" aria-label="Aide : Période">?</button><span class="help-tip" data-i18n="help_period">Déplacez les deux curseurs pour n'afficher que les événements compris dans une tranche d'années. Les marqueurs hors intervalle sont masqués.</span></span></h3><div class="range-label"><span id="minLabel">1825</span><span id="maxLabel">1835</span></div><input class="slider" type="range" id="minYear" min="-3000" max="1945" value="1825"><input class="slider" type="range" id="maxYear" min="-3000" max="1945" value="1835"><div class="ticks"><span>-3000</span><span>0</span><span>500</span><span>1000</span><span>1500</span><span>1945</span></div><h3><span data-i18n="s_periods">Périodes historiques</span><span class="help-wrap"><button class="help-btn" type="button" aria-label="Aide : Périodes historiques">?</button><span class="help-tip" data-i18n="help_periods">Cochez une ou plusieurs cases pour filtrer par époque. Les étiquettes en gras signalent les périodes actives. Utilisez le bouton ci-dessous pour tout activer ou désactiver d'un coup.</span></span></h3><div class="filter-actions"><button id="clearFilters" class="filter-action" type="button">Désélectionner toutes les options</button></div><div class="checklist" id="periods"></div><h3><span data-i18n="s_types">Type d'événement</span><span class="help-wrap"><button class="help-btn" type="button" aria-label="Aide : Type d'événement">?</button><span class="help-tip" data-i18n="help_types">Filtrez par nature des combats : bataille rangée, siège, escarmouche, front de positions… Plusieurs types peuvent être actifs en même temps.</span></span></h3><div class="filter-actions"><button id="clearTypes" class="filter-action" type="button">Désélectionner toutes les options</button></div>
 <div class="checklist" id="types"></div>
 
 <div class="poi-section">
-  <h3>Lieux de mémoire</h3>
+  <h3><span data-i18n="s_poi">Lieux de mémoire</span><span class="help-wrap"><button class="help-btn" type="button" aria-label="Aide : Lieux de mémoire">?</button><span class="help-tip" data-i18n="help_poi">Sites visitables classés en 8 catégories — ⚔️ Champ de bataille · 🕊️ Mémorial · 🪦 Cimetière · 🏛️ Musée · 🏰 Fortification · 📜 Bâtiment historique · ⚠️ Lieu de répression · 📍 Point géographique. Cliquez un marqueur pour préparer votre visite.</span></span></h3>
   <div class="checklist" id="poiTypes"></div>
 </div>
 
+<div class="map-help-section">
+  <h3><span data-i18n="s_map">Lire la carte</span><span class="help-wrap"><button class="help-btn" type="button" aria-label="Aide : lire la carte">?</button><span class="help-tip" data-i18n-html="help_map"><strong>Marqueurs de bataille</strong>Couleur = époque. Survol = nom. Clic = fiche détaillée avec sources et mouvements.<br><br><strong>Flèches de mouvement</strong>Dans l'onglet Mouvements d'une fiche, chaque couleur représente une armée ou unité. Les petits cercles blancs sont des lieux-clés géoréférencés.<br><br><strong>Couches de fond</strong>OSM standard, topographie avec courbes de niveau, ou carte Ferraris 1777 (Belgique uniquement).</span></span></h3>
+</div>
 <div class="results" id="results"></div><div class="ad-slot" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
   <div class="ad-content">
@@ -6477,24 +6540,43 @@ function normalizeCoordinateValue(coords) {
 normalizeAtlasCoordinates(battles);
 normalizeAtlasCoordinates(pointsOfInterest);
 
+const ALL_POI_TYPES = ['battlefield','memorial','cemetery','museum','fortification','historic','massacre','geographic'];
+
 const poiTypeLabels = {
-  memorial:'Mémorial',
-  cemetery:'Cimetière militaire',
-  museum:'Musée',
-  battlefield:'Champ de bataille',
-  fortification:'Fortification'
+  battlefield:   'Champ de bataille',
+  memorial:      'Monument et mémorial',
+  cemetery:      'Cimetière militaire',
+  museum:        'Musée ou centre d\'interprétation',
+  fortification: 'Fortification, fort ou citadelle',
+  historic:      'Bâtiment historique',
+  massacre:      'Lieu de massacre ou de répression',
+  geographic:    'Point géographique ou lieu stratégique'
 };
 
 const poiTypeColors = {
-  memorial:'#7a1f2b',
-  cemetery:'#485f44',
-  museum:'#315b7c',
-  battlefield:'#8a613d',
-  fortification:'#5d536e'
+  battlefield:   '#8a613d',
+  memorial:      '#7a1f2b',
+  cemetery:      '#485f44',
+  museum:        '#315b7c',
+  fortification: '#5d536e',
+  historic:      '#6b5a2a',
+  massacre:      '#a83228',
+  geographic:    '#1a6b6b'
+};
+
+const poiTypeIcons = {
+  battlefield:   '⚔️',
+  memorial:      '🕊️',
+  cemetery:      '🪦',
+  museum:        '🏛️',
+  fortification: '🏰',
+  historic:      '📜',
+  massacre:      '⚠️',
+  geographic:    '📍'
 };
 
 let poiLayer;
-let poiVisible = true;
+const poiActiveTypes = new Set(); /* vide au démarrage */
 
 function poiPopupHtml(poi){
   const related = poi.relatedBattles
@@ -6576,24 +6658,28 @@ function setupPoiPopup(poi, marker){
 function drawPointsOfInterest(){
   poiLayer.clearLayers();
 
-  if(!poiVisible) return;
+  if(!poiActiveTypes.size) return;
 
   pointsOfInterest.forEach(poi => {
-    const marker = L.circleMarker(poi.coords, {
-      radius:8,
-      color:'#fff',
-      weight:2,
-      fillColor:poiTypeColors[poi.type] || '#555',
-      fillOpacity:.96,
-      className:'poi-marker'
-    }).addTo(poiLayer);
+    if(!poiActiveTypes.has(poi.type)) return;
+
+    const color  = poiTypeColors[poi.type] || '#555';
+    const icon   = poiTypeIcons[poi.type]  || '●';
+    const label  = poiTypeLabels[poi.type] || poi.type;
+
+    const divIc = L.divIcon({
+      className:   'poi-div-marker',
+      html:        `<div class="poi-div-inner" style="background:${color}" title="${label}"><span aria-hidden="true">${icon}</span></div>`,
+      iconSize:    [24, 24],
+      iconAnchor:  [12, 12],
+      popupAnchor: [0, -14]
+    });
+
+    const marker = L.marker(poi.coords, {icon: divIc, zIndexOffset: 500}).addTo(poiLayer);
 
     marker.bindTooltip(
-      `${poiTypeLabels[poi.type] || poi.type} — ${poi.name}`,
-      {
-        direction:'top',
-        className:'poi-tooltip'
-      }
+      `${icon} ${label} — ${poi.name}`,
+      {direction:'top', className:'poi-tooltip'}
     );
 
     marker.bindPopup(poiPopupHtml(poi), {
@@ -6606,29 +6692,202 @@ function drawPointsOfInterest(){
   });
 }
 
+/* ════════════════════════════════════════════════════════════
+   i18n — Traductions FR · NL · DE · EN
+   Contenu historique conservé en français (solution de repli).
+   ════════════════════════════════════════════════════════════ */
+const I18N={
+fr:{
+  site_title:"Atlas des batailles de Belgique et d'Europe",
+  site_subtitle:"Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières",
+  explore_title:"Explorer la carte",
+  intro:"Chaque fiche indique un niveau de certitude et cite au moins deux sources indépendantes lorsque disponibles (source primaire/contemporaine + étude moderne). Les localisations sont des points représentatifs.",
+  s_search:"Recherche",search_ph:"Nom, lieu, conflit\u2026",
+  s_period:"Période",s_periods:"Périodes historiques",
+  s_types:"Type d'événement",s_poi:"Lieux de mémoire",s_map:"Lire la carte",
+  deselect_all:"Désélectionner toutes les options",reselect_all:"Resélectionner toutes les options",
+  poi_show_all:"Tout afficher",poi_hide_all:"Tout masquer",
+  poi_legend_hint:"Cochez les catégories à afficher. Cette section sert également de légende des icônes.",
+  counter:n=>`${n} événement${n!==1?"s":""} affiché${n!==1?"s":""}`,
+  results_title:n=>`Résultats (${n})`,
+  no_results:"Aucun événement ne correspond aux filtres actuels.",
+  tab_fiche:"Fiche",tab_ctx:"Contexte",tab_moves:"Mouvements",tab_visits:"Visiter & voir",
+  popup_outcome:"Issue",popup_sources:n=>`Sources (${n})`,popup_moves_title:"Mouvements de troupes",
+  cert_confirmed:"Confirmé",cert_probable:"Probable",cert_approx:"Approximatif",
+  no_moves:"Aucune donnée de mouvement disponible pour cet événement dans ce prototype.",
+  no_context:"Aucune donnée contextuelle disponible pour cet événement dans ce prototype.",
+  no_visits:"Aucun musée, mémorial ou documentaire n'est encore référencé pour cette bataille.",
+  hint_precise:"Tracé calé sur des lieux-clés géoréférencés (fermes, villages) issus de sources historiques ; les axes de mouvement entre ces points restent simplifiés.",
+  hint_approx:"Flèches schématiques et approximatives, à visée pédagogique — elles ne représentent pas un tracé militaire validé trait pour trait.",
+  keypoints_label:"Lieux clés :",
+  ctx_preambule:"Préambule",ctx_deroule:"Déroulé",ctx_apres:"Après la bataille",ctx_forces:"Forces en présence",ctx_pertes:"Pertes",
+  terrain_tab:"🗻 Terrain",
+  img_credit_default:"Illustration issue d'une recherche d'images générale ; provenance et statut de droits non vérifiés pièce par pièce.",
+  help_search:"Tapez un nom de bataille, un lieu ou un conflit. La liste et la carte se mettent à jour en temps réel. Laissez vide pour tout afficher.",
+  help_period:"Déplacez les deux curseurs pour n'afficher que les événements compris dans une tranche d'années. Les marqueurs hors intervalle sont masqués.",
+  help_periods:"Cochez une ou plusieurs cases pour filtrer par époque. Les étiquettes en gras signalent les périodes actives. Utilisez le bouton ci-dessous pour tout activer ou désactiver d'un coup.",
+  help_types:"Filtrez par nature des combats : bataille rangée, siège, escarmouche, front de positions… Plusieurs types peuvent être actifs en même temps.",
+  help_poi:"Sites visitables classés en 8 catégories — ⚔️ Champ de bataille · 🕊️ Mémorial · 🪦 Cimetière · 🏛️ Musée · 🏰 Fortification · 📜 Bâtiment historique · ⚠️ Lieu de répression · 📍 Point géographique. Cliquez un marqueur pour préparer votre visite.",
+  help_map:"<strong>Marqueurs de bataille</strong>Couleur = époque. Survol = nom. Clic = fiche détaillée avec sources et mouvements.<br><br><strong>Flèches de mouvement</strong>Dans l'onglet Mouvements d'une fiche, chaque couleur représente une armée ou unité. Les petits cercles blancs sont des lieux-clés géoréférencés.<br><br><strong>Couches de fond</strong>OSM standard, topographie avec courbes de niveau, ou carte Ferraris 1777 (Belgique uniquement).",
+  poi_types:{battlefield:"Champ de bataille",memorial:"Mémorial",cemetery:"Cimetière",museum:"Musée",fortification:"Fortification",historic:"Bâtiment historique",massacre:"Lieu de répression",geographic:"Point géographique"},
+  period_names:{}
+},
+nl:{
+  site_title:"Atlas van slagen in België en Europa",
+  site_subtitle:"Documentair prototype — slagvelden, belegeringen en gevechten op het grondgebied van het huidige België en buiten onze grenzen",
+  explore_title:"De kaart verkennen",
+  intro:"Elke fiche vermeldt een zekerheidsgraad en citeert ten minste twee onafhankelijke bronnen waar beschikbaar. De locaties zijn representatieve punten.",
+  s_search:"Zoeken",search_ph:"Naam, locatie, conflict\u2026",
+  s_period:"Tijdvak",s_periods:"Historische periodes",
+  s_types:"Type gebeurtenis",s_poi:"Gedenkplaatsen",s_map:"Kaartlegende",
+  deselect_all:"Alles deselecteren",reselect_all:"Alles selecteren",
+  poi_show_all:"Alles tonen",poi_hide_all:"Alles verbergen",
+  poi_legend_hint:"Vink categorieën aan om ze op de kaart te tonen. Deze sectie dient ook als icoonlegenda.",
+  counter:n=>`${n} evenement${n!==1?"en":""} weergegeven`,
+  results_title:n=>`Resultaten (${n})`,
+  no_results:"Geen evenementen gevonden voor de huidige filters.",
+  tab_fiche:"Info",tab_ctx:"Context",tab_moves:"Bewegingen",tab_visits:"Bezoeken & zien",
+  popup_outcome:"Afloop",popup_sources:n=>`Bronnen (${n})`,popup_moves_title:"Troepenbeweging",
+  cert_confirmed:"Bevestigd",cert_probable:"Waarschijnlijk",cert_approx:"Approximatief",
+  no_moves:"Geen bewegingsgegevens beschikbaar voor dit evenement in dit prototype.",
+  no_context:"Geen contextuele gegevens beschikbaar voor dit evenement in dit prototype.",
+  no_visits:"Nog geen museum, gedenkplaats of documentaire geregistreerd voor deze slag.",
+  hint_precise:"Tracé gebaseerd op georeferentie-sleutellocaties (boerderijen, dorpen) uit historische bronnen; de bewegingsassen zijn vereenvoudigd.",
+  hint_approx:"Schematische pijlen voor educatief gebruik — geen militair-historisch gevalideerde route.",
+  keypoints_label:"Sleutellocaties:",
+  ctx_preambule:"Aanloop",ctx_deroule:"Verloop",ctx_apres:"Na de slag",ctx_forces:"Strijdkrachten",ctx_pertes:"Verliezen",
+  terrain_tab:"🗻 Terrein",
+  img_credit_default:"Afbeelding uit een algemeen beeldonderzoek; herkomst en auteursrecht niet per afbeelding geverifieerd.",
+  help_search:"Typ een naam van een slag, een locatie of een conflict. De lijst en kaart worden direct bijgewerkt.",
+  help_period:"Versleep de twee schuifregelaars om alleen evenementen in een tijdvak te tonen.",
+  help_periods:"Vink één of meerdere vakjes aan om op tijdperk te filteren. Vetgedrukte labels zijn actief.",
+  help_types:"Filter op type gevecht: veldslag, belegering, schermutseling, loopgravenoorlog… Meerdere types tegelijk mogelijk.",
+  help_poi:"Bezoekaardige sites in 8 categorieën — ⚔️ Slagveld · 🕊️ Gedenkteken · 🪦 Begraafplaats · 🏛️ Museum · 🏰 Vesting · 📜 Historisch gebouw · ⚠️ Plek van vervolging · 📍 Geografisch punt.",
+  help_map:"<strong>Slagveldmarkeringen</strong>Kleur = tijdperk. Hover = naam. Klik = detailfiche.<br><br><strong>Bewegingspijlen</strong>In het tabblad Bewegingen stelt elke kleur een leger voor. Kleine witte cirkels zijn georeferentie-sleutellocaties.<br><br><strong>Achtergrondlagen</strong>OSM standaard, topografie, of Ferraris-kaart 1777 (alleen België).",
+  poi_types:{battlefield:"Slagveld",memorial:"Gedenkteken",cemetery:"Begraafplaats",museum:"Museum",fortification:"Vesting",historic:"Historisch gebouw",massacre:"Plek van vervolging",geographic:"Geografisch punt"},
+  period_names:{"Antiquité":"Oudheid","Antiquité tardive":"Laat-Oudheid","Haut Moyen Âge":"Vroege Middeleeuwen","Moyen Âge":"Middeleeuwen","Guerres de l'époque moderne":"Vroegmoderne oorlogen","Guerre de Trente Ans":"Dertigjarige Oorlog","Révolution et Empire":"Revolutie en Keizerrijk","Révolution belge":"Belgische Revolutie","Révolution belge et indépendance":"Belgische Revolutie en onafhankelijkheid","Première Guerre mondiale":"Eerste Wereldoorlog","Seconde Guerre mondiale":"Tweede Wereldoorlog","Guerres de Nouvelle-Zélande":"Nieuw-Zeelandse oorlogen","XVIIe siècle":"17e eeuw","XVIIIe siècle":"18e eeuw"}
+},
+de:{
+  site_title:"Atlas der Schlachten in Belgien und Europa",
+  site_subtitle:"Dokumentarischer Prototyp — Schlachtfelder, Belagerungen und Gefechte auf dem Gebiet des heutigen Belgiens und jenseits unserer Grenzen",
+  explore_title:"Karte erkunden",
+  intro:"Jede Karte gibt einen Sicherheitsgrad an und zitiert nach Möglichkeit mindestens zwei unabhängige Quellen. Die Standorte sind repräsentative Punkte.",
+  s_search:"Suche",search_ph:"Name, Ort, Konflikt\u2026",
+  s_period:"Zeitraum",s_periods:"Historische Epochen",
+  s_types:"Ereignistyp",s_poi:"Gedenkstätten",s_map:"Karte lesen",
+  deselect_all:"Alle abwählen",reselect_all:"Alle auswählen",
+  poi_show_all:"Alle anzeigen",poi_hide_all:"Alle ausblenden",
+  poi_legend_hint:"Kategorien ankreuzen, um sie auf der Karte anzuzeigen. Dieser Bereich dient auch als Legende.",
+  counter:n=>`${n} Ereignis${n!==1?"se":""} angezeigt`,
+  results_title:n=>`Ergebnisse (${n})`,
+  no_results:"Keine Ereignisse entsprechen den aktuellen Filtern.",
+  tab_fiche:"Info",tab_ctx:"Kontext",tab_moves:"Bewegungen",tab_visits:"Besuchen & sehen",
+  popup_outcome:"Ausgang",popup_sources:n=>`Quellen (${n})`,popup_moves_title:"Truppenbewegungen",
+  cert_confirmed:"Bestätigt",cert_probable:"Wahrscheinlich",cert_approx:"Ungefähr",
+  no_moves:"Keine Bewegungsdaten für dieses Ereignis in diesem Prototyp verfügbar.",
+  no_context:"Keine Kontextdaten für dieses Ereignis in diesem Prototyp verfügbar.",
+  no_visits:"Noch kein Museum, Denkmal oder Dokumentarfilm für diese Schlacht erfasst.",
+  hint_precise:"Darstellung anhand georeferenzierter Schlüsselorte aus historischen Quellen; die Bewegungsachsen sind vereinfacht.",
+  hint_approx:"Schematische Pfeile zu pädagogischen Zwecken — kein militärhistorisch validierter Streckenverlauf.",
+  keypoints_label:"Schlüsselorte:",
+  ctx_preambule:"Vorgeschichte",ctx_deroule:"Verlauf",ctx_apres:"Nach der Schlacht",ctx_forces:"Streitkräfte",ctx_pertes:"Verluste",
+  terrain_tab:"🗻 Gelände",
+  img_credit_default:"Abbildung aus einer allgemeinen Bildrecherche; Herkunft und Urheberrecht nicht einzeln geprüft.",
+  help_search:"Namen einer Schlacht, eines Orts oder Konflikts eingeben. Liste und Karte aktualisieren sich sofort.",
+  help_period:"Schieberegler anpassen, um nur Ereignisse in einem Jahresbereich anzuzeigen.",
+  help_periods:"Ein oder mehrere Kästchen ankreuzen, um nach Epoche zu filtern. Fettgedruckte Labels sind aktiv.",
+  help_types:"Nach Kampftyp filtern: Feldschlacht, Belagerung, Scharmützel, Stellungskrieg… Mehrere Typen gleichzeitig möglich.",
+  help_poi:"Besuchenswerte Stätten in 8 Kategorien — ⚔️ Schlachtfeld · 🕊️ Gedenkstätte · 🪦 Friedhof · 🏛️ Museum · 🏰 Festung · 📜 Historisches Gebäude · ⚠️ Ort der Verfolgung · 📍 Geografischer Punkt.",
+  help_map:"<strong>Schlachtmarkierungen</strong>Farbe = Epoche. Hover = Name. Klick = Detailkarte.<br><br><strong>Bewegungspfeile</strong>Im Reiter Bewegungen steht jede Farbe für eine Armee. Kleine weiße Kreise sind georeferenzierte Schlüsselorte.<br><br><strong>Hintergrundebenen</strong>OSM Standard, Topographie, oder Ferraris-Karte 1777 (nur Belgien).",
+  poi_types:{battlefield:"Schlachtfeld",memorial:"Gedenkstätte",cemetery:"Friedhof",museum:"Museum",fortification:"Festung",historic:"Historisches Gebäude",massacre:"Ort der Verfolgung",geographic:"Geografischer Punkt"},
+  period_names:{"Antiquité":"Antike","Antiquité tardive":"Spätantike","Haut Moyen Âge":"Frühmittelalter","Moyen Âge":"Mittelalter","Guerres de l'époque moderne":"Frühneuzeitliche Kriege","Guerre de Trente Ans":"Dreißigjähriger Krieg","Révolution et Empire":"Revolution und Kaiserreich","Révolution belge":"Belgische Revolution","Révolution belge et indépendance":"Belgische Revolution und Unabhängigkeit","Première Guerre mondiale":"Erster Weltkrieg","Seconde Guerre mondiale":"Zweiter Weltkrieg","Guerres de Nouvelle-Zélande":"Neuseelandkriege","XVIIe siècle":"17. Jahrhundert","XVIIIe siècle":"18. Jahrhundert"}
+},
+en:{
+  site_title:"Atlas of Battles in Belgium and Europe",
+  site_subtitle:"Documentary prototype — battlefields, sieges and combats on the territory of present-day Belgium and beyond our borders",
+  explore_title:"Explore the map",
+  intro:"Each entry indicates a confidence level and cites at least two independent sources where available. Locations are representative points.",
+  s_search:"Search",search_ph:"Name, place, conflict\u2026",
+  s_period:"Time period",s_periods:"Historical periods",
+  s_types:"Event type",s_poi:"Memorial sites",s_map:"Map legend",
+  deselect_all:"Deselect all",reselect_all:"Select all",
+  poi_show_all:"Show all",poi_hide_all:"Hide all",
+  poi_legend_hint:"Check categories to display them on the map. This section also serves as the icon legend.",
+  counter:n=>`${n} event${n!==1?"s":""} displayed`,
+  results_title:n=>`Results (${n})`,
+  no_results:"No events match the current filters.",
+  tab_fiche:"Info",tab_ctx:"Context",tab_moves:"Movements",tab_visits:"Visit & watch",
+  popup_outcome:"Outcome",popup_sources:n=>`Sources (${n})`,popup_moves_title:"Troop movements",
+  cert_confirmed:"Confirmed",cert_probable:"Probable",cert_approx:"Approximate",
+  no_moves:"No movement data available for this event in this prototype.",
+  no_context:"No contextual data available for this event in this prototype.",
+  no_visits:"No museum, memorial or documentary yet referenced for this battle.",
+  hint_precise:"Route based on georeferenced key locations (farms, villages) from historical sources; movement axes are simplified.",
+  hint_approx:"Schematic and approximate arrows for educational purposes — not a historically validated military route.",
+  keypoints_label:"Key locations:",
+  ctx_preambule:"Background",ctx_deroule:"Course of events",ctx_apres:"Aftermath",ctx_forces:"Forces involved",ctx_pertes:"Casualties",
+  terrain_tab:"🗻 Terrain",
+  img_credit_default:"Image from a general image search; origin and copyright not verified per image.",
+  help_search:"Type a battle name, location or conflict. The list and map update in real time.",
+  help_period:"Drag the two sliders to display only events within a specific year range.",
+  help_periods:"Check one or more boxes to filter by period. Bold labels are active. Use the button to select or deselect all.",
+  help_types:"Filter by combat type: pitched battle, siege, skirmish, trench warfare… Multiple types can be active simultaneously.",
+  help_poi:"Visitable sites in 8 categories — ⚔️ Battlefield · 🕊️ Memorial · 🪦 Cemetery · 🏛️ Museum · 🏰 Fortification · 📜 Historic building · ⚠️ Site of persecution · 📍 Geographic point.",
+  help_map:"<strong>Battle markers</strong>Colour = period. Hover = name. Click = detailed sheet with sources and movements.<br><br><strong>Movement arrows</strong>In the Movements tab, each colour represents an army or unit. Small white circles are georeferenced key locations.<br><br><strong>Base layers</strong>Standard OSM, topography with contour lines, or Ferraris map of 1777 (Belgium only).",
+  poi_types:{battlefield:"Battlefield",memorial:"Memorial",cemetery:"Cemetery",museum:"Museum",fortification:"Fortification",historic:"Historic building",massacre:"Site of persecution",geographic:"Geographic point"},
+  period_names:{"Antiquité":"Antiquity","Antiquité tardive":"Late Antiquity","Haut Moyen Âge":"Early Middle Ages","Moyen Âge":"Middle Ages","Guerres de l'époque moderne":"Early Modern Wars","Guerre de Trente Ans":"Thirty Years' War","Révolution et Empire":"Revolution and Empire","Révolution belge":"Belgian Revolution","Révolution belge et indépendance":"Belgian Revolution and Independence","Première Guerre mondiale":"World War I","Seconde Guerre mondiale":"World War II","Guerres de Nouvelle-Zélande":"New Zealand Wars","XVIIe siècle":"17th century","XVIIIe siècle":"18th century"}
+}
+};
+let currentLang="fr";
+function t(key){const v=I18N[currentLang]?.[key];return v!==undefined?v:(I18N.fr[key]!==undefined?I18N.fr[key]:key);}
+function tFn(key,...args){const fn=t(key);return typeof fn==="function"?fn(...args):String(fn);}
+function tPeriod(frName){return(I18N[currentLang]?.period_names?.[frName])||frName;}
+function tPoiType(type){return(I18N[currentLang]?.poi_types?.[type])||(I18N.fr.poi_types[type])||type;}
+
 function populatePoiFilters(){
   const target = document.getElementById('poiTypes');
-
   if(!target) return;
 
-  const presentTypes = [...new Set(pointsOfInterest.map(poi => poi.type))];
+  /* Décompte par type */
+  const counts = {};
+  ALL_POI_TYPES.forEach(t => { counts[t] = 0; });
+  pointsOfInterest.forEach(poi => { if(poi.type in counts) counts[poi.type]++; });
 
-  target.innerHTML = `
-    <label class="poi-master-toggle">
-      <input id="poiToggle" type="checkbox" checked>
-      Afficher les lieux de mémoire
-      <span id="poiCount">(${pointsOfInterest.length})</span>
-    </label>
-  ` + presentTypes.map(type => `
-    <label class="poi-type-row">
-      <span class="poi-dot" style="background:${poiTypeColors[type]}"></span>
-      ${esc(poiTypeLabels[type] || type)}
-      <span class="poi-type-count">${pointsOfInterest.filter(poi => poi.type === type).length}</span>
-    </label>
-  `).join('');
+  target.innerHTML =
+    `<p class="poi-legend-hint">${t('poi_legend_hint')}</p>` +
+    `<div class="poi-filter-actions">
+       <button id="poiShowAll" class="poi-filter-btn" type="button">${t('poi_show_all')}</button>
+       <button id="poiHideAll" class="poi-filter-btn" type="button">${t('poi_hide_all')}</button>
+     </div>` +
+    ALL_POI_TYPES.map(type =>
+      `<label class="poi-type-row">
+         <input class="poi-type-cb" type="checkbox" value="${type}" ${poiActiveTypes.has(type) ? 'checked' : ''}>
+         <span class="poi-type-icon" aria-hidden="true">${poiTypeIcons[type] || '●'}</span>
+         <span class="poi-dot" style="background:${poiTypeColors[type] || '#555'}"></span>
+         ${esc(tPoiType(type))}
+         <span class="poi-type-count">(${counts[type]})</span>
+       </label>`
+    ).join('');
 
-  document.getElementById('poiToggle').addEventListener('change', event => {
-    poiVisible = event.target.checked;
+  /* Événements par type */
+  target.querySelectorAll('.poi-type-cb').forEach(cb => {
+    cb.addEventListener('change', event => {
+      if(event.target.checked) poiActiveTypes.add(event.target.value);
+      else poiActiveTypes.delete(event.target.value);
+      drawPointsOfInterest();
+    });
+  });
+
+  /* Tout afficher / masquer */
+  document.getElementById('poiShowAll').addEventListener('click', () => {
+    ALL_POI_TYPES.forEach(t => poiActiveTypes.add(t));
+    target.querySelectorAll('.poi-type-cb').forEach(cb => { cb.checked = true; });
+    drawPointsOfInterest();
+  });
+
+  document.getElementById('poiHideAll').addEventListener('click', () => {
+    poiActiveTypes.clear();
+    target.querySelectorAll('.poi-type-cb').forEach(cb => { cb.checked = false; });
     drawPointsOfInterest();
   });
 }
@@ -6784,21 +7043,19 @@ if(window.ResizeObserver){
 }
 window.addEventListener('orientationchange',()=>window.setTimeout(syncMapLayout,150));
 const periods=[...new Set(battles.map(x=>x.period))],types=[...new Set(battles.map(x=>x.type))];
-function boxes(target,values,prefix){document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${v}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
+function boxes(target,values,prefix){const lbl=prefix==='period'?tPeriod:v=>v;document.getElementById(target).innerHTML=values.map((v)=>`<label><input type="checkbox" class="${prefix}" value="${v}" checked> ${lbl(v)}</label>`).join('')};boxes('periods',periods,'period');boxes('types',types,'type');
+/* État initial : seule la période "Révolution belge" est sélectionnée */
+document.querySelectorAll('input.period').forEach(cb=>{ cb.checked = cb.value === 'Révolution belge'; });
 const clearFiltersBtn = document.getElementById('clearFilters');
 const clearTypesBtn   = document.getElementById('clearTypes');
 
 function updateClearFiltersLabel() {
   const anyChecked = [...document.querySelectorAll('input.period')].some(i => i.checked);
-  clearFiltersBtn.textContent = anyChecked
-    ? 'Désélectionner toutes les options'
-    : 'Resélectionner toutes les options';
+  clearFiltersBtn.textContent = anyChecked ? t('deselect_all') : t('reselect_all');
 }
 function updateClearTypesLabel() {
   const anyChecked = [...document.querySelectorAll('input.type')].some(i => i.checked);
-  clearTypesBtn.textContent = anyChecked
-    ? 'Désélectionner toutes les options'
-    : 'Resélectionner toutes les options';
+  clearTypesBtn.textContent = anyChecked ? t('deselect_all') : t('reselect_all');
 }
 
 clearFiltersBtn.addEventListener('click', () => {
@@ -6824,17 +7081,17 @@ updateClearFiltersLabel();
 updateClearTypesLabel();
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function active(cls){return [...document.querySelectorAll('.'+cls+':checked')].map(x=>x.value)}
-function certLabel(c){return c==='confirmé'?'Confirmé':c==='probable'?'Probable':'Approximatif'}
+function certLabel(c){return c==='confirmé'?t('cert_confirmed'):c==='probable'?t('cert_probable'):t('cert_approx');}
 function certClass(c){return c==='confirmé'?'c-confirme':c==='probable'?'c-probable':'c-approx'}
 function popupHtml(x){const srcs=x.sources.map(s=>`<li><a href="${s.u}" target="_blank" rel="noopener">${esc(s.a)}</a> — ${esc(s.t)} <span class="srctype">(${esc(s.type)})</span></li>`).join('');
-const img=x.image?`<img class="popup-img" src="${x.image}" alt="Iconographie : ${esc(x.name)}" loading="lazy"><div class="img-credit">${x.credit?esc(x.credit):'Illustration issue d\'une recherche d\'images générale ; provenance et statut de droits non vérifiés pièce par pièce.'}</div>`:'';
-const infoPane=`${img}<div class="popup-meta">${x.year} · ${esc(x.period)}<br>${esc(x.place)}</div><div class="popup-text"><b>${esc(x.type)}</b><br>${esc(x.text)}<br><br><b>Issue :</b> ${esc(x.outcome)}<span class="certainty ${certClass(x.certainty)}">${certLabel(x.certainty)}</span></div><div class="sources"><b>Sources (${x.sources.length})</b><ul>${srcs}</ul></div>`;
+const img=x.image?`<img class="popup-img" src="${x.image}" alt="Iconographie : ${esc(x.name)}" loading="lazy"><div class="img-credit">${x.credit?esc(x.credit):t('img_credit_default')}</div>`:'';
+const infoPane=`${img}<div class="popup-meta">${x.year} · ${esc(x.period)}<br>${esc(x.place)}</div><div class="popup-text"><b>${esc(x.type)}</b><br>${esc(x.text)}<br><br><b>${t('popup_outcome')} :</b> ${esc(x.outcome)}<span class="certainty ${certClass(x.certainty)}">${certLabel(x.certainty)}</span></div><div class="sources"><b>${tFn('popup_sources',x.sources.length)}</b><ul>${srcs}</ul></div>`;
 const hasMoves=x.movements&&x.movements.length;
-const precise=x.keypoints&&x.keypoints.length;const kpList=precise?`<div class="moves-legend"><b>Lieux clés :</b> ${x.keypoints.map(kp=>esc(kp.name)).join(' · ')}</div>`:'';const hintText=precise?"Tracé calé sur des lieux-clés géoréférencés (fermes, villages) issus de sources historiques ; les axes de mouvement entre ces points restent simplifiés.":"Flèches schématiques et approximatives, à visée pédagogique — elles ne représentent pas un tracé militaire validé trait pour trait.";const legend=hasMoves?`<div class="moves-legend">${x.movements.map(mv=>`<div><span class="moves-swatch" style="background:${mv.color}"></span>${esc(mv.label)}</div>`).join('')}</div>${kpList}<div class="moves-hint">${hintText}</div>`:'<div class="moves-empty">Aucune donnée de mouvement disponible pour cet événement dans ce prototype.</div>';
+const precise=x.keypoints&&x.keypoints.length;const kpList=precise?`<div class="moves-legend"><b>${t('keypoints_label')}</b> ${x.keypoints.map(kp=>esc(kp.name)).join(' · ')}</div>`:'';const hintText=precise?t('hint_precise'):t('hint_approx');const legend=hasMoves?`<div class="moves-legend">${x.movements.map(mv=>`<div><span class="moves-swatch" style="background:${mv.color}"></span>${esc(mv.label)}</div>`).join('')}</div>${kpList}<div class="moves-hint">${hintText}</div>`:`<div class="moves-empty">${t('no_moves')}</div>`;
  const bmePanel=BattleMapEngine.buildPanel(x);
- const movesPane=`<div class="popup-text"><b>Mouvements de troupes</b>${legend}${bmePanel}</div>`;
+ const movesPane=`<div class="popup-text"><b>${t('popup_moves_title')}</b>${legend}${bmePanel}</div>`;
 const ctx=x.context;
-const ctxPane=ctx?`<div class="ctx-block"><div class="ctx-label">Préambule</div><div class="ctx-text">${esc(ctx.preambule)}</div></div><div class="ctx-block"><div class="ctx-label">Déroulé</div><div class="ctx-text">${esc(ctx.deroule)}</div></div><div class="ctx-block"><div class="ctx-label">Après la bataille</div><div class="ctx-text">${esc(ctx.apres)}</div></div><div class="ctx-block"><div class="ctx-label">Forces en présence</div><div class="ctx-text">${esc(ctx.forces)}</div></div><div class="ctx-block"><div class="ctx-label">Pertes</div><div class="ctx-text">${esc(ctx.pertes)}</div></div>`:'<div class="moves-empty">Aucune donnée contextuelle disponible pour cet événement dans ce prototype.</div>';
+const ctxPane=ctx?`<div class="ctx-block"><div class="ctx-label">${t('ctx_preambule')}</div><div class="ctx-text">${esc(ctx.preambule)}</div></div><div class="ctx-block"><div class="ctx-label">${t('ctx_deroule')}</div><div class="ctx-text">${esc(ctx.deroule)}</div></div><div class="ctx-block"><div class="ctx-label">${t('ctx_apres')}</div><div class="ctx-text">${esc(ctx.apres)}</div></div><div class="ctx-block"><div class="ctx-label">${t('ctx_forces')}</div><div class="ctx-text">${esc(ctx.forces)}</div></div><div class="ctx-block"><div class="ctx-label">${t('ctx_pertes')}</div><div class="ctx-text">${esc(ctx.pertes)}</div></div>`:`<div class="moves-empty">${t('no_context')}</div>`;
 const visitsPane = x.visits && x.visits.length
   ? `<div class="visits-list">
       ${x.visits.map(v => `
@@ -6848,13 +7105,11 @@ const visitsPane = x.visits && x.visits.length
         </a>
       `).join('')}
     </div>`
-  : `<div class="moves-empty">
-       Aucun musée, mémorial ou documentaire n’est encore référencé pour cette bataille.
-     </div>`;
+  : `<div class="moves-empty">${t('no_visits')}</div>`;
                      const hasT=x.terrain&&(x.terrain.frontlines||x.terrain.trenches||x.terrain.forts||x.terrain.railways||x.terrain.floods);
-const terrainTab=hasT?`<button class="popup-tab" data-pane="terrain-${x.id}">\u{1F5FB} Terrain</button>`:'';
+const terrainTab=hasT?`<button class="popup-tab" data-pane="terrain-${x.id}">${t('terrain_tab')}</button>`:'';
 const terrainPane=hasT?`<div class="popup-pane" id="terrain-${x.id}">${buildTerrainPanel(x)}</div>`:'';
-return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">Fiche</button><button class="popup-tab" data-pane="ctx-${x.id}">Contexte</button><button class="popup-tab" data-pane="moves-${x.id}">Mouvements</button><button class="popup-tab" data-pane="visits-${x.id}">Visiter & voir</button></div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>${terrainPane}`}
+return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">${t('tab_fiche')}</button><button class="popup-tab" data-pane="ctx-${x.id}">${t('tab_ctx')}</button><button class="popup-tab" data-pane="moves-${x.id}">${t('tab_moves')}</button><button class="popup-tab" data-pane="visits-${x.id}">${t('tab_visits')}</button>${terrainTab}</div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>${terrainPane}`}
 
 function update(){
   let a=+minYear.value,b=+maxYear.value;
@@ -6893,10 +7148,10 @@ function update(){
     markerById[x.id]=marker;
   });
 
-  counter.textContent=`${data.length} événement${data.length!==1?'s':''} affiché${data.length!==1?'s':''}`;
+  counter.textContent=tFn('counter',data.length);
   results.innerHTML=data.length
-    ? `<h3>Résultats (${data.length})</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join('')
-    : '<div class="empty">Aucun événement ne correspond aux filtres actuels.</div>';
+    ? `<h3>${tFn('results_title',data.length)}</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-title">${esc(x.name)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join('')
+    : `<div class="empty">${t('no_results')}</div>`;
   document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{
     const x=battles.find(z=>z.id===el.dataset.id);
     map.flyTo(x.coords,11,{duration:.6});
@@ -7001,6 +7256,8 @@ function setupPopupTabs(x,popupNode){
 }
 
 const {minYear,maxYear,search,minLabel,maxLabel,counter,results}=Object.fromEntries(['minYear','maxYear','search','minLabel','maxLabel','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
+/* Centrage initial sur les batailles de la Révolution belge */
+(function(){ const rb=battles.filter(x=>x.period==='Révolution belge'); if(rb.length) map.fitBounds(L.latLngBounds(rb.map(x=>x.coords)),{padding:[50,50],maxZoom:11}); })();
 /* ── Mobile : panneau Explorer + fiche de bataille ── */
 const mobileQuery = window.matchMedia('(max-width: 760px)');
 const mobileExplorerToggle = document.getElementById('mobileExplorerToggle');
@@ -7335,4 +7592,76 @@ document.addEventListener('keydown', event => {
 
 
 
+/* ── Sélecteur de langue ── */
+function applyLang(lang){
+  if(!I18N[lang]) return;
+  currentLang=lang;
+  document.documentElement.lang=lang;
+  /* Éléments statiques data-i18n (textContent) */
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const v=t(el.dataset.i18n);
+    if(typeof v==='string') el.textContent=v;
+  });
+  /* Éléments data-i18n-html (innerHTML, pour les tooltips avec balises) */
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const v=t(el.dataset.i18nHtml);
+    if(typeof v==='string') el.innerHTML=v;
+  });
+  /* Placeholder de recherche */
+  const searchEl=document.getElementById('search');
+  if(searchEl) searchEl.placeholder=t('search_ph');
+  /* Régénérer les cases à cocher en conservant l'état actuel */
+  const checkedPeriods=new Set([...document.querySelectorAll('input.period:checked')].map(i=>i.value));
+  const checkedTypes=new Set([...document.querySelectorAll('input.type:checked')].map(i=>i.value));
+  boxes('periods',periods,'period');
+  boxes('types',types,'type');
+  document.querySelectorAll('input.period').forEach(cb=>{
+    cb.checked=checkedPeriods.has(cb.value);
+    cb.addEventListener('change',updateClearFiltersLabel);
+  });
+  document.querySelectorAll('input.type').forEach(cb=>{
+    cb.checked=checkedTypes.has(cb.value);
+    cb.addEventListener('change',updateClearTypesLabel);
+  });
+  updateClearFiltersLabel();
+  updateClearTypesLabel();
+  /* Régénérer les filtres POI */
+  populatePoiFilters();
+  /* Rafraîchir carte + résultats (régénère les pop-ups avec la nouvelle langue) */
+  update();
+  /* Bouton actif */
+  document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));
+}
+document.getElementById('langSelector').addEventListener('click',e=>{
+  const btn=e.target.closest('.lang-btn');
+  if(btn&&btn.dataset.lang) applyLang(btn.dataset.lang);
+});
+
+/* ── Infobulles d'aide : positionnement JS ── */
+(function(){
+  function positionTip(btn,tip){
+    const r=btn.getBoundingClientRect(),w=240;
+    let left=r.right-w;
+    left=Math.max(8,Math.min(left,window.innerWidth-w-8));
+    tip.style.top=(r.bottom+8)+'px';
+    tip.style.left=left+'px';
+  }
+  document.querySelectorAll('.help-btn').forEach(btn=>{
+    const tip=btn.nextElementSibling;
+    if(!tip||!tip.classList.contains('help-tip'))return;
+    btn.addEventListener('mouseenter',()=>{positionTip(btn,tip);tip.classList.add('help-tip-open');});
+    btn.addEventListener('mouseleave',()=>{tip.classList.remove('help-tip-open');});
+    btn.addEventListener('focus',()=>{positionTip(btn,tip);tip.classList.add('help-tip-open');});
+    btn.addEventListener('blur',()=>{tip.classList.remove('help-tip-open');});
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const open=tip.classList.contains('help-tip-open');
+      document.querySelectorAll('.help-tip-open').forEach(t=>t.classList.remove('help-tip-open'));
+      if(!open){positionTip(btn,tip);tip.classList.add('help-tip-open');}
+    });
+  });
+  document.addEventListener('click',()=>{
+    document.querySelectorAll('.help-tip-open').forEach(t=>t.classList.remove('help-tip-open'));
+  });
+})();
 </script></body></html>
