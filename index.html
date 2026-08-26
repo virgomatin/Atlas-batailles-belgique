@@ -512,6 +512,17 @@
   .help-tip{position:static!important;display:none;width:auto!important;margin:8px 0 0;opacity:1!important;visibility:visible!important;pointer-events:auto!important;box-shadow:none}
   .help-tip.help-tip-open{display:block}
 }
+</style>
+<style>
+.search-results{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;overflow:hidden}
+.search-results[hidden]{display:none}
+.search-results-heading{margin:0;padding:9px 10px;background:#f1e8d8;color:var(--wine);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.search-result-item{padding:10px;border-top:1px solid #e7dfd1;cursor:pointer}
+.search-result-item:first-of-type{border-top:0}
+.search-result-item:hover{background:#f8f0e3}
+.search-result-item .item-title{font-size:13px}
+.search-result-kind{display:block;margin-top:3px;color:#65717c;font-size:11px}
+.search-results-empty{padding:12px 10px;color:#65717c;font-size:13px}
 </style></head>
 <body><header><div class="brand"><h1 data-i18n="site_title">Atlas des batailles de Belgique et d'Europe</h1><p data-i18n="site_subtitle">Prototype documentaire — champs de bataille, sièges et combats sur le territoire belge actuel et en dehors de nos frontières</p></div><div class="ad-slot ad-top" data-provider="placeholder" aria-label="Emplacement publicitaire">
   <span class="ad-label">Publicité</span>
@@ -6612,6 +6623,7 @@ const poiTypeIcons = {
 };
 
 let poiLayer;
+let poiMarkerById={};
 const poiActiveTypes = new Set(); /* vide au démarrage */
 
 function poiPopupHtml(poi){
@@ -6693,6 +6705,7 @@ function setupPoiPopup(poi, marker){
 
 function drawPointsOfInterest(){
   poiLayer.clearLayers();
+  poiMarkerById={};
 
   if(!poiActiveTypes.size) return;
 
@@ -6725,6 +6738,7 @@ function drawPointsOfInterest(){
     });
 
     setupPoiPopup(poi, marker);
+    poiMarkerById[poi.id]=marker;
   });
 }
 
@@ -7347,14 +7361,34 @@ const terrainTab=hasT?`<button class="popup-tab" data-pane="terrain-${x.id}">${t
 const terrainPane=hasT?`<div class="popup-pane" id="terrain-${x.id}">${buildTerrainPanel(x)}</div>`:'';
 return `<div class="popup-title">${esc(x.name)}</div><div class="popup-tabs"><button class="popup-tab active" data-pane="info-${x.id}">${t('tab_fiche')}</button><button class="popup-tab" data-pane="ctx-${x.id}">${t('tab_ctx')}</button><button class="popup-tab" data-pane="moves-${x.id}">${t('tab_moves')}</button><button class="popup-tab" data-pane="visits-${x.id}">${t('tab_visits')}</button>${terrainTab}</div><div class="popup-pane active" id="info-${x.id}">${infoPane}</div><div class="popup-pane" id="ctx-${x.id}">${ctxPane}</div><div class="popup-pane" id="moves-${x.id}">${movesPane}</div><div class="popup-pane" id="visits-${x.id}">${visitsPane}</div>${terrainPane}`}
 
+let searchResults;
+function normalizeSearchText(value){
+  return String(value||'').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function renderSearchResults(battleData,q){
+  if(!searchResults) return;
+  if(!q){
+    searchResults.hidden=true;
+    searchResults.innerHTML='';
+    return;
+  }
+  const poiData=pointsOfInterest.filter(poi=>normalizeSearchText([
+    poi.name,poi.city,poi.description,(poi.periods||[]).join(' '),poiTypeLabels[poi.type]
+  ].join(' ')).includes(q));
+  const groups=[];
+  if(battleData.length){
+    groups.push(`<h4 class="search-results-heading">${tFn('results_title',battleData.length)}</h4>${battleData.slice().sort((x,y)=>x.year-y.year).map(x=>`<div class="search-result-item" data-search-result-type="battle" data-search-result-id="${esc(x.id)}"><div class="item-row"><div class="item-title">${esc(x.name)}</div>${compareBattleActionButton(x)}</div><span class="search-result-kind">${x.year} · ${esc(x.place)}</span></div>`).join('')}`);
+  }
+  if(poiData.length){
+    groups.push(`<h4 class="search-results-heading">${esc(t('s_poi'))} (${poiData.length})</h4>${poiData.map(poi=>`<div class="search-result-item" data-search-result-type="poi" data-search-result-id="${esc(poi.id)}"><div class="item-title">${poi.icon||'●'} ${esc(poi.name)}</div><span class="search-result-kind">${esc(poiTypeLabels[poi.type]||poi.type)} · ${esc(poi.city)}</span></div>`).join('')}`);
+  }
+  searchResults.innerHTML=groups.length?groups.join(''):`<div class="search-results-empty">${t('no_results')}</div>`;
+  searchResults.hidden=false;
+}
 function update(){
-  let a=+minYear.value,b=+maxYear.value;
-  if(a>b)[a,b]=[b,a];
-  minLabel.textContent=a;
-  maxLabel.textContent=b;
-  const q=search.value.trim().toLowerCase();
+  const q=normalizeSearchText(search.value.trim());
   const ps=active('period'),ts=active('type');
-  const data=battles.filter(x=>x.year>=a&&x.year<=b&&ps.includes(x.period)&&ts.includes(x.type)&&(`${x.name} ${x.place} ${x.conflict}`.toLowerCase().includes(q)));
+  const data=battles.filter(x=>ps.includes(x.period)&&ts.includes(x.type)&&normalizeSearchText(`${x.name} ${x.place} ${x.conflict}`).includes(q));
   layer.clearLayers();
   markerById={};
 
@@ -7385,9 +7419,15 @@ function update(){
   });
 
   counter.textContent=tFn('counter',data.length);
-  results.innerHTML=data.length
-    ? `<h3>${tFn('results_title',data.length)}</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-row"><div class="item-title">${esc(x.name)}</div>${compareBattleActionButton(x)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join('')
-    : `<div class="empty">${t('no_results')}</div>`;
+  if(q){
+    results.innerHTML='';
+    renderSearchResults(data,q);
+  }else{
+    results.innerHTML=data.length
+      ? `<h3>${tFn('results_title',data.length)}</h3>`+data.sort((x,y)=>x.year-y.year).map(x=>`<div class="item" data-id="${x.id}"><div class="item-row"><div class="item-title">${esc(x.name)}</div>${compareBattleActionButton(x)}</div><div class="meta">${x.year} · ${esc(x.place)}</div></div>`).join('')
+      : `<div class="empty">${t('no_results')}</div>`;
+    renderSearchResults(data,q);
+  }
   document.querySelectorAll('.item').forEach(el=>el.onclick=()=>{
     const x=battles.find(z=>z.id===el.dataset.id);
     map.flyTo(x.coords,11,{duration:.6});
@@ -7491,13 +7531,44 @@ function setupPopupTabs(x,popupNode){
   });
 }
 
-const {minYear,maxYear,search,minLabel,maxLabel,counter,results}=Object.fromEntries(['minYear','maxYear','search','minLabel','maxLabel','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
-/* Le filtre de dates a été retiré de l'interface : toutes les années restent disponibles. */
-minYear.value=minYear.min;
-maxYear.value=maxYear.max;
+const {search,counter,results}=Object.fromEntries(['search','counter','results'].map(id=>[id,document.getElementById(id)]));document.querySelectorAll('input').forEach(el=>el.addEventListener('input',update));update();
+/* La recherche est l'unique emplacement des résultats lorsqu'une requête est active. */
 const dateFilterHeading=document.querySelector('aside > h3:nth-of-type(2)');
 if(dateFilterHeading) dateFilterHeading.remove();
 document.querySelectorAll('aside > .range-label, aside > .slider, aside > .ticks').forEach(el=>el.remove());
+searchResults=document.createElement('div');
+searchResults.id='searchResults';
+searchResults.className='search-results';
+searchResults.hidden=true;
+search.parentNode.insertBefore(searchResults,search.nextSibling);
+searchResults.addEventListener('click',event=>{
+  if(event.target.closest('[data-compare-action]')) return;
+  const item=event.target.closest('[data-search-result-type]');
+  if(!item) return;
+  const type=item.dataset.searchResultType;
+  const id=item.dataset.searchResultId;
+  if(type==='battle'){
+    const battle=battles.find(entry=>entry.id===id);
+    if(!battle) return;
+    map.flyTo(battle.coords,11,{duration:.6});
+    if(isMobileView()) openMobileBattleSheet(battle);
+    else if(markerById[battle.id]) markerById[battle.id].openPopup();
+    return;
+  }
+  const poi=pointsOfInterest.find(entry=>entry.id===id);
+  if(!poi) return;
+  if(!poiActiveTypes.has(poi.type)){
+    poiActiveTypes.add(poi.type);
+    const checkbox=[...document.querySelectorAll('.poi-type-cb')].find(input=>input.value===poi.type);
+    if(checkbox) checkbox.checked=true;
+    drawPointsOfInterest();
+  }
+  map.flyTo(poi.coords,14,{duration:.6});
+  window.setTimeout(()=>{
+    const marker=poiMarkerById[poi.id];
+    if(marker) marker.openPopup();
+  },650);
+});
 update();
 /* Centrage initial sur les batailles de la Révolution belge */
 (function(){ const rb=battles.filter(x=>x.period==='Révolution belge'); if(rb.length) map.fitBounds(L.latLngBounds(rb.map(x=>x.coords)),{padding:[50,50],maxZoom:11}); })();
