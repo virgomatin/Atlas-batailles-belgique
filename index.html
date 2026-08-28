@@ -452,6 +452,37 @@
 .bme-mapcard-img:hover{opacity:.9}
 .bme-mapcard-desc{font-size:11px;color:#5c554c;padding:5px 9px 2px;margin:0;line-height:1.45}
 .bme-mapcard-credit{font-size:10px;color:#8a7f74;padding:3px 9px 7px;margin:0;font-style:italic}
+.bme-timeline{margin:10px 0 4px;padding:9px;border:1px solid #d4c8ae;border-radius:7px;background:#f8f3e9}
+.bme-timeline-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px}
+.bme-phase-toggle{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
+.bme-phase-btn{min-height:32px;padding:5px 7px;border:1px solid #bcae98;border-radius:5px;background:#fffdf8;color:#5f1722;font-size:10px;font-weight:800;cursor:pointer}
+.bme-phase-btn.is-active{background:#5f1722;border-color:#5f1722;color:#fff}
+.bme-timeline-title{color:#5a4535;font:700 12px/1.3 Georgia,serif}
+.bme-timeline-count{color:#8a7f74;font-size:10px}
+.bme-timeline-range{width:100%;margin:2px 0 5px;accent-color:var(--wine);cursor:pointer}
+.bme-timeline-readout{display:block;margin:0 0 7px;color:#302a23;font-size:12px;font-weight:700;text-align:center}
+.bme-timeline-actions{display:flex;align-items:center;justify-content:center;gap:5px}
+.bme-timeline-btn{min-width:31px;min-height:30px;padding:4px 7px;border:1px solid #bcae98;border-radius:5px;background:#fbf8f1;color:#6d1c28;font-size:12px;font-weight:700;cursor:pointer}
+.bme-timeline-btn:hover:not(:disabled),.bme-timeline-btn:focus-visible:not(:disabled){background:#eadcc6;border-color:#a88752;outline:2px solid rgba(122,31,43,.2);outline-offset:1px}
+.bme-timeline-btn:disabled{cursor:not-allowed;opacity:.45}
+.bme-timeline-btn[data-bme-action="play"]{min-width:78px;background:var(--wine);border-color:#5f1722;color:#fff}
+.bme-timeline-btn[data-bme-action="play"]:hover:not(:disabled),.bme-timeline-btn[data-bme-action="play"]:focus-visible:not(:disabled){background:#5f1722}
+.bme-timeline-note,.bme-timeline-empty{margin-top:8px;padding-top:7px;border-top:1px dashed #cfc4ae;color:#65717c;font-size:11px;line-height:1.4}
+.bme-movement-list{display:grid;gap:5px;margin-top:8px}
+.bme-movement-open{width:100%;min-height:32px;padding:6px 8px;border:1px solid #c9bda8;border-radius:5px;background:#fffdf8;color:#5f1722;font-size:11px;font-weight:700;line-height:1.3;text-align:left;cursor:pointer}
+.bme-movement-open:hover,.bme-movement-open:focus-visible{background:#efe5d1;border-color:#a88752;outline:2px solid rgba(122,31,43,.2);outline-offset:1px}
+.bme-inline-detail{margin-top:8px;padding:9px;border:1px solid #c9bda8;border-radius:6px;background:#fffdf8}
+.bme-timeline-empty{margin:8px 0 0;padding:8px 9px;border:1px dashed #c8bdab;border-radius:6px;background:#f8f3e9}
+.bme-movement-popup{min-width:190px;max-width:250px;font-size:12px;line-height:1.4}
+.bme-movement-title{margin-bottom:5px;color:var(--wine);font:700 14px/1.25 Georgia,serif}
+.bme-movement-meta{color:#5a6570;font-size:11px}
+.bme-movement-explanation{margin-top:6px;color:#332e26}
+.bme-precision{display:inline-block;margin-top:6px;padding:3px 6px;border-radius:9px;background:#efe5d1;color:#6d1c28;font-size:10px;font-weight:700}
+.bme-precision.is-documented{background:#dcebdc;color:#2d5a31}
+.bme-movement-hit{cursor:pointer;pointer-events:stroke!important}
+.bme-schematic-line{stroke-dasharray:8 6}
+.bme-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.bme-timeline{padding:10px}.bme-timeline-btn{min-height:40px;padding:7px 9px}.bme-timeline-btn[data-bme-action="play"]{min-width:92px}.bme-timeline-readout{font-size:13px}}
 
 /* ── Terrain overlay styles ── */
 .terrain-note{font-size:12px;line-height:1.46;color:#3e3220;background:#f5f0e0;border-left:3px solid #7a5c28;padding:6px 9px;border-radius:4px;margin-bottom:9px}
@@ -586,13 +617,49 @@
 (function(global){
   'use strict';
   /* ════════════════════════════════════════════════════════════
-     BattleMapEngine — affichage STATIQUE des mouvements de troupes
+     BattleMapEngine — mouvements statiques et chronologie post-bataille
      Polylignes colorées + flèches de direction sur la carte Leaflet.
-     Onglet Mouvements : carte historique d'époque si disponible.
-     Aucune animation, aucun son, aucune dépendance externe.
+     Les itinéraires documentés sont distincts des tracés schématiques.
   ════════════════════════════════════════════════════════════ */
   const BME = {};
-  let _map = null, _layer = null, _battle = null;
+  let _map = null, _layer = null, _battle = null, _dayIndex = 0;
+  let _timer = null, _controls = null, _movementLayers = [], _phase = 'battle';
+
+  function _escape(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+  function _text(key, fallback) {
+    return typeof global.t === 'function' ? global.t(key) : fallback;
+  }
+  function _timeline(b) {
+    return Array.isArray(b && b.postBattleTimeline) ? b.postBattleTimeline : [];
+  }
+  function _activeDay(b) {
+    const days = _timeline(b);
+    return days.length ? days[Math.min(_dayIndex, days.length - 1)] : null;
+  }
+  function _activeMovements(b) {
+    const day = _activeDay(b);
+    return _phase === 'timeline' && day
+      ? (Array.isArray(day.movements) ? day.movements : [])
+      : (b && b.movements) || [];
+  }
+  function _stop() {
+    if (_timer !== null) {
+      global.clearInterval(_timer);
+      _timer = null;
+    }
+    if (_controls) {
+      const play = _controls.querySelector('[data-bme-action="play"]');
+      if (play) {
+        play.textContent = _text('bme_play', 'Lire');
+        play.setAttribute('aria-label', _text('bme_play_aria', 'Lire la chronologie'));
+        play.setAttribute('aria-pressed', 'false');
+      }
+    }
+  }
 
   function _ensure() {
     if (!_layer) _layer = L.layerGroup().addTo(_map);
@@ -610,19 +677,58 @@
     return Math.atan2(b.x - a.x, a.y - b.y) * 180 / Math.PI;
   }
 
-  /* ── Dessin statique : polylignes + pointe SVG au point d'arrivée ── */
+  /* ── Dessin : polylignes + pointe SVG au point d'arrivée ── */
   function _render(b) {
     if (!_map || !b) return;
     _ensure().clearLayers();
-    (b.movements || []).forEach(m => {
+    _movementLayers = [];
+    const day = _phase === 'timeline' ? _activeDay(b) : null;
+    const dayDate = day && (day.date || day.label);
+    _activeMovements(b).forEach(m => {
       if (!m.coords || m.coords.length < 2) return;
       const pts = m.coords.map(c => L.latLng(c[0], c[1]));
       const col = m.color || '#555555';
-      /* Polyligne */
-      L.polyline(pts, {
-        color: col, weight: 3, opacity: 0.85,
+      const documented = day ? m.precision === 'documented' : true;
+      const line = L.polyline(pts, {
+        color: col, weight: documented ? 3.5 : 3, opacity: 0.88,
+        dashArray: documented ? null : '8,6',
+        className: day
+          ? `bme-movement-line ${documented ? 'bme-documented-line' : 'bme-schematic-line'}`
+          : 'bme-movement-line',
         lineJoin: 'round', lineCap: 'round'
       }).addTo(_layer);
+      const precisionLabel = documented
+        ? _text('bme_documented', 'Tracé documenté')
+        : _text('bme_schematic', 'Tracé schématique');
+      const unknown = _text('bme_unknown', 'Donnée non établie');
+      const details = day ? [
+        [_text('bme_date', 'Date'), dayDate || unknown],
+        [_text('bme_personnel', 'Effectif'), m.personnel || m.effectif || unknown],
+        [_text('bme_unit', 'Unité ou corps'), m.unit || m.corps || unknown],
+        [_text('bme_direction', 'Sens'), m.direction || unknown]
+      ].map(item => `<div><b>${_escape(item[0])} :</b> ${_escape(item[1])}</div>`).join('') : '';
+      const movementPopup = `<div class="bme-movement-popup">`
+        + `<div class="bme-movement-title">${_escape(m.label || _text('bme_movement', 'Mouvement'))}</div>`
+        + (details ? `<div class="bme-movement-meta">${details}</div>` : '')
+        + (m.explanation ? `<div class="bme-movement-explanation">${_escape(m.explanation)}</div>` : '')
+        + (day ? `<span class="bme-precision${documented ? ' is-documented' : ''}">${_escape(precisionLabel)}</span>` : '')
+        + `</div>`;
+      line.bindPopup(movementPopup, {maxWidth:270});
+      const tooltipLabel = _escape(m.label || _text('bme_movement', 'Mouvement'))
+        + (day ? ` — ${_escape(precisionLabel)}` : '');
+      line.bindTooltip(tooltipLabel, {sticky:true, className:'kp-tooltip'});
+      const hitLine = L.polyline(pts, {
+        color: col,
+        weight: 30,
+        opacity: 0.01,
+        interactive: true,
+        className: 'bme-movement-hit',
+        lineJoin: 'round',
+        lineCap: 'round'
+      }).addTo(_layer);
+      hitLine.bindPopup(movementPopup, {maxWidth:270});
+      hitLine.bindTooltip(tooltipLabel, {sticky:true, className:'kp-tooltip'});
+      _movementLayers.push(hitLine);
       /* Flèche SVG orientée d'après les deux derniers points projetés */
       const n = pts.length;
       const ang = _screenAngle(pts[n - 2], pts[n - 1]);
@@ -642,6 +748,11 @@
   }
 
   function draw(b) {
+    if (_battle !== b) {
+      _stop();
+      _dayIndex = 0;
+      _phase = Array.isArray(b.movements) && b.movements.length ? 'battle' : 'timeline';
+    }
     _battle = b;
     _render(_battle);
   }
@@ -650,19 +761,54 @@
     _render(_battle);
   }
 
+  function _movementListHtml(day) {
+    const movements = day && Array.isArray(day.movements) ? day.movements : [];
+    return movements.map((movement, index) =>
+      `<button class="bme-movement-open" type="button" data-bme-movement-index="${index}">↗ ${_escape(movement.label || _text('bme_movement', 'Mouvement'))}</button>`
+    ).join('');
+  }
+
   /* ── Panneau Mouvements : carte historique d'époque si définie ── */
   function buildPanel(b) {
-    if (!b.battleMap) return '';
-    const m = b.battleMap;
-    const nm = String(b.name).replace(/"/g, '&quot;').replace(/</g, '&lt;');
-    return `<div class="bme-mapcard">`
-      + `<div class="bme-mapcard-lbl">🗺&#xFE0E; Carte d'époque</div>`
-      + `<a href="${m.url}" target="_blank" rel="noopener noreferrer" title="Ouvrir en grand">`
-      + `<img class="bme-mapcard-img" src="${m.url}" alt="Carte historique : ${nm}" loading="lazy">`
-      + `</a>`
-      + (m.desc ? `<p class="bme-mapcard-desc">${m.desc}</p>` : '')
-      + `<p class="bme-mapcard-credit">${m.credit}</p>`
+    let html = '';
+    if (b.battleMap) {
+      const m = b.battleMap;
+      const nm = _escape(b.name);
+      html += `<div class="bme-mapcard">`
+        + `<div class="bme-mapcard-lbl">🗺&#xFE0E; Carte d'époque</div>`
+        + `<a href="${m.url}" target="_blank" rel="noopener noreferrer" title="Ouvrir en grand">`
+        + `<img class="bme-mapcard-img" src="${m.url}" alt="Carte historique : ${nm}" loading="lazy">`
+        + `</a>`
+        + (m.desc ? `<p class="bme-mapcard-desc">${_escape(m.desc)}</p>` : '')
+        + `<p class="bme-mapcard-credit">${_escape(m.credit || '')}</p>`
+        + `</div>`;
+    }
+    const days = _timeline(b);
+    if (!days.length) {
+      return html + `<div class="bme-timeline-empty">${_escape(_text('bme_no_data', 'Aucun mouvement post-bataille suffisamment documenté pour cet événement.'))}</div>`;
+    }
+    const id = _escape(b.id);
+    const rangeId = `bme-range-${id}`;
+    const lastIndex = days.length - 1;
+    const hasStaticMovements = Array.isArray(b.movements) && b.movements.length;
+    html += `<div class="bme-timeline" data-bme-id="${id}">`
+      + `<div class="bme-timeline-head"><span class="bme-timeline-title">${_escape(_text('bme_timeline_title', 'Chronologie post-bataille'))}</span><span class="bme-timeline-count">${days.length} ${_escape(_text('bme_days', 'jours'))}</span></div>`
+      + (hasStaticMovements ? `<div class="bme-phase-toggle"><button class="bme-phase-btn is-active" type="button" data-bme-phase="battle" aria-pressed="true">${_escape(_text('bme_battle_phase', 'Bataille'))}</button><button class="bme-phase-btn" type="button" data-bme-phase="timeline" aria-pressed="false">${_escape(_text('bme_post_phase', 'Après la bataille'))}</button></div>` : '')
+      + `<div data-bme-timeline-controls${hasStaticMovements ? ' hidden' : ''}>`
+      + `<label class="bme-sr-only" for="${rangeId}">${_escape(_text('bme_choose_day', 'Choisir le jour'))}</label>`
+      + `<output class="bme-timeline-readout" data-bme-output for="${rangeId}">${_escape(_dayLabel(days[0], 0))}</output>`
+      + `<input class="bme-timeline-range" id="${rangeId}" data-bme-range type="range" min="0" max="${lastIndex}" step="1" value="0">`
+      + `<div class="bme-timeline-actions">`
+      + `<button class="bme-timeline-btn" type="button" data-bme-action="prev" aria-label="${_escape(_text('bme_previous_aria', 'Jour précédent'))}" title="${_escape(_text('bme_previous', 'Précédent'))}">‹</button>`
+      + `<button class="bme-timeline-btn" type="button" data-bme-action="play" aria-label="${_escape(_text('bme_play_aria', 'Lire la chronologie'))}" aria-pressed="false">${_escape(_text('bme_play', 'Lire'))}</button>`
+      + `<button class="bme-timeline-btn" type="button" data-bme-action="next" aria-label="${_escape(_text('bme_next_aria', 'Jour suivant'))}" title="${_escape(_text('bme_next', 'Suivant'))}">›</button>`
+      + `</div>`
+      + `<div class="bme-timeline-note" data-bme-note>${_escape(days[0].note || _text('bme_day_hint', 'Les axes affichés sont ceux documentés pour cette journée.'))}</div>`
+      + `<div class="bme-movement-list" data-bme-list>${_movementListHtml(days[0])}</div>`
+      + `<div class="bme-inline-detail" data-bme-inline-detail hidden></div>`
+      + `</div>`
       + `</div>`;
+    return html;
   }
 
   function attach(m) {
@@ -674,13 +820,102 @@
   BME.attach  = attach;
   BME.draw    = draw;
   BME.refresh = refresh;
+  BME.hasLayer = layer => Boolean(_layer && layer && _layer.hasLayer(layer));
   BME.clear   = () => {
+    _stop();
     _battle = null;
+    _controls = null;
+    _dayIndex = 0;
+    _movementLayers = [];
+    _phase = 'battle';
     if (_layer) _layer.clearLayers();
   };
   BME.buildPanel  = buildPanel;
-  BME.bindControls = () => {};   /* no-op : plus de contrôles animation */
-  BME.status  = () => 'idle';
+  function _dayLabel(day, index) {
+    return (day && (day.label || day.date)) || `J+${index}`;
+  }
+  function _syncControls() {
+    if (!_controls || !_battle) return;
+    const days = _timeline(_battle);
+    if (!days.length) return;
+    _dayIndex = Math.max(0, Math.min(_dayIndex, days.length - 1));
+    const range = _controls.querySelector('[data-bme-range]');
+    const output = _controls.querySelector('[data-bme-output]');
+    const note = _controls.querySelector('[data-bme-note]');
+    const list = _controls.querySelector('[data-bme-list]');
+    const timelineControls = _controls.querySelector('[data-bme-timeline-controls]');
+    const inlineDetail = _controls.querySelector('[data-bme-inline-detail]');
+    const prev = _controls.querySelector('[data-bme-action="prev"]');
+    const next = _controls.querySelector('[data-bme-action="next"]');
+    if (range) range.value = String(_dayIndex);
+    if (output) output.textContent = _dayLabel(days[_dayIndex], _dayIndex);
+    if (note) note.textContent = days[_dayIndex].note || _text('bme_day_hint', 'Les axes affichés sont ceux documentés pour cette journée.');
+    if (list) list.innerHTML = _movementListHtml(days[_dayIndex]);
+    if (timelineControls) timelineControls.hidden = _phase !== 'timeline';
+    if (inlineDetail) {
+      inlineDetail.hidden = true;
+      inlineDetail.innerHTML = '';
+    }
+    _controls.querySelectorAll('[data-bme-phase]').forEach(button => {
+      const active = button.dataset.bmePhase === _phase;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    if (prev) prev.disabled = _dayIndex === 0;
+    if (next) next.disabled = _dayIndex === days.length - 1;
+    _render(_battle);
+  }
+  BME.bindControls = (container, battle) => {
+    const panel = container && container.querySelector('.bme-timeline');
+    if (!panel || !Array.isArray(battle.postBattleTimeline) || !battle.postBattleTimeline.length) return;
+    _controls = panel;
+    _battle = battle;
+    const days = _timeline(battle);
+    const setDay = index => {
+      _dayIndex = Math.max(0, Math.min(Number(index) || 0, days.length - 1));
+      _syncControls();
+    };
+    const range = panel.querySelector('[data-bme-range]');
+    if (range) range.oninput = event => setDay(event.target.value);
+    panel.querySelectorAll('[data-bme-phase]').forEach(button => {
+      button.onclick = () => {
+        _stop();
+        _phase = button.dataset.bmePhase === 'timeline' ? 'timeline' : 'battle';
+        _syncControls();
+      };
+    });
+    const list = panel.querySelector('[data-bme-list]');
+    if (list) list.onclick = event => {
+      const button = event.target.closest('[data-bme-movement-index]');
+      if (!button) return;
+      const movementLayer = _movementLayers[Number(button.dataset.bmeMovementIndex)];
+      if (movementLayer) movementLayer.openPopup();
+    };
+    panel.querySelectorAll('[data-bme-action]').forEach(button => {
+      const action = button.dataset.bmeAction;
+      if (action === 'prev') button.onclick = () => setDay(_dayIndex - 1);
+      if (action === 'next') button.onclick = () => setDay(_dayIndex + 1);
+      if (action === 'play') button.onclick = () => {
+        if (_timer !== null) {
+          _stop();
+          return;
+        }
+        if (_dayIndex >= days.length - 1) setDay(0);
+        button.textContent = _text('bme_pause', 'Pause');
+        button.setAttribute('aria-label', _text('bme_pause_aria', 'Mettre la chronologie en pause'));
+        button.setAttribute('aria-pressed', 'true');
+        _timer = global.setInterval(() => {
+          if (_dayIndex >= days.length - 1) {
+            _stop();
+            return;
+          }
+          setDay(_dayIndex + 1);
+        }, 1800);
+      };
+    });
+    _syncControls();
+  };
+  BME.status  = () => _timer === null ? 'idle' : 'playing';
   global.BattleMapEngine = BME;
 })(window);
 
@@ -823,7 +1058,21 @@ sources:[
  {a:'Andrew W. Field',t:'Grouchy’s Waterloo: The Battles of Ligny and Wavre (Pen & Sword, 2017)',u:'https://archive.org/details/grouchyswaterloo0000fiel',type:'monographie savante'},
  {a:'The Napoleon Series — recension',t:'Review of Grouchy’s Waterloo',u:'https://www.napoleon-series.org/reviews/military/GrouchyWaterloo.pdf',type:'recension académique'},
  {a:'The Napoleon Series',t:'The Battle of Ligny',u:'https://www.napoleon-series.org/military-info/battles/hundred/c_chapter4.html',type:'synthèse spécialisée'}]},
-{id:'waterloo',name:'Bataille de Waterloo',year:1815,period:'Révolution et Empire',type:'Bataille rangée',place:'Braine-l’Alleud, Waterloo, Lasne',coords:[50.68,4.412],conflict:'Campagne de Belgique (Cent-Jours)',outcome:'Victoire de la coalition',certainty:'confirmé',color:'#536e8c',text:'Combat du 18 juin 1815 entre l’armée française, l’armée anglo-alliée et l’armée prussienne ; fin des Cent-Jours.',image:'https://commons.wikimedia.org/wiki/Special:FilePath/De%20Slag%20bij%20Waterloo%20Rijksmuseum%20SK-A-1115%20%28cropped%29.jpeg',credit:'Jan Willem Pieneman, La Bataille de Waterloo, 1824, Rijksmuseum SK-A-1115 — CC0, domaine public',keypoints:[{"name": "Château d\'Hougoumont", "coords": [50.6706, 4.3948], "desc": "Ferme fortifiée sur le flanc droit allié, assaillie sans succès toute la journée par le IIe corps de Reille."}, {"name": "Ferme de la Haie Sainte", "coords": [50.6784, 4.4056], "desc": "Ferme centrale tenue par la Légion allemande du roi, prise par les Français vers 18h00 après épuisement des munitions."}, {"name": "Hameau de Papelotte", "coords": [50.6803, 4.4339], "desc": "Ancre le flanc gauche allié, défendu par la brigade nassovienne du prince de Saxe-Weimar."}, {"name": "Village de Plancenoit", "coords": [50.6607, 4.4295], "desc": "Enjeu de combats acharnés entre la Jeune Garde française et le IVe corps prussien de Bülow."}, {"name": "Ferme du Mont-Saint-Jean", "coords": [50.6797, 4.4067], "desc": "Point d\'ancrage de la crête tenue par Wellington, hôpital de campagne durant la bataille."}, {"name": "La Belle Alliance", "coords": [50.6667, 4.4083], "desc": "Auberge servant de poste de commandement à Napoléon en début de bataille."}],context:{"preambule": "Après les victoires françaises de Ligny et l\'issue indécise de Quatre-Bras le 16 juin, Napoléon poursuit Wellington replié sur la crête de Mont-Saint-Jean, espérant l\'écraser avant l\'arrivée des renforts prussiens de Blücher.", "deroule": "Le 18 juin 1815, Napoléon retarde son attaque jusqu\'à midi pour laisser sécher le terrain détrempé ; les assauts français successifs sur Hougoumont, La Haie Sainte puis le centre allié échouent à percer la ligne de Wellington, tandis que l\'arrivée décisive des Prussiens de Bülow sur le flanc droit français à Plancenoit détourne des forces cruciales. L\'assaut final de la Garde impériale, repoussé vers 19h30, précipite la débandade de l\'armée française.", "apres": "Napoléon abdique quatre jours plus tard, le 22 juin 1815, mettant fin définitivement à l\'Empire et à l\'ère napoléonienne ; il sera exilé à Sainte-Hélène où il mourra en 1821. La bataille inaugure le Congrès de Vienne et une nouvelle ère de stabilité relative en Europe, le Concert des nations.", "forces": "72 000 Français (Napoléon, 246 canons) contre 68 000 Anglo-Alliés (Wellington, 156 canons) et 45 000-50 000 Prussiens engagés (Blücher, 104 canons).", "pertes": "24 000-26 000 pertes françaises (dont 6 000-9 000 prisonniers) contre ≈17 000 pertes anglo-alliées et ≈7 000 pertes prussiennes."},movements:[{"label": "Attaque de diversion française sur Hougoumont (11h30)", "color": "#8a3e3e", "coords": [[50.685, 4.4], [50.678, 4.397], [50.6706, 4.3948]]}, {"label": "Assaut du Ier corps de d\'Erlon sur le centre (13h00-13h30)", "color": "#8a3e3e", "coords": [[50.665, 4.42], [50.672, 4.412], [50.6784, 4.4056]]}, {"label": "Charges de cavalerie française de Ney (16h00)", "color": "#8a3e3e", "coords": [[50.665, 4.42], [50.674, 4.41], [50.6797, 4.4067]]}, {"label": "Prise de la Haye Sainte (18h00)", "color": "#8a3e3e", "coords": [[50.672, 4.407], [50.6784, 4.4056]]}, {"label": "Assaut de la Garde impériale (19h30)", "color": "#8a3e3e", "coords": [[50.667, 4.408], [50.674, 4.407], [50.6797, 4.4067]]}, {"label": "Défense anglo-alliée (Wellington) sur la crête", "color": "#345b8c", "coords": [[50.685, 4.4], [50.6797, 4.4067]]}, {"label": "Arrivée et attaque prussienne sur Plancenoit (16h30-19h00)", "color": "#8a4a1c", "coords": [[50.66, 4.55], [50.662, 4.48], [50.6607, 4.4295]]}],visits:[
+{id:'waterloo',name:'Bataille de Waterloo',year:1815,period:'Révolution et Empire',type:'Bataille rangée',place:'Braine-l’Alleud, Waterloo, Lasne',coords:[50.68,4.412],conflict:'Campagne de Belgique (Cent-Jours)',outcome:'Victoire de la coalition',certainty:'confirmé',color:'#536e8c',text:'Combat du 18 juin 1815 entre l’armée française, l’armée anglo-alliée et l’armée prussienne ; fin des Cent-Jours.',image:'https://commons.wikimedia.org/wiki/Special:FilePath/De%20Slag%20bij%20Waterloo%20Rijksmuseum%20SK-A-1115%20%28cropped%29.jpeg',credit:'Jan Willem Pieneman, La Bataille de Waterloo, 1824, Rijksmuseum SK-A-1115 — CC0, domaine public',keypoints:[{"name": "Château d\'Hougoumont", "coords": [50.6706, 4.3948], "desc": "Ferme fortifiée sur le flanc droit allié, assaillie sans succès toute la journée par le IIe corps de Reille."}, {"name": "Ferme de la Haie Sainte", "coords": [50.6784, 4.4056], "desc": "Ferme centrale tenue par la Légion allemande du roi, prise par les Français vers 18h00 après épuisement des munitions."}, {"name": "Hameau de Papelotte", "coords": [50.6803, 4.4339], "desc": "Ancre le flanc gauche allié, défendu par la brigade nassovienne du prince de Saxe-Weimar."}, {"name": "Village de Plancenoit", "coords": [50.6607, 4.4295], "desc": "Enjeu de combats acharnés entre la Jeune Garde française et le IVe corps prussien de Bülow."}, {"name": "Ferme du Mont-Saint-Jean", "coords": [50.6797, 4.4067], "desc": "Point d\'ancrage de la crête tenue par Wellington, hôpital de campagne durant la bataille."}, {"name": "La Belle Alliance", "coords": [50.6667, 4.4083], "desc": "Auberge servant de poste de commandement à Napoléon en début de bataille."}],context:{"preambule": "Après les victoires françaises de Ligny et l\'issue indécise de Quatre-Bras le 16 juin, Napoléon poursuit Wellington replié sur la crête de Mont-Saint-Jean, espérant l\'écraser avant l\'arrivée des renforts prussiens de Blücher.", "deroule": "Le 18 juin 1815, Napoléon retarde son attaque jusqu\'à midi pour laisser sécher le terrain détrempé ; les assauts français successifs sur Hougoumont, La Haie Sainte puis le centre allié échouent à percer la ligne de Wellington, tandis que l\'arrivée décisive des Prussiens de Bülow sur le flanc droit français à Plancenoit détourne des forces cruciales. L\'assaut final de la Garde impériale, repoussé vers 19h30, précipite la débandade de l\'armée française.", "apres": "Napoléon abdique quatre jours plus tard, le 22 juin 1815, mettant fin définitivement à l\'Empire et à l\'ère napoléonienne ; il sera exilé à Sainte-Hélène où il mourra en 1821. La bataille inaugure le Congrès de Vienne et une nouvelle ère de stabilité relative en Europe, le Concert des nations.", "forces": "72 000 Français (Napoléon, 246 canons) contre 68 000 Anglo-Alliés (Wellington, 156 canons) et 45 000-50 000 Prussiens engagés (Blücher, 104 canons).", "pertes": "24 000-26 000 pertes françaises (dont 6 000-9 000 prisonniers) contre ≈17 000 pertes anglo-alliées et ≈7 000 pertes prussiennes."},postBattleTimeline:[
+  {day:0,date:'18 juin 1815, soirée',label:'J+0 · 18 juin',note:'Axes schématiques fondés sur la retraite française et la poursuite prussienne rapportées après l’effondrement de la ligne impériale.',movements:[
+    {label:'Retraite française vers Genappe',color:'#8a3e3e',coords:[[50.6667,4.4083],[50.637,4.431],[50.610,4.451]],personnel:'Donnée non établie',unit:'Débris de l’armée du Nord',direction:'Repli',explanation:'Après le recul de la Garde, une partie de l’armée française se retire vers le sud par l’axe de Genappe.',precision:'schematic'},
+    {label:'Poursuite prussienne vers Genappe',color:'#8a4a1c',coords:[[50.6607,4.4295],[50.638,4.439],[50.610,4.451]],personnel:'Donnée non établie',unit:'Avant-garde prussienne',direction:'Poursuite',explanation:'Les troupes prussiennes poursuivent les formations françaises en déroute au sud du champ de bataille.',precision:'schematic'}
+  ]},
+  {day:1,date:'19 juin 1815',label:'J+1 · 19 juin',note:'Le tracé indique un axe général de repli et non les routes précises empruntées par chaque corps.',movements:[
+    {label:'Retrait français vers Charleroi',color:'#8a3e3e',coords:[[50.610,4.451],[50.567,4.450],[50.412,4.444]],personnel:'Donnée non établie',unit:'Restes de l’armée du Nord',direction:'Repli',explanation:'Les survivants français poursuivent leur retrait vers la Sambre et Charleroi.',precision:'schematic'},
+    {label:'Poursuite de la coalition',color:'#345b8c',coords:[[50.680,4.412],[50.610,4.451],[50.567,4.450]],personnel:'Donnée non établie',unit:'Avant-gardes alliées et prussiennes',direction:'Poursuite',explanation:'La coalition maintient la pression vers le sud sans qu’un itinéraire unique soit établi pour l’ensemble des unités.',precision:'schematic'}
+  ]},
+  {day:2,date:'20 juin 1815',label:'J+2 · 20 juin',note:'La retraite de Grouchy relève du théâtre élargi de la campagne ; l’axe vers Namur est représenté schématiquement.',movements:[
+    {label:'Repli du corps de Grouchy vers Namur',color:'#536e8c',coords:[[50.718,4.611],[50.603,4.704],[50.467,4.867]],personnel:'50 000 à 60 000 hommes (estimation du corpus)',unit:'Corps du maréchal Grouchy',direction:'Repli et regroupement',explanation:'Après Wavre et l’annonce de la défaite de Waterloo, Grouchy ramène ses forces vers Namur afin de rejoindre la France.',precision:'schematic'}
+  ]},
+  {day:3,date:'21 juin 1815',label:'J+3 · 21 juin',note:'Aucun axe de mouvement suffisamment documenté n’est cartographié pour cette journée dans le corpus actuel.',movements:[]},
+  {day:4,date:'22 juin 1815',label:'J+4 · 22 juin',note:'Aucun itinéraire militaire n’est cartographié ; l’abdication de Napoléon ce jour-là constitue un événement politique, pas un mouvement de troupes.',movements:[]}
+],movements:[{"label": "Attaque de diversion française sur Hougoumont (11h30)", "color": "#8a3e3e", "coords": [[50.685, 4.4], [50.678, 4.397], [50.6706, 4.3948]]}, {"label": "Assaut du Ier corps de d\'Erlon sur le centre (13h00-13h30)", "color": "#8a3e3e", "coords": [[50.665, 4.42], [50.672, 4.412], [50.6784, 4.4056]]}, {"label": "Charges de cavalerie française de Ney (16h00)", "color": "#8a3e3e", "coords": [[50.665, 4.42], [50.674, 4.41], [50.6797, 4.4067]]}, {"label": "Prise de la Haye Sainte (18h00)", "color": "#8a3e3e", "coords": [[50.672, 4.407], [50.6784, 4.4056]]}, {"label": "Assaut de la Garde impériale (19h30)", "color": "#8a3e3e", "coords": [[50.667, 4.408], [50.674, 4.407], [50.6797, 4.4067]]}, {"label": "Défense anglo-alliée (Wellington) sur la crête", "color": "#345b8c", "coords": [[50.685, 4.4], [50.6797, 4.4067]]}, {"label": "Arrivée et attaque prussienne sur Plancenoit (16h30-19h00)", "color": "#8a4a1c", "coords": [[50.66, 4.55], [50.662, 4.48], [50.6607, 4.4295]]}],visits:[
   {
     kind:'Musée et champ de bataille',
     title:'Mémorial Waterloo 1815',
@@ -6764,6 +7013,7 @@ fr:{
   no_results:"Aucun événement ne correspond aux filtres actuels.",
   tab_fiche:"Fiche",tab_ctx:"Contexte",tab_moves:"Mouvements",tab_visits:"Visiter & voir",
   popup_outcome:"Issue",popup_sources:n=>`Sources (${n})`,popup_moves_title:"Mouvements de troupes",
+  bme_timeline_title:"Chronologie post-bataille",bme_days:"jours",bme_choose_day:"Choisir le jour",bme_previous:"Précédent",bme_next:"Suivant",bme_previous_aria:"Jour précédent",bme_next_aria:"Jour suivant",bme_play:"Lire",bme_pause:"Pause",bme_play_aria:"Lire la chronologie",bme_pause_aria:"Mettre la chronologie en pause",bme_documented:"Tracé documenté",bme_schematic:"Tracé schématique",bme_movement:"Mouvement",bme_date:"Date",bme_personnel:"Effectif",bme_unit:"Unité ou corps",bme_direction:"Sens",bme_unknown:"Donnée non établie",bme_day_hint:"Les axes affichés sont ceux documentés pour cette journée.",bme_no_data:"Aucun mouvement post-bataille suffisamment documenté pour cet événement.",
   cert_confirmed:"Confirmé",cert_probable:"Probable",cert_approx:"Approximatif",
   no_moves:"Aucune donnée de mouvement disponible pour cet événement dans ce prototype.",
   no_context:"Aucune donnée contextuelle disponible pour cet événement dans ce prototype.",
@@ -6800,6 +7050,7 @@ nl:{
   no_results:"Geen evenementen gevonden voor de huidige filters.",
   tab_fiche:"Info",tab_ctx:"Context",tab_moves:"Bewegingen",tab_visits:"Bezoeken & zien",
   popup_outcome:"Afloop",popup_sources:n=>`Bronnen (${n})`,popup_moves_title:"Troepenbeweging",
+  bme_timeline_title:"Chronologie na de slag",bme_days:"dagen",bme_choose_day:"Kies de dag",bme_previous:"Vorige",bme_next:"Volgende",bme_previous_aria:"Vorige dag",bme_next_aria:"Volgende dag",bme_play:"Afspelen",bme_pause:"Pauze",bme_play_aria:"Chronologie afspelen",bme_pause_aria:"Chronologie pauzeren",bme_documented:"Gedocumenteerd traject",bme_schematic:"Schematisch traject",bme_movement:"Beweging",bme_date:"Datum",bme_personnel:"Effectief",bme_unit:"Eenheid of korps",bme_direction:"Richting",bme_unknown:"Niet vastgesteld",bme_day_hint:"De getoonde assen zijn voor deze dag gedocumenteerd.",bme_no_data:"Voor deze gebeurtenis zijn geen voldoende gedocumenteerde bewegingen na de slag beschikbaar.",
   cert_confirmed:"Bevestigd",cert_probable:"Waarschijnlijk",cert_approx:"Approximatief",
   no_moves:"Geen bewegingsgegevens beschikbaar voor dit evenement in dit prototype.",
   no_context:"Geen contextuele gegevens beschikbaar voor dit evenement in dit prototype.",
@@ -6836,6 +7087,7 @@ de:{
   no_results:"Keine Ereignisse entsprechen den aktuellen Filtern.",
   tab_fiche:"Info",tab_ctx:"Kontext",tab_moves:"Bewegungen",tab_visits:"Besuchen & sehen",
   popup_outcome:"Ausgang",popup_sources:n=>`Quellen (${n})`,popup_moves_title:"Truppenbewegungen",
+  bme_timeline_title:"Chronologie nach der Schlacht",bme_days:"Tage",bme_choose_day:"Tag auswählen",bme_previous:"Zurück",bme_next:"Weiter",bme_previous_aria:"Vorheriger Tag",bme_next_aria:"Nächster Tag",bme_play:"Abspielen",bme_pause:"Pause",bme_play_aria:"Chronologie abspielen",bme_pause_aria:"Chronologie pausieren",bme_documented:"Dokumentierter Verlauf",bme_schematic:"Schematischer Verlauf",bme_movement:"Bewegung",bme_date:"Datum",bme_personnel:"Stärke",bme_unit:"Einheit oder Korps",bme_direction:"Richtung",bme_unknown:"Nicht belegt",bme_day_hint:"Angezeigt werden die für diesen Tag dokumentierten Bewegungsachsen.",bme_no_data:"Für dieses Ereignis sind keine ausreichend dokumentierten Bewegungen nach der Schlacht verfügbar.",
   cert_confirmed:"Bestätigt",cert_probable:"Wahrscheinlich",cert_approx:"Ungefähr",
   no_moves:"Keine Bewegungsdaten für dieses Ereignis in diesem Prototyp verfügbar.",
   no_context:"Keine Kontextdaten für dieses Ereignis in diesem Prototyp verfügbar.",
@@ -6872,6 +7124,7 @@ en:{
   no_results:"No events match the current filters.",
   tab_fiche:"Info",tab_ctx:"Context",tab_moves:"Movements",tab_visits:"Visit & watch",
   popup_outcome:"Outcome",popup_sources:n=>`Sources (${n})`,popup_moves_title:"Troop movements",
+  bme_timeline_title:"Post-battle timeline",bme_days:"days",bme_choose_day:"Choose the day",bme_previous:"Previous",bme_next:"Next",bme_previous_aria:"Previous day",bme_next_aria:"Next day",bme_play:"Play",bme_pause:"Pause",bme_play_aria:"Play timeline",bme_pause_aria:"Pause timeline",bme_documented:"Documented route",bme_schematic:"Schematic route",bme_movement:"Movement",bme_date:"Date",bme_personnel:"Strength",bme_unit:"Unit or corps",bme_direction:"Direction",bme_unknown:"Not established",bme_day_hint:"The displayed axes are those documented for this day.",bme_no_data:"No sufficiently documented post-battle movements are available for this event.",
   cert_confirmed:"Confirmed",cert_probable:"Probable",cert_approx:"Approximate",
   no_moves:"No movement data available for this event in this prototype.",
   no_context:"No contextual data available for this event in this prototype.",
@@ -6892,6 +7145,10 @@ en:{
   period_names:{"Antiquité":"Antiquity","Antiquité tardive":"Late Antiquity","Haut Moyen Âge":"Early Middle Ages","Moyen Âge":"Middle Ages","Guerres de l'époque moderne":"Early Modern Wars","Guerre de Trente Ans":"Thirty Years' War","Révolution et Empire":"Revolution and Empire","Révolution belge":"Belgian Revolution","Révolution belge et indépendance":"Belgian Revolution and Independence","Première Guerre mondiale":"World War I","Seconde Guerre mondiale":"World War II","Guerres de Nouvelle-Zélande":"New Zealand Wars","XVIIe siècle":"17th century","XVIIIe siècle":"18th century"}
 }
 };
+Object.assign(I18N.fr,{bme_battle_phase:"Bataille",bme_post_phase:"Après la bataille"});
+Object.assign(I18N.nl,{bme_battle_phase:"Slag",bme_post_phase:"Na de slag"});
+Object.assign(I18N.de,{bme_battle_phase:"Schlacht",bme_post_phase:"Nach der Schlacht"});
+Object.assign(I18N.en,{bme_battle_phase:"Battle",bme_post_phase:"After the battle"});
 let currentLang="fr";
 function t(key){const v=I18N[currentLang]?.[key];return v!==undefined?v:(I18N.fr[key]!==undefined?I18N.fr[key]:key);}
 function tFn(key,...args){const fn=t(key);return typeof fn==="function"?fn(...args):String(fn);}
@@ -7505,7 +7762,7 @@ function buildTerrainPanel(x){
 }
 
 function clearMovementLayer(){moveLayer.clearLayers();BattleMapEngine.clear();}
-function drawMovements(x){clearMovementLayer();if(!x.movements)return;if(x.keypoints){x.keypoints.forEach(kp=>{const kpMarker=L.marker(kp.coords,{icon:L.divIcon({className:'keypoint-icon',html:'<span></span>',iconSize:[14,14]}),zIndexOffset:1000});const kpPopup=`<div class="kp-popup"><b>${esc(kp.name)}</b>${kp.desc?`<div class="kp-desc">${esc(kp.desc)}</div>`:''}</div>`;kpMarker.bindPopup(kpPopup,{maxWidth:240});kpMarker.bindTooltip(kp.name,{permanent:false,direction:'top',className:'kp-tooltip'});kpMarker.addTo(moveLayer);});}const allCoords=x.movements.flatMap(mv=>mv.coords).concat((x.keypoints||[]).map(kp=>kp.coords));map.fitBounds(L.latLngBounds(allCoords),{padding:[40,40],maxZoom:16});BattleMapEngine.draw(x);}
+function drawMovements(x){clearMovementLayer();const staticMovements=x.movements||[];const postMovements=(x.postBattleTimeline||[]).flatMap(day=>day.movements||[]);if(!staticMovements.length&&!postMovements.length)return;if(x.keypoints){x.keypoints.forEach(kp=>{const kpMarker=L.marker(kp.coords,{icon:L.divIcon({className:'keypoint-icon',html:'<span></span>',iconSize:[14,14]}),zIndexOffset:1000});const kpPopup=`<div class="kp-popup"><b>${esc(kp.name)}</b>${kp.desc?`<div class="kp-desc">${esc(kp.desc)}</div>`:''}</div>`;kpMarker.bindPopup(kpPopup,{maxWidth:240});kpMarker.bindTooltip(kp.name,{permanent:false,direction:'top',className:'kp-tooltip'});kpMarker.addTo(moveLayer);});}const allCoords=staticMovements.concat(postMovements).flatMap(mv=>mv.coords||[]).concat((x.keypoints||[]).map(kp=>kp.coords));if(allCoords.length){const fitOptions=isMobileView()?{padding:[40,70],maxZoom:16}:{paddingTopLeft:[380,240],paddingBottomRight:[60,60],maxZoom:16};map.fitBounds(L.latLngBounds(allCoords),fitOptions);}BattleMapEngine.draw(x);}
 
 function setupPopupTabs(x,popupNode){
   const container=(popupNode&&popupNode.querySelector('.leaflet-popup-content'))||document.querySelector('.leaflet-popup-content');
@@ -7739,11 +7996,23 @@ function prepareMobileSurface(nextSurface){
 
 function isOverlayDetailPopup(popup){
   const source=popup&&popup._source;
-  return Boolean(source&&(moveLayer.hasLayer(source)||terrainLayer.hasLayer(source)));
+  return Boolean(source&&(moveLayer.hasLayer(source)||terrainLayer.hasLayer(source)||BattleMapEngine.hasLayer(source)));
 }
 
 function handleLeafletPopupOpening(popup){
   if(isMobileView()){
+    const source=popup&&popup._source;
+    if(source&&BattleMapEngine.hasLayer(source)&&document.body.classList.contains('mobile-battle-open')){
+      const inlineDetail=mobileBattleSheet.querySelector('[data-bme-inline-detail]');
+      const content=popup.getContent();
+      if(inlineDetail){
+        inlineDetail.innerHTML=typeof content==='string'?content:'';
+        inlineDetail.hidden=false;
+        inlineDetail.scrollIntoView({block:'nearest',behavior:'smooth'});
+      }
+      window.setTimeout(()=>map.closePopup(popup),0);
+      return;
+    }
     closeMobileHelpTips();
     closeComparePanel();
     closeExplorerSheet();
@@ -7840,6 +8109,7 @@ function setupMobileTabs(x) {
 
       if (tab.dataset.pane.startsWith('moves-')) {
         drawMovements(x);
+        BattleMapEngine.bindControls(mobileBattleSheet,x);
       } else if (tab.dataset.pane.startsWith('terrain-')) {
         clearMovementLayer(); /* terrain already drawn on open */
       } else {
